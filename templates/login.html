@@ -1,4 +1,24 @@
 <html>
+WELCOME TO EUREKA
+    <form action="/authenticate" form method="POST">
+        <!-- iterate through form, which is taken the "form" taken from views -->
+        {% for field in form %}
+
+            {% for error in field.errors %}
+            <!-- print error message -->
+            <p style="color:red">{{error}}</p>
+            {% endfor %}
+        <!-- represent the field and its respective label, such as "email" or "password" -->
+            {{ field.label }}
+            {{ field }}<br>
+        {% endfor %}
+        <input type="submit">
+    </form>
+</html>
+
+<!-- OLD VERSION:
+ -->
+<!-- <html>
 <body>
 	Welcome to EUREKA
 <form action="/authenticate" method="POST">
@@ -13,4 +33,4 @@
 </form>
 Register as a new user <a href="http://localhost:5000/new_user">HERE</a>
 </body>
-</html>
+</html> -->

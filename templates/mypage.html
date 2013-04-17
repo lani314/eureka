@@ -2,6 +2,12 @@
 <body>
 	MY PAGE
 	<p>My Projects</p>
+
+	{% for project in recent_work %}
+		{{project.name}}
+	{% endfor %}
+
+
 	<p><a href="http://localhost:5000/new_project">Start New Project</a></p>
 	<p><a href="http://localhost:5000/search_project">Join an Existing Project</a></p>
 </body>
