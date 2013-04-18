@@ -1,11 +1,12 @@
 from flask import Flask, render_template, redirect, request, g, session, flash, url_for
 import model
-from model import User, Project, Membership, Idea, Rating
+# from model import User, Project, Membership, Idea, Rating
 from model import session as db_session
 import forms
 
 app = Flask(__name__)
 app.secret_key = 'discovery'
+
 
 @app.before_request
 def before_request():
@@ -47,6 +48,14 @@ def add_user():
         model.session.add(register_user)
         model.session.commit()
 
+        # userid_generator = model.session.query(model.User).get(register_user.id)
+
+        # place_usermembership = model.Membership(user_id = register_user.id)
+
+        # model.session.add(place_usermembership)
+        # model.session.commit()
+
+
         # WHY IS THE FLASH NOT WORKING?
         flash("Thanks for registering. Please login now.")
         return render_template("/login.html")
@@ -74,26 +83,27 @@ def add_user():
 @app.route("/mypage", methods=['GET'])
 def my_page():
 
-    # create an empty list to append recent projects to
-    recent_work = []
+    # # create an empty list to append recent projects to
+    # recent_work = []
 
-    # query for projects from the Membership table
-    work_query = db_session.query(model.Membership).all()
-    # test query -- an object should be printed out
-    print work_query
-    # iterate through all memberships from query
-    for membership in work_query:
-        # assign variable to user backreference of memberships
-        x = membership.user
-        # assign variable to project backreference of memberships
-        y = membership.project
-        # for a project in the backreference of the projects
-        for project in y:
-            # append the project names to the recent_work list
-            recent_work.append(project.name)
+    # # query for projects from the Membership table
+    # # query for USER rather than ALL
+    # work_query = model.session.query(model.Membership).all()
+    # # test query -- an object should be printed out
+    # print work_query
+    # # iterate through all memberships from query
+    # for membership in work_query:
+    #     # assign variable to user backreference of memberships
+    #     x = membership.user
+    #     # assign variable to project backreference of memberships
+    #     y = membership.project
+    #     # for a project in the backreference of the projects
+    #     for project in y:
+    #         # append the project names to the recent_work list
+    #         recent_work.append(project.name)
 
-    # test to see recent_work list 
-    print recent_work
+    # # test to see recent_work list 
+    # print recent_work
 
     # other reference point from past ratings project:
     # projects = model.session.query(model.Membership).get(1)
@@ -101,7 +111,9 @@ def my_page():
         # limit(5).all()
 
     session['id'] = id
-    return render_template("mypage.html", recent_work = recent_work)
+    # return render_template("mypage.html", recent_work = recent_work)
+    return render_template("mypage.html")
+
 
 @app.route("/new_project")
 def new_project():
@@ -120,10 +132,28 @@ def add_project():
     form = forms.AddProjectForm()
     if form.validate_on_submit():
         register_project = model.Project(project_name = form.name.data, project_password = form.password.data, base_text = form.base_text.data)
-        # OLD WAY, BEFORE CORRECTIONS TO WFORMS -- THIS IS INCORRECT -- SHOW DIFFERENCES:
-        # register_user = model.User(form.email.data, form.username.data, form.password.data)
         model.session.add(register_project)
         model.session.commit()
+
+        # projectid_generator = model.session.query(model.Project).get(register_project.id)
+
+        # place_projectmembership = model.Membership(user_id = register_project.id)
+
+        # model.session.add(place_projectmembership)
+        # model.session.commit().id
+
+        projectid_generator = model.session.query(model.Project).get(register_project.id)
+
+        # int_id = int(g.id)
+
+        # place_membership = model.Membership(project_id = register_project.id, user_id = int_id)
+        place_membership = model.Membership(project_id = register_project.id)
+
+        model.session.add(place_membership)
+        model.session.commit()
+
+        # test -- shows id as object that cannot have int() method applied to it
+        print g.id
 
         # WHY IS THE FLASH NOT WORKING?
         flash("You have successfully created a new project.")
