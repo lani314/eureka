@@ -19,6 +19,13 @@ class User(Base):
     username = Column(String(80), nullable=False)
     password = Column(String(80), nullable=False)
 
+    # indiv_user = relationship("User", 
+    #     secondary = pruser, 
+    #     primaryjoin = (pruser.user_id == id), 
+    #     secondaryjoin = (pruser.user_id == id), 
+    #     backref = backref(pruser, lazy = 'dynamic'), 
+    #     lazy = 'dynamic')
+
 class Project(Base):
     __tablename__ = "projects"
     id = Column(Integer, primary_key = True)
@@ -31,7 +38,7 @@ class Project(Base):
 # We need this b/c of the many-many relationship
 # However, if it were 1-many, we would not need it
 class Membership(Base):
-    __tablename__ = "pruser"
+    __tablename__ = "memberships"
     id = Column(Integer, primary_key = True)
     user_id = Column(Integer, ForeignKey('users.id'))
     project_id = Column(Integer, ForeignKey('projects.id'))

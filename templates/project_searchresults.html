@@ -1,0 +1,11 @@
+<html>
+    <form action="/save_user" form method="POST">
+        <!-- iterate through form, which is taken the "form" taken from views -->
+        <p>PROJECT</p>
+
+    {% for project in projects %}
+        {{project}}
+    {% endfor %}
+
+    </form>
+</html>

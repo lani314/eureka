@@ -1,5 +1,6 @@
 from flask import Flask, render_template, redirect, request, g, session, flash, url_for
 import model
+from model import User, Project, Membership, Idea, Rating
 from model import session as db_session
 import forms
 
@@ -73,7 +74,26 @@ def add_user():
 @app.route("/mypage", methods=['GET'])
 def my_page():
 
-    recent_work = db_session.query(model.Membership).all()
+    # create an empty list to append recent projects to
+    recent_work = []
+
+    # query for projects from the Membership table
+    work_query = db_session.query(model.Membership).all()
+    # test query -- an object should be printed out
+    print work_query
+    # iterate through all memberships from query
+    for membership in work_query:
+        # assign variable to user backreference of memberships
+        x = membership.user
+        # assign variable to project backreference of memberships
+        y = membership.project
+        # for a project in the backreference of the projects
+        for project in y:
+            # append the project names to the recent_work list
+            recent_work.append(project.name)
+
+    # test to see recent_work list 
+    print recent_work
 
     # other reference point from past ratings project:
     # projects = model.session.query(model.Membership).get(1)
@@ -91,6 +111,11 @@ def new_project():
 
 @app.route("/save_project", methods=["POST"])
 def add_project():
+
+    # i need one membership for each project to get project information
+    # add an instance of membership 
+    # create:
+    # THINK ABOUT THIS: register_project.id = membership.project_id
 
     form = forms.AddProjectForm()
     if form.validate_on_submit():
@@ -113,10 +138,10 @@ def display_search():
 def search():
     query = request.form['query']
     projects = db_session.query(Project).\
-            filter(Project.name.ilike("%" + query + "%")).\
+            filter(Project.project_name.ilike("%" + query + "%")).\
             limit(20).all()
 
-    return render_template("results.html", projects=projects)
+    return render_template("project_searchresults.html", projects=projects)
 
 if __name__ == "__main__":
     app.run(debug = True)
