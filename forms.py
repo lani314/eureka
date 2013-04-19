@@ -16,4 +16,5 @@ class AddProjectForm(Form):
 	password = TextField("password", validators=[v.required()])
 	base_text = TextField("base_text", validators=[v.required()])
 
-
+class AddIdeaForm(Form):
+	idea = TextField("idea", validators=[v.required()])
