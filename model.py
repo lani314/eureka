@@ -63,7 +63,7 @@ class Idea(Base):
     idea = Column(String, nullable = True)
 
     # load corresponding project object
-    # project = relationship("Project", backref=backref("projects", order_by=id))
+    project = relationship("Project", backref=backref("projects", order_by=id))
 
 class Rating(Base):
     __tablename__ = "ratings"

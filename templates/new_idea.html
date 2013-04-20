@@ -4,5 +4,21 @@
 	<p>Random</p>
 	<p>Like</p>
 	<p>Mix</p>
+
+	  <form action="/save_idea" form method="POST">
+        <!-- iterate through form, which is taken the "form" taken from views -->
+        {% for field in form %}
+
+            {% for error in field.errors %}
+            <!-- print error message -->
+            <p style="color:red">{{error}}</p>
+            {% endfor %}
+        <!-- represent the field and its respective label, such as "email" or "password" -->
+            {{ field.label }}
+            {{ field }}<br>
+        {% endfor %}
+        <input type="submit">
+    </form>
+</html>
 </body>
 </html>
