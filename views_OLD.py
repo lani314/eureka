@@ -75,27 +75,29 @@ def my_page():
 
     # query for projects from the Membership table
     # query for USER rather than ALL
-    # work_query = model.session.query(model.Membership).all()
-    # # test query -- an object should be printed out
-    # print work_query
-
-    for my_project in model.session.query(model.Membership).order_by(model.Membership.id): 
-        # recent_work.append(my_project)
-        # if g.user.id = model.Membership.user_id:
-            print my_project.project_id
-
+    work_query = model.session.query(model.Membership).all()
+    # test query -- an object should be printed out
+    print work_query
     # iterate through all memberships from query
-    # for membership in work_query:
-    #     # assign variable to user backreference of memberships
-    #     x = membership.user
-    #     # assign variable to project backreference of memberships
-    #     y = membership.project
-    #     # for a project in the backreference of the projects
-    #     for project in y:
-    #         # append the project names to the recent_work list
-    #         recent_work.append(project.name)
 
-    # test to see recent_work list 
+    for membership in work_query:
+        # assign variable to user backreference of memberships
+        recent_work.append(membership)
+
+
+        # user_info = membership.user
+        # # assign variable to project backreference of memberships
+        # project_info = membership.project
+        # # for a project in the backreference of the projects
+
+        # print user_info
+        # print project_info
+
+        # for each_project in project_info:
+        #     # append the project names to the recent_work list
+        #     recent_work.append(project)
+
+    # # # test to see recent_work list 
     # print recent_work
 
     # other reference point from past ratings project:
@@ -164,13 +166,15 @@ def save_idea():
     form = forms.AddIdeaForm()
 
     if form.validate_on_submit():
-        register_idea = model.Idea(id = None, idea = form.idea.data, project_id = project)
+        register_idea = model.Idea(idea = form.idea.data, project_id = project)
         model.session.add(register_idea)
         model.session.commit()
-        # model.session.refresh(register_idea)
-        session["idea"] = register_idea.id
+        # session["idea"] = register_idea.id
 
-    return redirect("/rate_idea")
+        model.session.refresh(register_idea)
+
+    # return redirect("/new_idea.html", form=form)
+    return render_template("/new_idea.html", form=form)
 
 @app.route("/search_project", methods=["GET"])
 def display_search():
@@ -185,31 +189,23 @@ def search():
 
     return render_template("project_searchresults.html", projects=projects)
 
-@app.route("/rate_idea")
-def add_rating():
+# @app.route("/rate_idea")
+# def add_rating():
 
-    form = forms.RateIdeaForm()
-    return render_template("/rate_idea.html", form=form)
+#     form = forms.RateIdeaForm()
+#     return render_template("/rate_idea.html", form=form)
 
-@app.route("/save_rating", methods=["GET", "POST"])
-def save_rating():
+# @app.route("/save_rating", methods=["GET", "POST"])
+# def save_rating():
 
-    idea = session.get("idea")
-    user = session.get("g.user")
+#     idea = session.get("idea")
 
-    print user
+#     form = forms.RateIdeaForm()
 
-    form = forms.RateIdeaForm()
-
-    if form.validate_on_submit():
-        register_rating = model.Rating(id = None, idea_id = idea, rater_id = g.user.id, rating = form.rating.data, rating_notes = form.rating_notes.data)
-        model.session.add(register_rating)
-        model.session.commit()
-
-        # commit this addition
-    model.session.commit()
-
-    return redirect("/mypage")
+#     if form.validate_on_submit():
+#         register_rating = model.Rating(idea_id = idea, rater_id = g.user, rating = form.rating.data, rating_notes = form.rating_notes.data)
+#         model.session.add(register_rating)
+#         model.session.commit()
 
 if __name__ == "__main__":
     app.run(debug = True)

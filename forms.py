@@ -18,3 +18,7 @@ class AddProjectForm(Form):
 
 class AddIdeaForm(Form):
 	idea = TextField("idea", validators=[v.required()])
+
+class RateIdeaForm(Form):
+	rating = TextField("rating", validators=[v.required()])
+	rating_notes = TextField("rating_notes", validators=[v.required()])
