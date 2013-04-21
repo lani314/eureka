@@ -1,8 +1,8 @@
 from flask import Flask, render_template, redirect, request, g, session, flash, url_for
 import model
-# from model import User, Project, Membership, Idea, Rating
 from model import session as db_session
 import forms
+# from urllib2 import urlope
 
 app = Flask(__name__)
 app.secret_key = 'discovery'
@@ -170,17 +170,14 @@ def member_authenticate():
             register_member = model.Membership(user_id = g.user.id, project_id = form.project_id.data)
         model.session.add(register_member)
         model.session.commit()
-        return redirect("/my_project")
+        return render_template("/my_projects.html")
     else:
         return redirect("/mypage")
 
 @app.route("/my_project/<int:id>", methods=["GET"])
 def my_project(id):
-    # query for info on user id, defined as user variable
-    project_info = model.session.query(model.User).get(id)
 
-    #print ratings
-    return render_template("/my_project", project_info = project_info)
+    return render_template("/my_project.html")
 
 @app.route("/rate_idea")
 def add_rating():
