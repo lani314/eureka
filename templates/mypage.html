@@ -4,11 +4,21 @@
 	<p>My Projects</p>
 
 	{% for project in recent_work %}
-		{{project.name}}
+
+		<p>Project ID: <a href="{{url_for("my_project", id=project.id)}}">{{project.id}}</a></p>
+		<p>Project Name: {{project.project_name}}</p>
 	{% endfor %}
 
+	{% for one in my_work %}
+		<p>Project ID: {{one.id}}</p>
+		<p>Project Name: {{one.project_name}}</p>
+	{% endfor %}
+
+<!-- 	{% for name in recentwork_name %}
+		<p>Project ID: {{name.name}}</p>
+	{% endfor %} -->
 
 	<p><a href="http://localhost:5000/new_project">Start New Project</a></p>
-	<p><a href="http://localhost:5000/search_project">Join an Existing Project</a></p>
+	<p><a href="http://localhost:5000/search_project">Search for an Existing Project</a></p>
 </body>
 </html>

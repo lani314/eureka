@@ -22,3 +22,8 @@ class AddIdeaForm(Form):
 class RateIdeaForm(Form):
 	rating = TextField("rating", validators=[v.required()])
 	rating_notes = TextField("rating_notes", validators=[v.required()])
+
+class JoinProjectForm(Form):
+	project_id = TextField("project_id", validators=[v.required()])
+	project_name = TextField("project_name", validators=[v.required()])
+	project_password = TextField("project_password", validators=[v.required()])

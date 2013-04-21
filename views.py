@@ -73,35 +73,9 @@ def my_page():
     # create an empty list to append recent projects to
     recent_work = []
 
-    # query for projects from the Membership table
-    # query for USER rather than ALL
-    # work_query = model.session.query(model.Membership).all()
-    # # test query -- an object should be printed out
-    # print work_query
-
-    for my_project in model.session.query(model.Membership).order_by(model.Membership.id): 
-        # recent_work.append(my_project)
-        # if g.user.id = model.Membership.user_id:
-            print my_project.project_id
-
-    # iterate through all memberships from query
-    # for membership in work_query:
-    #     # assign variable to user backreference of memberships
-    #     x = membership.user
-    #     # assign variable to project backreference of memberships
-    #     y = membership.project
-    #     # for a project in the backreference of the projects
-    #     for project in y:
-    #         # append the project names to the recent_work list
-    #         recent_work.append(project.name)
-
-    # test to see recent_work list 
-    # print recent_work
-
-    # other reference point from past ratings project:
-    # projects = model.session.query(model.Membership).get(1)
-        # filter(model.Membership.project_id).\
-        # limit(5).all()
+    # Query for all projects that match user in membership table (project user = global user)
+    for my_membership in model.session.query(model.Membership).filter_by(user_id=g.user.id):
+        recent_work.append(my_membership.project)
 
     # return render_template("mypage.html", recent_work = recent_work)
     return render_template("mypage.html", recent_work = recent_work)
@@ -179,11 +153,34 @@ def display_search():
 @app.route("/search", methods=["POST"])
 def search():
     query = request.form['query']
-    projects = db_session.query(Project).\
-            filter(Project.project_name.ilike("%" + query + "%")).\
-            limit(20).all()
+    projects = model.session.query(model.Project).\
+            filter(model.Project.project_name.ilike("%" + query + "%")).all()
 
-    return render_template("project_searchresults.html", projects=projects)
+    form = forms.JoinProjectForm()
+
+    return render_template("project_searchresults.html", projects=projects, form=form)
+
+@app.route("/authenticate_member", methods=["POST"])
+def member_authenticate():
+
+    form = forms.JoinProjectForm()
+    if form.validate_on_submit():
+        group_project = model.session.query(model.Project).filter_by(id=form.project_id.data, project_name=form.project_name.data, project_password=form.project_password.data)
+        if group_project:
+            register_member = model.Membership(user_id = g.user.id, project_id = form.project_id.data)
+        model.session.add(register_member)
+        model.session.commit()
+        return redirect("/my_project")
+    else:
+        return redirect("/mypage")
+
+@app.route("/my_project/<int:id>", methods=["GET"])
+def my_project(id):
+    # query for info on user id, defined as user variable
+    project_info = model.session.query(model.User).get(id)
+
+    #print ratings
+    return render_template("/my_project", project_info = project_info)
 
 @app.route("/rate_idea")
 def add_rating():
@@ -195,9 +192,6 @@ def add_rating():
 def save_rating():
 
     idea = session.get("idea")
-    user = session.get("g.user")
-
-    print user
 
     form = forms.RateIdeaForm()
 
