@@ -118,6 +118,7 @@ def add_project():
 
         # commit this addition
         model.session.commit()
+        session["membership"] = place_membership.id
         session["project"] = register_project.id
         # WHY IS THE FLASH NOT WORKING?
         flash("You have successfully created a new project.")
@@ -138,13 +139,14 @@ def save_idea():
     form = forms.AddIdeaForm()
 
     if form.validate_on_submit():
-        register_idea = model.Idea(id = None, idea = form.idea.data, project_id = project)
+        register_idea = model.Idea(id = None, idea = form.idea.data, project_id = project, creator_id = g.user.id)
         model.session.add(register_idea)
         model.session.commit()
         # model.session.refresh(register_idea)
         session["idea"] = register_idea.id
 
     return redirect("/rate_idea")
+
 
 @app.route("/search_project", methods=["GET"])
 def display_search():
@@ -170,14 +172,39 @@ def member_authenticate():
             register_member = model.Membership(user_id = g.user.id, project_id = form.project_id.data)
         model.session.add(register_member)
         model.session.commit()
-        return render_template("/my_projects.html")
+        # THIS PROBABLY NEEDS TO BE WORKED ON
+        # IT SHOULD PROBABLY BE REDIRECT INSTEAD OF JUST RENDER_TEMPLATE BUT IT CURRENTLY DOES NOT WORK AS REDIRECT WAY VERY WELL
+        return render_template("/my_project.html")
     else:
         return redirect("/mypage")
 
 @app.route("/my_project/<int:id>", methods=["GET"])
 def my_project(id):
 
+    # session["existing_project"] = my_project.id
     return render_template("/my_project.html")
+
+# @app.route("/update_idea")
+# def update_idea():
+
+#     form = forms.AddIdeaForm()
+#     return render_template("/update_idea.html", form=form)
+
+# @app.route("/save_update_idea", methods=["GET", "POST"])
+# def save_update_idea():
+
+#     existing_project = session.get("existing_project")
+
+#     form = forms.AddIdeaForm()
+
+#     if form.validate_on_submit():
+#         register_idea = model.Idea(id = None, idea = form.idea.data, project_id = existing_project)
+#         model.session.add(register_idea)
+#         model.session.commit()
+#         # model.session.refresh(register_idea)
+#         session["idea"] = register_idea.id
+
+#     return redirect("/rate_idea")
 
 @app.route("/rate_idea")
 def add_rating():
@@ -201,6 +228,23 @@ def save_rating():
     model.session.commit()
 
     return redirect("/mypage")
+
+@app.route("/view_ratings", methods=["GET", "POST"])
+def view_ratings():
+
+    idea = session.get("idea")
+    # project = session.get("project")
+
+    idea_ratings = []
+
+    for viewer in model.session.query(model.Rating).filter_by(idea_id = idea):
+        idea_ratings.append(viewer.idea)
+        # idea_ratings.append(viewer.rating)
+        # idea_ratings.append(viewer.rater)
+
+    # return render_template("mypage.html", recent_work = recent_work)
+    return render_template("view_ratings.html", idea_ratings = idea_ratings)
+
 
 if __name__ == "__main__":
     app.run(debug = True)

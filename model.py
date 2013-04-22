@@ -18,14 +18,7 @@ class User(Base):
     email = Column(String(80), nullable=False)
     username = Column(String(80), nullable=False)
     password = Column(String(80), nullable=False)
-
-    # indiv_user = relationship("User", 
-    #     secondary = pruser, 
-    #     primaryjoin = (pruser.user_id == id), 
-    #     secondaryjoin = (pruser.user_id == id), 
-    #     backref = backref(pruser, lazy = 'dynamic'), 
-    #     lazy = 'dynamic')
-
+    
 class Project(Base):
     __tablename__ = "projects"
     id = Column(Integer, primary_key = True)
@@ -59,11 +52,14 @@ class Idea(Base):
     __tablename__ = "ideas"
     id = Column(Integer, primary_key = True)
     project_id = Column(Integer, ForeignKey('projects.id'))
+    creator_id = Column(Integer, ForeignKey('users.id'))
     inspiration = Column(String, nullable = True)
     idea = Column(String, nullable = True)
 
     # load corresponding project object
-    project = relationship("Project", backref=backref("projects", order_by=id))
+    idea_project = relationship("Project", backref=backref("ideas", order_by=id))
+    creator = relationship("User", backref=backref("ideas", order_by=id))
+
 
 class Rating(Base):
     __tablename__ = "ratings"
@@ -74,9 +70,9 @@ class Rating(Base):
     rating_notes= Column(String, nullable = True)
 
     # one idea has many ratings - ONE TO MANY
-    # idea = relationship("Idea", backref=backref("ideas", order_by=id))
+    idea = relationship("Idea", backref=backref("ideas", order_by=id))
     # # one rater has many ratings - ONE TO MANY
-    # rater = relationship("User", backref=backref("ratings", order_by=id))
+    rater = relationship("User", backref=backref("ratings", order_by=id))
 
 def main():
     """In case we need this for something"""

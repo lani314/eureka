@@ -1,14 +1,13 @@
 <html>
 <body>
-	MY PAGE
-	<p>My Projects</p>
+	IDEA RATINGS
 
-	{% for project in recent_work %}
+	{% for result in idea_ratings %}
 
-		<p>Project ID: <a href="{{url_for("my_project", id=project.id)}}">{{project.id}}</a><br>
-		<p>Project Name: {{project.project_name}}</p>
+		<p>Idea:{{result.idea}}<br>
+<!-- 		Project Rating: {{result.rating}}<br>
+		Creator: {{result.creator.name}}</p> -->
 	{% endfor %}
-
 
 <!-- 	{% for name in recentwork_name %}
 		<p>Project ID: {{name.name}}</p>

@@ -1,12 +1,11 @@
 <html>
-        <!-- iterate through form, which is taken the "form" taken from views -->
-        <p>PROJECT</p>
-
-    {% for project in projects %}
-        Project ID: {{project.id}} Project Name: {{project.project_name}}
-    {% endfor %}
-
- <form action="/authenticate_member" form method="POST">
+<body>
+	CREATE A NEW IDEA FOR YOUR PROJECT!
+	<p>Random</p>
+	<p>Like</p>
+	<p>Mix</p>
+[DISPLAY BASE TEXT HERE]
+	  <form action="/save_update_idea" form method="POST">
         <!-- iterate through form, which is taken the "form" taken from views -->
         {% for field in form %}
 
@@ -15,10 +14,11 @@
             <p style="color:red">{{error}}</p>
             {% endfor %}
         <!-- represent the field and its respective label, such as "email" or "password" -->
-            {{ field.label }}<br>
+            {{ field.label }}
             {{ field }}<br>
         {% endfor %}
         <input type="submit">
     </form>
-
+</html>
+</body>
 </html>
