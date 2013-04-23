@@ -2,11 +2,16 @@ from flask import Flask, render_template, redirect, request, g, session, flash, 
 import model
 from model import session as db_session
 import forms
-# from urllib2 import urlope
+from urllib2 import Request, urlopen, URLError
+
+from wordnik import *
+apiUrl = 'http://api.wordnik.com/v4'
+apiKey = '3a764609677c7b0b4000408a0a905c1febd664dfa62363aaf'
+client = swagger.ApiClient(apiKey, apiUrl)
+
 
 app = Flask(__name__)
 app.secret_key = 'discovery'
-
 
 @app.before_request
 def before_request():
@@ -129,7 +134,19 @@ def add_project():
 def add_idea():
 
     form = forms.AddIdeaForm()
-    return render_template("/new_idea.html", form=form)
+
+    # my_words = urlopen('http://api.wordnik.com/v4)
+    # response = my_words.read()
+
+    word_list = []
+
+    wordsApi = WordsApi.WordsApi(client)
+    random_word = wordsApi.getRandomWord()
+    # print random_word
+
+    word_list.append(random_word)
+
+    return render_template("/new_idea.html", form=form, word_list = word_list)
 
 @app.route("/save_idea", methods=["GET", "POST"])
 def save_idea():
@@ -169,6 +186,7 @@ def member_authenticate():
     if form.validate_on_submit():
         group_project = model.session.query(model.Project).filter_by(id=form.project_id.data, project_name=form.project_name.data, project_password=form.project_password.data)
         if group_project:
+            # ENSURE THAT PERSON IS NOT ALREADY REGISTERED TO THIS PROJECT!
             register_member = model.Membership(user_id = g.user.id, project_id = form.project_id.data)
         model.session.add(register_member)
         model.session.commit()
@@ -184,7 +202,7 @@ def my_project(id):
     # session["existing_project"] = my_project.id
     return render_template("/my_project.html")
 
-# @app.route("/update_idea")
+# @app.route("/project/<int:id>/update_idea")
 # def update_idea():
 
 #     form = forms.AddIdeaForm()
@@ -192,8 +210,6 @@ def my_project(id):
 
 # @app.route("/save_update_idea", methods=["GET", "POST"])
 # def save_update_idea():
-
-#     existing_project = session.get("existing_project")
 
 #     form = forms.AddIdeaForm()
 

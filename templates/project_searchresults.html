@@ -3,7 +3,7 @@
         <p>PROJECT</p>
 
     {% for project in projects %}
-        Project ID: {{project.id}} Project Name: {{project.project_name}}
+        <p>Project ID: {{project.id}} <br>Project Name: {{project.project_name}}</p>
     {% endfor %}
 
  <form action="/authenticate_member" form method="POST">
@@ -15,8 +15,8 @@
             <p style="color:red">{{error}}</p>
             {% endfor %}
         <!-- represent the field and its respective label, such as "email" or "password" -->
-            {{ field.label }}<br>
-            {{ field }}<br>
+            {{ field.label }}
+            {{ field }}
         {% endfor %}
         <input type="submit">
     </form>
