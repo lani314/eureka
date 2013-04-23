@@ -27,3 +27,6 @@ class JoinProjectForm(Form):
 	project_id = TextField("project_id", validators=[v.required()])
 	project_name = TextField("project_name", validators=[v.required()])
 	project_password = TextField("project_password", validators=[v.required()])
+
+class KeywordForm(Form):
+	keyword = TextField("keyword", validators=[v.required()])

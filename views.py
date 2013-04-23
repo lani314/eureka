@@ -133,20 +133,34 @@ def add_project():
 @app.route("/new_idea")
 def add_idea():
 
+    # THIS HAS SOME ISSUES. NOT COMPLETELY CORRECT.
+    # BASE TEXT IS MOST RECENT. IT IS NOT PROPERLY ATTACHED TO THE PROPER PROJECT.
+
+    project = session.get("project")
+
+    basetext_generator = []
+
+    for my_text in model.session.query(model.Project).filter_by(id=project):
+        basetext_generator.append(my_text)
+
     form = forms.AddIdeaForm()
 
     # my_words = urlopen('http://api.wordnik.com/v4)
     # response = my_words.read()
 
     word_list = []
+    # like_list = []
 
     wordsApi = WordsApi.WordsApi(client)
     random_word = wordsApi.getRandomWord()
-    # print random_word
-
     word_list.append(random_word)
 
-    return render_template("/new_idea.html", form=form, word_list = word_list)
+    # wordApi = WordApi.WordApi(client)
+    # synonym = wordApi.WordApi("WORD HERE")
+    # like_list.append(synonym)
+
+    # return render_template("/new_idea.html", form=form, word_list = word_list)
+    return render_template("/new_idea.html", form=form, word_list = word_list, basetext_generator=basetext_generator)
 
 @app.route("/save_idea", methods=["GET", "POST"])
 def save_idea():
@@ -202,8 +216,8 @@ def my_project(id):
     # session["existing_project"] = my_project.id
     return render_template("/my_project.html")
 
-# @app.route("/project/<int:id>/update_idea")
-# def update_idea():
+# @app.route("/my_project/<int:id>/update_idea")
+# def update_idea(id):
 
 #     form = forms.AddIdeaForm()
 #     return render_template("/update_idea.html", form=form)

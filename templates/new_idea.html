@@ -1,6 +1,14 @@
 <html>
 <body>
 	CREATE A NEW IDEA FOR YOUR PROJECT!
+
+
+    {% for extract in basetext_generator %}
+
+        <p>BASE TEXT:</p> 
+        {{extract.base_text}}
+    {% endfor %}
+
 	<p>RANDOM:</p>
     <!-- How do we retrieve the random word? -->
 
