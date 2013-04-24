@@ -1,9 +1,12 @@
 <html>
+<head>
+    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.css') }}"  />
+</head>
 <body>
 	CREATE A NEW IDEA FOR YOUR PROJECT!
 
 
-    {% for extract in basetext_generator %}
+    {% for extract in project_generator %}
 
         <p>BASE TEXT:</p> 
         {{extract.base_text}}
@@ -17,13 +20,22 @@
         <br>Don't know the word? See the dictionary definition HERE.
     {% endfor %}
 
-	<p>LIKE:</p>
+    <p>KEYWORDS:</p>
+
+     {% for extract in project_generator %}
+
+        {{extract.keywords}}
+    {% endfor %}
+
+   <p></p>
 
      {% for each in like_list %}
         {{each}}
         {{each.words}}
         <br>Don't know the word? See the dictionary definition HERE.
     {% endfor %}
+
+    <p>LIKE:</p>
 
 	<p>MIX:</p>
 
@@ -41,6 +53,8 @@
         {% endfor %}
         <input type="submit">
     </form>
+
+    Continue to <a href="http://localhost:5000/rate_idea"">Rate Idea</a><br>
 
 
 <!--     <form action="/new_idea" form method="POST">

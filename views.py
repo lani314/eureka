@@ -1,6 +1,7 @@
 from flask import Flask, render_template, redirect, request, g, session, flash, url_for
 import model
 from model import session as db_session
+# from flask.ext.bootstrap import Bootstrap
 import forms
 from urllib2 import Request, urlopen, URLError
 
@@ -102,7 +103,7 @@ def add_project():
 
     form = forms.AddProjectForm()
     if form.validate_on_submit():
-        register_project = model.Project(id = None, project_name = form.name.data, project_password = form.password.data, base_text = form.base_text.data)
+        register_project = model.Project(id = None, project_name = form.name.data, project_password = form.password.data, base_text = form.base_text.data, keywords = form.keywords.data)
         model.session.add(register_project)
         
         # query in Projects to get the id of the currently registered project's id
@@ -138,10 +139,13 @@ def add_idea():
 
     project = session.get("project")
 
-    basetext_generator = []
+    project_generator = []
 
     for my_text in model.session.query(model.Project).filter_by(id=project):
-        basetext_generator.append(my_text)
+        project_generator.append(my_text)
+
+    # for my_text in model.session.query(model.Project).filter_by(id=project):
+    #     keyword_generator.append(my_text)
 
     form = forms.AddIdeaForm()
 
@@ -154,7 +158,6 @@ def add_idea():
     random_word = wordsApi.getRandomWord()
     word_list.append(random_word)
 
-
     likeform = forms.KeywordForm()
     like_list = []
 
@@ -163,7 +166,7 @@ def add_idea():
     like_list.append(synonym)
 
     # return render_template("/new_idea.html", form=form, word_list = word_list)
-    return render_template("/new_idea.html", form=form, likeform = likeform, word_list = word_list, basetext_generator=basetext_generator, like_list = like_list)
+    return render_template("/new_idea.html", form=form, likeform = likeform, word_list = word_list, project_generator = project_generator, like_list = like_list)
 
 @app.route("/save_idea", methods=["GET", "POST"])
 def save_idea():
@@ -181,6 +184,7 @@ def save_idea():
         session["idea"] = register_idea.id
 
     return redirect("/rate_idea")
+    # return rediect("/new_idea")
 
 
 @app.route("/search_project", methods=["GET"])
@@ -208,9 +212,12 @@ def member_authenticate():
             register_member = model.Membership(user_id = g.user.id, project_id = form.project_id.data)
         model.session.add(register_member)
         model.session.commit()
+        # session["existing_project"] = id
+
         # THIS PROBABLY NEEDS TO BE WORKED ON
         # IT SHOULD PROBABLY BE REDIRECT INSTEAD OF JUST RENDER_TEMPLATE BUT IT CURRENTLY DOES NOT WORK AS REDIRECT WAY VERY WELL
-        return render_template("/my_project.html")
+        return render_template("/my_project.html", id=form.project_id.data)
+        # return render_template("/my_project.html", id=id)
     else:
         return redirect("/mypage")
 
@@ -218,6 +225,7 @@ def member_authenticate():
 def my_project(id):
 
     session["existing_project"] = id
+    # existing_project = session.get("existing_project")
     return render_template("/my_project.html", id=id)
 
 @app.route("/update_idea/<int:id>")

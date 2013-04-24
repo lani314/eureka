@@ -1,15 +1,19 @@
 <html>
+<head>
+    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.css') }}"  />
+</head>
 <body>
 	PROJECT IDEAS<br>
 
 	{% for selection in all_ideas %}
 
-		{{selection.id}}
 		{{selection.idea}}
 		{{selection.username}}
 
 	{% endfor %}	
 
+	<p><a href="http://localhost:5000/new_project">Start New Project</a></p>
+	<p><a href="http://localhost:5000/mypage">Return to My Profile Page</a></p>
 
 </body>
 </html>

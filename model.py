@@ -25,6 +25,7 @@ class Project(Base):
     project_name = Column(String(80), nullable=True)
     project_password = Column(String, nullable=True)
     base_text = Column(String, nullable=True)
+    keywords = Column(String, nullable=True)
 
 
 # ASSOCIATION TABLE
