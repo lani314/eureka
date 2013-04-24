@@ -3,8 +3,10 @@
     <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.css') }}"  />
 </head>
 <body>
+    <h1>Rate</h1>
+    <p>Rate the idea you created(1-10)</p>
+    <p>You may provide an optional note about your rating, which may help other users</p>
 
-RATE THIS IDEA THAT YOU JUST CREATED!
 
 	  <form action="/save_rating" form method="POST">
         <!-- iterate through form, which is taken the "form" taken from views -->

@@ -2,6 +2,10 @@
 <head>
     <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.css') }}"  />
 </head>
+    <h1>Registration</h1>
+    <p>Become a member of EUREKA!</p>
+    <p>Feel inspired by the unexpected, surreal and absurd</p>
+
     <form action="/save_user" form method="POST">
         <!-- iterate through form, which is taken the "form" taken from views -->
         {% for field in form %}

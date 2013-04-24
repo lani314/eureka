@@ -126,6 +126,7 @@ def add_project():
         model.session.commit()
         session["membership"] = place_membership.id
         session["project"] = register_project.id
+        session["kwords"] = register_project.keywords
         # WHY IS THE FLASH NOT WORKING?
         flash("You have successfully created a new project.")
         return redirect("/new_idea")
@@ -138,6 +139,11 @@ def add_idea():
     # BASE TEXT IS MOST RECENT. IT IS NOT PROPERLY ATTACHED TO THE PROPER PROJECT.
 
     project = session.get("project")
+    kwords = session.get("kword")
+
+    # split_kwords = split(kwords)
+    # print "HERE ARE MY KWORDS:" 
+    # print kwords
 
     project_generator = []
 
@@ -158,15 +164,15 @@ def add_idea():
     random_word = wordsApi.getRandomWord()
     word_list.append(random_word)
 
-    likeform = forms.KeywordForm()
     like_list = []
 
     wordApi = WordApi.WordApi(client)
     synonym = wordApi.getRelatedWords(word = 'irony', relationshipTypes='synonym', limitPerRelationshipType=1)
     like_list.append(synonym)
 
+    
     # return render_template("/new_idea.html", form=form, word_list = word_list)
-    return render_template("/new_idea.html", form=form, likeform = likeform, word_list = word_list, project_generator = project_generator, like_list = like_list)
+    return render_template("/new_idea.html", form=form, word_list = word_list, project_generator = project_generator, like_list = like_list)
 
 @app.route("/save_idea", methods=["GET", "POST"])
 def save_idea():
@@ -174,7 +180,6 @@ def save_idea():
     project = session.get("project")
 
     form = forms.AddIdeaForm()
-    # likeform = forms.forms.KeywordForm()
 
     if form.validate_on_submit():
         register_idea = model.Idea(id = None, idea = form.idea.data, project_id = project, creator_id = g.user.id)
@@ -234,10 +239,10 @@ def update_idea(id):
     # project = session.get("project")
     existing_project = session.get("existing_project")
 
-    basetext_generator = []
+    project_generator = []
 
     for my_text in model.session.query(model.Project).filter_by(id=existing_project):
-        basetext_generator.append(my_text)
+        project_generator.append(my_text)
 
     form = forms.AddIdeaForm()
 
@@ -251,8 +256,14 @@ def update_idea(id):
     random_word = wordsApi.getRandomWord()
     word_list.append(random_word)
 
+    like_list = []
 
-    return render_template("/update_idea.html", form=form, word_list = word_list, basetext_generator=basetext_generator)
+    wordApi = WordApi.WordApi(client)
+    synonym = wordApi.getRelatedWords(word = 'irony', relationshipTypes='synonym', limitPerRelationshipType=1)
+    like_list.append(synonym)
+
+
+    return render_template("/update_idea.html", form=form, word_list = word_list, like_list = like_list, project_generator=project_generator)
 
 @app.route("/save_updated_idea/", methods=["GET", "POST"])
 def save_updated_idea():

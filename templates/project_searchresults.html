@@ -3,7 +3,8 @@
     <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.css') }}"  />
 </head>
         <!-- iterate through form, which is taken the "form" taken from views -->
-        <p>PROJECT</p>
+        <h1>Search Results</h1>
+
 
     {% for project in projects %}
         <p>Project ID: {{project.id}} <br>Project Name: {{project.project_name}}</p>

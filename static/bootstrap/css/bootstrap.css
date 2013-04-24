@@ -222,12 +222,38 @@ textarea {
 }
 
 body {
-  margin: 0;
+  margin: 40px;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 14px;
   line-height: 20px;
   color: #333333;
-  background-color: #ffffff;
+  background-color: #75D19D;
+}
+
+.darkphototext {
+color: white;
+font-weight: bold; 
+} 
+
+.informational {
+color: white;
+font-weight: bold; 
+background-color: #6694CC;
+} 
+
+.entrance {
+color: white;
+font-weight: bold; 
+background-color: #D68585;
+position:fixed;
+top:110px;
+left:340px;
+} 
+
+.resize {
+width: 500px;
+height: auto;
+display: inline-block;
 }
 
 a {

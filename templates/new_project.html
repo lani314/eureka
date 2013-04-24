@@ -2,6 +2,10 @@
 <head>
     <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.css') }}"  />
 </head>
+    <h1>Project</h1>
+    <p>Create a project, either for yourself or a team!</p>
+    <p>If you wish to keep your project private (for yourself or your team), remember to include a PASSWORD.</p>
+
     <form action="/save_project" form method="POST">
         <!-- iterate through form, which is taken the "form" taken from views -->
         {% for field in form %}
