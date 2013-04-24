@@ -18,6 +18,13 @@
     {% endfor %}
 
 	<p>LIKE:</p>
+
+     {% for each in like_list %}
+        {{each}}
+        {{each.words}}
+        <br>Don't know the word? See the dictionary definition HERE.
+    {% endfor %}
+
 	<p>MIX:</p>
 
 	  <form action="/save_idea" form method="POST">
@@ -34,6 +41,19 @@
         {% endfor %}
         <input type="submit">
     </form>
+
+
+<!--     <form action="/new_idea" form method="POST">
+        {% for field in likeform %}
+
+            {% for error in field.errors %}
+            <p style="color:red">{{error}}</p>
+            {% endfor %}
+            {{ field.label }}
+            {{ field }}<br>
+        {% endfor %}
+        <input type="submit">
+    </form> -->
 </html>
 </body>
 </html>

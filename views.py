@@ -149,18 +149,21 @@ def add_idea():
     # response = my_words.read()
 
     word_list = []
-    # like_list = []
 
     wordsApi = WordsApi.WordsApi(client)
     random_word = wordsApi.getRandomWord()
     word_list.append(random_word)
 
-    # wordApi = WordApi.WordApi(client)
-    # synonym = wordApi.WordApi("WORD HERE")
-    # like_list.append(synonym)
+
+    likeform = forms.KeywordForm()
+    like_list = []
+
+    wordApi = WordApi.WordApi(client)
+    synonym = wordApi.getRelatedWords(word = 'irony', relationshipTypes='synonym', limitPerRelationshipType=1)
+    like_list.append(synonym)
 
     # return render_template("/new_idea.html", form=form, word_list = word_list)
-    return render_template("/new_idea.html", form=form, word_list = word_list, basetext_generator=basetext_generator)
+    return render_template("/new_idea.html", form=form, likeform = likeform, word_list = word_list, basetext_generator=basetext_generator, like_list = like_list)
 
 @app.route("/save_idea", methods=["GET", "POST"])
 def save_idea():
@@ -168,6 +171,7 @@ def save_idea():
     project = session.get("project")
 
     form = forms.AddIdeaForm()
+    # likeform = forms.forms.KeywordForm()
 
     if form.validate_on_submit():
         register_idea = model.Idea(id = None, idea = form.idea.data, project_id = project, creator_id = g.user.id)
@@ -256,7 +260,7 @@ def save_updated_idea():
         # model.session.refresh(register_idea)
         session["idea"] = register_idea.id
 
-    return redirect("/rate_idea")
+    return redirect("/project_ideas")
 
 @app.route("/rate_idea")
 def add_rating():
@@ -281,21 +285,37 @@ def save_rating():
 
     return redirect("/mypage")
 
-@app.route("/view_ratings", methods=["GET", "POST"])
-def view_ratings():
+# @app.route("/view_ratings", methods=["GET", "POST"])
+# def view_ratings():
 
-    idea = session.get("idea")
-    # project = session.get("project")
+#     idea = session.get("idea")
+#     # project = session.get("project")
 
-    idea_ratings = []
+#     idea_ratings = []
 
-    for viewer in model.session.query(model.Rating).filter_by(idea_id = idea):
-        idea_ratings.append(viewer.idea)
-        # idea_ratings.append(viewer.rating)
-        # idea_ratings.append(viewer.rater)
+#     for viewer in model.session.query(model.Rating).filter_by(idea_id = idea):
+#         idea_ratings.append(viewer.idea)
+#         # idea_ratings.append(viewer.rating)
+#         # idea_ratings.append(viewer.rater)
+
+#     # return render_template("mypage.html", recent_work = recent_work)
+#     return render_template("view_ratings.html", idea_ratings = idea_ratings)
+
+@app.route("/project_ideas", methods=['GET'])
+def project_ideas():
+
+    existing_project = session.get("existing_project")
+
+    # create an empty list to append recent projects to
+    all_ideas = []
+
+    # Query for all projects that match user in membership table (project user = global user)
+    for each_idea in model.session.query(model.Idea).filter_by(project_id=existing_project):
+        all_ideas.append(each_idea)
 
     # return render_template("mypage.html", recent_work = recent_work)
-    return render_template("view_ratings.html", idea_ratings = idea_ratings)
+    return render_template("project_ideas.html", all_ideas = all_ideas)
+
 
 
 if __name__ == "__main__":

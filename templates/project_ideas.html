@@ -1,0 +1,15 @@
+<html>
+<body>
+	PROJECT IDEAS<br>
+
+	{% for selection in all_ideas %}
+
+		{{selection.id}}
+		{{selection.idea}}
+		{{selection.username}}
+
+	{% endfor %}	
+
+
+</body>
+</html>
