@@ -213,28 +213,50 @@ def member_authenticate():
 @app.route("/my_project/<int:id>", methods=["GET"])
 def my_project(id):
 
-    # session["existing_project"] = my_project.id
-    return render_template("/my_project.html")
+    session["existing_project"] = id
+    return render_template("/my_project.html", id=id)
 
-# @app.route("/my_project/<int:id>/update_idea")
-# def update_idea(id):
+@app.route("/update_idea/<int:id>")
+def update_idea(id):
 
-#     form = forms.AddIdeaForm()
-#     return render_template("/update_idea.html", form=form)
+    # project = session.get("project")
+    existing_project = session.get("existing_project")
 
-# @app.route("/save_update_idea", methods=["GET", "POST"])
-# def save_update_idea():
+    basetext_generator = []
 
-#     form = forms.AddIdeaForm()
+    for my_text in model.session.query(model.Project).filter_by(id=existing_project):
+        basetext_generator.append(my_text)
 
-#     if form.validate_on_submit():
-#         register_idea = model.Idea(id = None, idea = form.idea.data, project_id = existing_project)
-#         model.session.add(register_idea)
-#         model.session.commit()
-#         # model.session.refresh(register_idea)
-#         session["idea"] = register_idea.id
+    form = forms.AddIdeaForm()
 
-#     return redirect("/rate_idea")
+    # my_words = urlopen('http://api.wordnik.com/v4)
+    # response = my_words.read()
+
+    word_list = []
+    # like_list = []
+
+    wordsApi = WordsApi.WordsApi(client)
+    random_word = wordsApi.getRandomWord()
+    word_list.append(random_word)
+
+
+    return render_template("/update_idea.html", form=form, word_list = word_list, basetext_generator=basetext_generator)
+
+@app.route("/save_updated_idea/", methods=["GET", "POST"])
+def save_updated_idea():
+
+    existing_project = session.get("existing_project")
+
+    form = forms.AddIdeaForm()
+
+    if form.validate_on_submit():
+        register_idea = model.Idea(id = None, idea = form.idea.data, creator_id = g.user.id, project_id = existing_project)
+        model.session.add(register_idea)
+        model.session.commit()
+        # model.session.refresh(register_idea)
+        session["idea"] = register_idea.id
+
+    return redirect("/rate_idea")
 
 @app.route("/rate_idea")
 def add_rating():

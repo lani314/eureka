@@ -1,11 +1,26 @@
 <html>
 <body>
 	CREATE A NEW IDEA FOR YOUR PROJECT!
-	<p>Random</p>
-	<p>Like</p>
-	<p>Mix</p>
-[DISPLAY BASE TEXT HERE]
-	  <form action="/save_update_idea" form method="POST">
+
+
+    {% for extract in basetext_generator %}
+
+        <p>BASE TEXT:</p> 
+        {{extract.base_text}}
+    {% endfor %}
+
+    <p>RANDOM:</p>
+    <!-- How do we retrieve the random word? -->
+
+    {% for individual in word_list %}
+        {{individual.word}}
+        <br>Don't know the word? See the dictionary definition HERE.
+    {% endfor %}
+    
+    <p>LIKE:</p>
+    <p>MIX:</p>
+
+	  <form action="/save_updated_idea/" form method="POST">
         <!-- iterate through form, which is taken the "form" taken from views -->
         {% for field in form %}
 
