@@ -172,11 +172,6 @@ def add_idea():
     wordApi = WordApi.WordApi(client)
 
 
-    
-    # synonym = wordApi.getRelatedWords(word = 'irony', relationshipTypes='synonym', limitPerRelationshipType=1)
-    # like_list.append(synonym)
-    
-
     # query for correct project in project table
     for kword_search in model.session.query(model.Project).filter_by(id=project):
         # retrieve keywords that match project
@@ -184,11 +179,13 @@ def add_idea():
         # split keywords into individual elements in a list
         splitlist = fromlist.split()
         # randomly select an element/keyword from list and assign it to a variable
-        random_keyword = randrange(0,len(splitlist))
-        # access API client
-        # apply random keyword to word, select synonym and one each
+        random_index = randrange(0,len(splitlist))
+        random_keyword = splitlist[random_index]
+
+    #     # access API client
+    #     # apply random keyword to word, select synonym and one each
         synonym = wordApi.getRelatedWords(word = random_keyword, relationshipTypes='synonym', limitPerRelationshipType=1)
-        # append to list to be displayed in HTML page
+    #     # append to list to be displayed in HTML page
         like_list.append(synonym)
 
     # return render_template("/new_idea.html", form=form, word_list = word_list)
@@ -276,22 +273,22 @@ def update_idea(id):
 
     like_list = []
 
-    # wordApi = WordApi.WordApi(client)
-    # synonym = wordApi.getRelatedWords(word = 'irony', relationshipTypes='synonym', limitPerRelationshipType=1)
-    # like_list.append(synonym)
+    wordApi = WordApi.WordApi(client)
 
-    for kword_search in model.session.query(model.Project).filter_by(id=project):
+    # # query for correct project in project table
+    for kword_search in model.session.query(model.Project).filter_by(id=existing_project):
         # retrieve keywords that match project
         fromlist = kword_search.keywords
         # split keywords into individual elements in a list
         splitlist = fromlist.split()
         # randomly select an element/keyword from list and assign it to a variable
-        random_keyword = randrange(0,len(splitlist))
-        # access API client
-        wordApi = WordApi.WordApi(client)
-        # apply random keyword to word, select synonym and one each
+        random_index = randrange(0,len(splitlist))
+        random_keyword = splitlist[random_index]
+
+    #     # access API client
+    #     # apply random keyword to word, select synonym and one each
         synonym = wordApi.getRelatedWords(word = random_keyword, relationshipTypes='synonym', limitPerRelationshipType=1)
-        # append to list to be displayed in HTML page
+    #     # append to list to be displayed in HTML page
         like_list.append(synonym)
 
     return render_template("/update_idea.html", form=form, word_list = word_list, like_list = like_list, project_generator=project_generator)
