@@ -32,8 +32,8 @@
    <p></p>
 
      {% for each in like_list %}
-        {{each}}
-        {{each.words}}
+        {{each[0].words[0]}} <br>
+        {[each[0].words]}
         <br>Don't know the word? See the dictionary definition HERE.
     {% endfor %}
 

@@ -2,6 +2,7 @@ from flask import Flask, render_template, redirect, request, g, session, flash, 
 import model
 from model import session as db_session
 # from flask.ext.bootstrap import Bootstrap
+from random import choice, randrange
 import forms
 from urllib2 import Request, urlopen, URLError
 
@@ -150,6 +151,7 @@ def add_idea():
     for my_text in model.session.query(model.Project).filter_by(id=project):
         project_generator.append(my_text)
 
+
     # for my_text in model.session.query(model.Project).filter_by(id=project):
     #     keyword_generator.append(my_text)
 
@@ -166,11 +168,29 @@ def add_idea():
 
     like_list = []
 
+
     wordApi = WordApi.WordApi(client)
-    synonym = wordApi.getRelatedWords(word = 'irony', relationshipTypes='synonym', limitPerRelationshipType=1)
-    like_list.append(synonym)
+
 
     
+    # synonym = wordApi.getRelatedWords(word = 'irony', relationshipTypes='synonym', limitPerRelationshipType=1)
+    # like_list.append(synonym)
+    
+
+    # query for correct project in project table
+    for kword_search in model.session.query(model.Project).filter_by(id=project):
+        # retrieve keywords that match project
+        fromlist = kword_search.keywords
+        # split keywords into individual elements in a list
+        splitlist = fromlist.split()
+        # randomly select an element/keyword from list and assign it to a variable
+        random_keyword = randrange(0,len(splitlist))
+        # access API client
+        # apply random keyword to word, select synonym and one each
+        synonym = wordApi.getRelatedWords(word = random_keyword, relationshipTypes='synonym', limitPerRelationshipType=1)
+        # append to list to be displayed in HTML page
+        like_list.append(synonym)
+
     # return render_template("/new_idea.html", form=form, word_list = word_list)
     return render_template("/new_idea.html", form=form, word_list = word_list, project_generator = project_generator, like_list = like_list)
 
@@ -213,7 +233,6 @@ def member_authenticate():
     if form.validate_on_submit():
         group_project = model.session.query(model.Project).filter_by(id=form.project_id.data, project_name=form.project_name.data, project_password=form.project_password.data)
         if group_project:
-            # ENSURE THAT PERSON IS NOT ALREADY REGISTERED TO THIS PROJECT!
             register_member = model.Membership(user_id = g.user.id, project_id = form.project_id.data)
         model.session.add(register_member)
         model.session.commit()
@@ -222,7 +241,6 @@ def member_authenticate():
         # THIS PROBABLY NEEDS TO BE WORKED ON
         # IT SHOULD PROBABLY BE REDIRECT INSTEAD OF JUST RENDER_TEMPLATE BUT IT CURRENTLY DOES NOT WORK AS REDIRECT WAY VERY WELL
         return render_template("/my_project.html", id=form.project_id.data)
-        # return render_template("/my_project.html", id=id)
     else:
         return redirect("/mypage")
 
@@ -236,7 +254,7 @@ def my_project(id):
 @app.route("/update_idea/<int:id>")
 def update_idea(id):
 
-    # project = session.get("project")
+    # NOTE: IF WE SEARCH PROJECT AND AUTHENTICATE OURSELVES, WE ARE DIRECTED TO PROJECT BUT HAVE WRONG BASE TEXT!!
     existing_project = session.get("existing_project")
 
     project_generator = []
@@ -258,10 +276,23 @@ def update_idea(id):
 
     like_list = []
 
-    wordApi = WordApi.WordApi(client)
-    synonym = wordApi.getRelatedWords(word = 'irony', relationshipTypes='synonym', limitPerRelationshipType=1)
-    like_list.append(synonym)
+    # wordApi = WordApi.WordApi(client)
+    # synonym = wordApi.getRelatedWords(word = 'irony', relationshipTypes='synonym', limitPerRelationshipType=1)
+    # like_list.append(synonym)
 
+    for kword_search in model.session.query(model.Project).filter_by(id=project):
+        # retrieve keywords that match project
+        fromlist = kword_search.keywords
+        # split keywords into individual elements in a list
+        splitlist = fromlist.split()
+        # randomly select an element/keyword from list and assign it to a variable
+        random_keyword = randrange(0,len(splitlist))
+        # access API client
+        wordApi = WordApi.WordApi(client)
+        # apply random keyword to word, select synonym and one each
+        synonym = wordApi.getRelatedWords(word = random_keyword, relationshipTypes='synonym', limitPerRelationshipType=1)
+        # append to list to be displayed in HTML page
+        like_list.append(synonym)
 
     return render_template("/update_idea.html", form=form, word_list = word_list, like_list = like_list, project_generator=project_generator)
 

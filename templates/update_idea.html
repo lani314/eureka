@@ -27,17 +27,16 @@
      {% for extract in project_generator %}
 
         {{extract.keywords}}
+        
     {% endfor %}
 
-   <p></p>
+    <p>LIKE:</p>
 
-     {% for each in like_list %}
-        {{each}}
-        {{each.words}}
+      {% for each in like_list %}
+        {{each[0].words}}
         <br>Don't know the word? See the dictionary definition HERE.
     {% endfor %}
     
-    <p>LIKE:</p>
     <p>MIX:</p>
 
 	  <form action="/save_updated_idea/" form method="POST">

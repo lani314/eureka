@@ -1,5 +1,5 @@
 from flask.ext.wtf import Form
-from wtforms import TextField, validators as v
+from wtforms import TextField, IntegerField, validators as v
 
 class AddUserForm(Form):
 	email = TextField("email", validators=[v.required()])
@@ -21,7 +21,7 @@ class AddIdeaForm(Form):
 	idea = TextField("idea", validators=[v.required()])
 
 class RateIdeaForm(Form):
-	rating = TextField("rating", validators=[v.required()])
+	rating = IntegerField("rating", validators=[v.required()])
 	rating_notes = TextField("rating_notes", validators=[v.required()])
 
 class JoinProjectForm(Form):
