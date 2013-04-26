@@ -70,7 +70,7 @@ def add_user():
 
         # WHY IS THE FLASH NOT WORKING?
         flash("Thanks for registering. Please login now.")
-        return render_template("/login.html")
+        return redirect("/")
     return render_template("/new_user.html", form=form)
 
 
@@ -281,8 +281,10 @@ def update_idea(id):
         fromlist = kword_search.keywords
         # split keywords into individual elements in a list
         splitlist = fromlist.split()
-        # randomly select an element/keyword from list and assign it to a variable
+        # apply randrange function to list, thereby allowing a random selection to be assigned to an integer
         random_index = randrange(0,len(splitlist))
+        # take it out of randrange integer state
+        # to do this, we select the random_index element from the list
         random_keyword = splitlist[random_index]
 
     #     # access API client

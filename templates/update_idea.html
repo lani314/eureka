@@ -40,6 +40,15 @@
 
     <p>MIX:</p>
 
+    {% for individual in word_list %}
+        {{individual.word}}
+    {% endfor %}
+     {% for each in like_list %}
+        {{each[0].words[0]}} <br>
+    {% endfor %}
+
+
+
 	  <form action="/save_updated_idea/" form method="POST">
         <!-- iterate through form, which is taken the "form" taken from views -->
         {% for field in form %}
