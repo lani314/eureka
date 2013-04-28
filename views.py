@@ -237,7 +237,10 @@ def member_authenticate():
 
         # THIS PROBABLY NEEDS TO BE WORKED ON
         # IT SHOULD PROBABLY BE REDIRECT INSTEAD OF JUST RENDER_TEMPLATE BUT IT CURRENTLY DOES NOT WORK AS REDIRECT WAY VERY WELL
-        return render_template("/my_project.html", id=form.project_id.data)
+        pro = form.project_id.data
+        mem_project = str(pro)
+        return redirect("/my_project/" + mem_project)
+        # return render_template("/my_project.html", id=form.project_id.data)
     else:
         return redirect("/mypage")
 
