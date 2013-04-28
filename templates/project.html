@@ -7,38 +7,36 @@
     <p>Create a new idea for your project!</p>
     <p>Feel inspired by the unexpected, surreal and absurd</p>
 
+
     {% for extract in project_generator %}
 
         <p>BASE TEXT:</p> 
         {{extract.base_text}}
     {% endfor %}
 
-    <p>RANDOM:</p>
+	<p>RANDOM:</p>
     <!-- How do we retrieve the random word? -->
 
     {% for individual in word_list %}
         {{individual.word}}
         <br>Don't know the word? See the dictionary definition <a href="http://dictionary.reference.com/browse/{{individual.word}}" target="_blank">HERE.</a>
     {% endfor %}
-
 <!-- 
     <p>KEYWORDS:</p>
 
      {% for extract in project_generator %}
 
         {{extract.keywords}}
-        
     {% endfor %} -->
 
-    <p>LIKE:</p>
+       <p>LIKE:</p>
 
-
-    {% for each in like_list %}
+     {% for each in like_list %}
         {{each[0].words[0]}} <br>
     <br>Don't know the word? See the dictionary definition <a href="http://dictionary.reference.com/browse/{{each[0].words[0]}}" target="_blank">HERE.</a>
     {% endfor %}
 
-    <p>MIX:</p>
+	<p>MIX:</p>
 
     {% for individual in word_list %}
         {{individual.word}}
@@ -47,8 +45,7 @@
         {{each[0].words[0]}} <br>
     {% endfor %}
 
-
-	<form action="/save_updated_idea" form method="POST">
+	  <form action="/save_idea" form method="POST">
         <!-- iterate through form, which is taken the "form" taken from views -->
         {% for field in form %}
 
@@ -62,7 +59,6 @@
         {% endfor %}
         <input type="submit">
     </form>
-  
-</html>
-</body>
-</html>
+
+    Continue to <a href="http://localhost:5000/rate_idea"">Rate Idea</a><br>
+

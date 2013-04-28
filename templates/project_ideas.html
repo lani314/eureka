@@ -7,9 +7,16 @@
 
 	{% for selection in all_ideas %}
 
-		{{selection.idea}}
-		{{selection.username}}
+	<!-- 	{{selection.idea}}
+		{{selection.creator.username}}
+	{% endfor %}	 -->
 
+	{% for one in all_ratings %}
+		<p><b>Idea:</b></p>
+		{{one.idea.idea}}
+		<p><b>Creator:</b></p>
+		<p><b>Rating:</b></p>
+		{{one.rating}}
 	{% endfor %}	
 
 	<p><a href="http://localhost:5000/new_project">Start New Project</a></p>

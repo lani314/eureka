@@ -34,6 +34,11 @@ def login():
     form = forms.LoginUserForm()
     return render_template("login.html", form=form)
 
+@app.route("/logout")
+def logout():
+    session.pop("id")
+    return "Logged out"
+
 @app.route("/authenticate", methods=["POST"])
 def authenticate():
 
@@ -87,17 +92,12 @@ def my_page():
     # return render_template("mypage.html", recent_work = recent_work)
     return render_template("mypage.html", recent_work = recent_work)
 
-
 @app.route("/new_project")
 def new_project():
     # CHECK SESSION ID -- VALIDATE THAT IN SESSION IN ORDER TO HAVE PAGE RENDERED
     form = forms.AddProjectForm()
     return render_template("new_project.html", form=form)
 
-@app.route("/logout")
-def logout():
-    session.pop("id")
-    return "Logged out"
 
 @app.route("/save_project", methods=["POST"])
 def add_project():
@@ -125,89 +125,89 @@ def add_project():
 
         # commit this addition
         model.session.commit()
-        session["membership"] = place_membership.id
-        session["project"] = register_project.id
-        session["kwords"] = register_project.keywords
-        # WHY IS THE FLASH NOT WORKING?
-        flash("You have successfully created a new project.")
-        return redirect("/new_idea")
+        # session["membership"] = place_membership.id
+        # session["project"] = register_project.id
+        project = register_project.id
+        st_project = str(project)
+        # session["kwords"] = register_project.keywords
+        
+        # flash("You have successfully created a new project.")
+
+        return redirect("/my_project/" + st_project)
+        # return redirect("/new_idea")
     return render_template("/mypage")
 
-@app.route("/new_idea")
-def add_idea():
+# @app.route("/new_idea")
+# def add_idea():
+# # def add_idea(project):
 
-    # THIS HAS SOME ISSUES. NOT COMPLETELY CORRECT.
-    # BASE TEXT IS MOST RECENT. IT IS NOT PROPERLY ATTACHED TO THE PROPER PROJECT.
+#     project = session.get("project")
+#     # kwords = session.get("kword")
 
-    project = session.get("project")
-    kwords = session.get("kword")
+#     # split_kwords = split(kwords)
+#     # print "HERE ARE MY KWORDS:" 
+#     # print kwords
 
-    # split_kwords = split(kwords)
-    # print "HERE ARE MY KWORDS:" 
-    # print kwords
+#     project_generator = []
 
-    project_generator = []
-
-    for my_text in model.session.query(model.Project).filter_by(id=project):
-        project_generator.append(my_text)
+#     for my_text in model.session.query(model.Project).filter_by(id=project):
+#         project_generator.append(my_text)
 
 
-    # for my_text in model.session.query(model.Project).filter_by(id=project):
-    #     keyword_generator.append(my_text)
+#     # for my_text in model.session.query(model.Project).filter_by(id=project):
+#     #     keyword_generator.append(my_text)
 
-    form = forms.AddIdeaForm()
+#     form = forms.AddIdeaForm()
 
-    # my_words = urlopen('http://api.wordnik.com/v4)
-    # response = my_words.read()
+#     # my_words = urlopen('http://api.wordnik.com/v4)
+#     # response = my_words.read()
 
-    word_list = []
+#     word_list = []
 
-    wordsApi = WordsApi.WordsApi(client)
-    random_word = wordsApi.getRandomWord()
-    word_list.append(random_word)
+#     wordsApi = WordsApi.WordsApi(client)
+#     random_word = wordsApi.getRandomWord()
+#     word_list.append(random_word)
 
-    like_list = []
-
-
-    wordApi = WordApi.WordApi(client)
+#     like_list = []
 
 
-    # query for correct project in project table
-    for kword_search in model.session.query(model.Project).filter_by(id=project):
-        # retrieve keywords that match project
-        fromlist = kword_search.keywords
-        # split keywords into individual elements in a list
-        splitlist = fromlist.split()
-        # randomly select an element/keyword from list and assign it to a variable
-        random_index = randrange(0,len(splitlist))
-        random_keyword = splitlist[random_index]
+#     wordApi = WordApi.WordApi(client)
 
-    #     # access API client
-    #     # apply random keyword to word, select synonym and one each
-        synonym = wordApi.getRelatedWords(word = random_keyword, relationshipTypes='synonym', limitPerRelationshipType=1)
-    #     # append to list to be displayed in HTML page
-        like_list.append(synonym)
 
-    # return render_template("/new_idea.html", form=form, word_list = word_list)
-    return render_template("/new_idea.html", form=form, word_list = word_list, project_generator = project_generator, like_list = like_list)
+#     # query for correct project in project table
+#     for kword_search in model.session.query(model.Project).filter_by(id=project):
+#         # retrieve keywords that match project
+#         fromlist = kword_search.keywords
+#         # split keywords into individual elements in a list
+#         splitlist = fromlist.split()
+#         # randomly select an element/keyword from list and assign it to a variable
+#         random_index = randrange(0,len(splitlist))
+#         random_keyword = splitlist[random_index]
 
-@app.route("/save_idea", methods=["GET", "POST"])
-def save_idea():
+#     #     # access API client
+#     #     # apply random keyword to word, select synonym and one each
+#         synonym = wordApi.getRelatedWords(word = random_keyword, relationshipTypes='synonym', limitPerRelationshipType=1)
+#     #     # append to list to be displayed in HTML page
+#         like_list.append(synonym)
 
-    project = session.get("project")
+#     # return render_template("/new_idea.html", form=form, word_list = word_list)
+#     return render_template("/new_idea.html", form=form, word_list = word_list, project_generator = project_generator, like_list = like_list)
 
-    form = forms.AddIdeaForm()
+# @app.route("/save_idea", methods=["GET", "POST"])
+# def save_idea():
 
-    if form.validate_on_submit():
-        register_idea = model.Idea(id = None, idea = form.idea.data, project_id = project, creator_id = g.user.id)
-        model.session.add(register_idea)
-        model.session.commit()
-        # model.session.refresh(register_idea)
-        session["idea"] = register_idea.id
+#     project = session.get("project")
 
-    return redirect("/rate_idea")
-    # return rediect("/new_idea")
+#     form = forms.AddIdeaForm()
 
+#     if form.validate_on_submit():
+#         register_idea = model.Idea(id = None, idea = form.idea.data, project_id = project, creator_id = g.user.id)
+#         model.session.add(register_idea)
+#         model.session.commit()
+#         # model.session.refresh(register_idea)
+#         session["idea"] = register_idea.id
+
+#     return redirect("/rate_idea")
 
 @app.route("/search_project", methods=["GET"])
 def display_search():
@@ -242,9 +242,10 @@ def member_authenticate():
         return redirect("/mypage")
 
 @app.route("/my_project/<int:id>", methods=["GET"])
+# def my_project(id, idea):
 def my_project(id):
 
-    session["existing_project"] = id
+    # session["existing_project"] = id
     # existing_project = session.get("existing_project")
     return render_template("/my_project.html", id=id)
 
@@ -252,11 +253,11 @@ def my_project(id):
 def update_idea(id):
 
     # NOTE: IF WE SEARCH PROJECT AND AUTHENTICATE OURSELVES, WE ARE DIRECTED TO PROJECT BUT HAVE WRONG BASE TEXT!!
-    existing_project = session.get("existing_project")
+    # existing_project = session.get("existing_project")
 
     project_generator = []
 
-    for my_text in model.session.query(model.Project).filter_by(id=existing_project):
+    for my_text in model.session.query(model.Project).filter_by(id=id):
         project_generator.append(my_text)
 
     form = forms.AddIdeaForm()
@@ -276,7 +277,7 @@ def update_idea(id):
     wordApi = WordApi.WordApi(client)
 
     # # query for correct project in project table
-    for kword_search in model.session.query(model.Project).filter_by(id=existing_project):
+    for kword_search in model.session.query(model.Project).filter_by(id=id):
         # retrieve keywords that match project
         fromlist = kword_search.keywords
         # split keywords into individual elements in a list
@@ -295,21 +296,23 @@ def update_idea(id):
 
     return render_template("/update_idea.html", form=form, word_list = word_list, like_list = like_list, project_generator=project_generator)
 
-@app.route("/save_updated_idea/", methods=["GET", "POST"])
+@app.route("/save_updated_idea", methods=["GET", "POST"])
 def save_updated_idea():
 
-    existing_project = session.get("existing_project")
+    # existing_project = session.get("existing_project")
 
     form = forms.AddIdeaForm()
 
     if form.validate_on_submit():
-        register_idea = model.Idea(id = None, idea = form.idea.data, creator_id = g.user.id, project_id = existing_project)
+        # register_idea = model.Idea(id = None, idea = form.idea.data, creator_id = g.user.id, project_id = existing_project)
+        register_idea = model.Idea(id = None, idea = form.idea.data, creator_id = g.user.id)
+        # NEED TO ADD IN ID
         model.session.add(register_idea)
         model.session.commit()
-        # model.session.refresh(register_idea)
-        session["idea"] = register_idea.id
+        model.session.refresh(register_idea)
+        # session["idea"] = register_idea.id
 
-    return redirect("/project_ideas")
+    return redirect("/rate_idea")
 
 @app.route("/rate_idea")
 def add_rating():
@@ -355,16 +358,30 @@ def project_ideas():
 
     existing_project = session.get("existing_project")
 
+    idea = session.get("idea")
+
     # create an empty list to append recent projects to
     all_ideas = []
+
+    all_ratings = []
 
     # Query for all projects that match user in membership table (project user = global user)
     for each_idea in model.session.query(model.Idea).filter_by(project_id=existing_project):
         all_ideas.append(each_idea)
 
-    # return render_template("mypage.html", recent_work = recent_work)
-    return render_template("project_ideas.html", all_ideas = all_ideas)
+    # YOU HAVE TO GET THE PROPER IDEA ID SO YOU CAN PROPERLY FILTER TO WHICH IDEAS YOU WANT DISPLAYED HERE
+    for each_rating in model.session.query(model.Rating):
+        # indiv_rating = each_rating.rating
+        # each_rating = indiv_rating.sort
+        # each_rating = indiv_rating.sort()
+        all_ratings.append(each_rating)
 
+    # return render_template("mypage.html", recent_work = recent_work)
+    return render_template("project_ideas.html", all_ideas = all_ideas, all_ratings = all_ratings)
+
+@app.route("/about", methods=['GET'])
+def about():
+    return render_template("about.html")
 
 
 if __name__ == "__main__":

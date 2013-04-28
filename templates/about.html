@@ -17,27 +17,17 @@
   </div>
 </div>
 
-	<h1>MY PAGE</h1>
-	<p>My Projects</p>
+	<h1>Why Eureka?</h1>
+	
+  <p>Eureka was inspired by a basic concept: we try too hard to imagine.</p>
 
-	{% for project in recent_work %}
+  <p>Think about it: The story of Archimedes and his bathtub discovery. The cut-up method of William Burroughs. We are inspired by the random, surreal and unexpected</p>
 
+  <p>But how random is TOO random? Sometimes, overly random things doen't let us make interesting connections in our minds. So, Eureka also allows for keywords so that the random generation can be complemented by a certain level of "relevance."</p>
 
-<!-- 	the problem with this is that i need to pass an id that is not the same as user BECAUSE THE ID WAS USER DURING AUTHENTICATION
- -->
-		<p>PROJECT ID: <a href="{{url_for("my_project", id=project.id)}}">{{project.id}}</a><br>
-		<p>PROJECT NAME: {{project.project_name}}</p>
-	{% endfor %}
+  <p>Happy creating!</p>
 
-
-<!-- 	{% for name in recentwork_name %}
-		<p>Project ID: {{name.name}}</p>
-	{% endfor %} -->
-
-	<!-- <p><a href="http://localhost:5000/new_project">Start New Project</a></p -->>
-	<a href="{{url_for("new_project")}}">Start a New Project</a><br>
-
-
+	<p><a href="http://localhost:5000/new_project">Start New Project</a></p>
 	<p><a href="http://localhost:5000/search_project">Search for an Existing Project</a></p>
 </body>
 </html>
