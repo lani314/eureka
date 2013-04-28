@@ -3,15 +3,19 @@
     <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.css') }}"  />
 </head>
 <body>
-	<h1>Ideas</h1>
+
+        <h1>Ideas</h1>
+
     <p>Create a new idea for your project!</p>
     <p>Feel inspired by the unexpected, surreal and absurd</p>
 
     {% for extract in project_generator %}
 
+      <p>Project:</p>
+        {{extract.project_name}}
+
         <p>BASE TEXT:</p> 
         {{extract.base_text}}
-        {{extract.id}}
     {% endfor %}
 
     <p>RANDOM:</p>
@@ -63,7 +67,6 @@
         {% endfor %}
         <input type="submit">
     </form>
-  
 </html>
 </body>
 </html>

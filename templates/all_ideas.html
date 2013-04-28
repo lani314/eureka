@@ -1,0 +1,15 @@
+<html>
+<head>
+    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.css') }}"  />
+</head>
+<body>
+     
+    {% for individual in recent_ideas %}
+        Idea ID: <a href="{{url_for("rate_idea", id=individual.project_id, idea=individual.id)}}">Rate Idea</a><br>
+<!--         Idea ID: {{individual.id}}
+ -->        Idea: {{individual.idea}}
+            Creator: {{individual.creator.username}}
+     {% endfor %}
+</html>
+</body>
+</html>

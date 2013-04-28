@@ -94,7 +94,6 @@ def my_page():
 
 @app.route("/new_project")
 def new_project():
-    # CHECK SESSION ID -- VALIDATE THAT IN SESSION IN ORDER TO HAVE PAGE RENDERED
     form = forms.AddProjectForm()
     return render_template("new_project.html", form=form)
 
@@ -235,17 +234,14 @@ def member_authenticate():
         model.session.commit()
         # session["existing_project"] = id
 
-        # THIS PROBABLY NEEDS TO BE WORKED ON
-        # IT SHOULD PROBABLY BE REDIRECT INSTEAD OF JUST RENDER_TEMPLATE BUT IT CURRENTLY DOES NOT WORK AS REDIRECT WAY VERY WELL
         pro = form.project_id.data
-        mem_project = str(pro)
+        mem_project = str(form.project_id.data)
         return redirect("/my_project/" + mem_project)
         # return render_template("/my_project.html", id=form.project_id.data)
     else:
         return redirect("/mypage")
 
 @app.route("/my_project/<int:id>", methods=["GET"])
-# def my_project(id, idea):
 def my_project(id):
 
     # session["existing_project"] = id
@@ -255,7 +251,6 @@ def my_project(id):
 @app.route("/my_project/<int:id>/create_idea")
 def create_idea(id):
 
-    # NOTE: IF WE SEARCH PROJECT AND AUTHENTICATE OURSELVES, WE ARE DIRECTED TO PROJECT BUT HAVE WRONG BASE TEXT!!
     # existing_project = session.get("existing_project")
 
     project_generator = []
@@ -321,16 +316,34 @@ def save_idea(id):
 
     return redirect("/my_project/" + new_idea + "/create_idea")
 
-@app.route("/rate_idea")
-def add_rating():
+@app.route("/my_project/<int:id>/all_ideas", methods=["GET"])
+def all_ideas(id):
+
+    recent_ideas = []
+
+    for work in model.session.query(model.Idea).filter_by(project_id=id):
+        recent_ideas.append(work)
+   
+    return render_template("/all_ideas.html", recent_ideas=recent_ideas)
+
+@app.route("/my_project/<int:id>/rate_idea/<int:idea>")
+def rate_idea(id, idea):
+
+    # recent_ideas = []
+
+    # for work in model.session.query(model.Idea).filter_by(project_id=id):
+    #     recent_ideas.append(work)
 
     form = forms.RateIdeaForm()
+    # return render_template("/rate_idea.html", form=form, recent_ideas=recent_ideas)
     return render_template("/rate_idea.html", form=form)
 
-@app.route("/save_rating", methods=["GET", "POST"])
-def save_rating():
+@app.route("/my_project/<int:id>/rate_idea/<int:idea>/save_rating", methods=["POST"])
+# @app.route("/my_project/<int:id>/save_rating/<int:idea>", methods=["POST"])
 
-    idea = session.get("idea")
+def save_rating(id, idea):
+
+    # idea = session.get("idea")
 
     form = forms.RateIdeaForm()
 
@@ -342,7 +355,9 @@ def save_rating():
         # commit this addition
     model.session.commit()
 
-    return redirect("/mypage")
+    new_rating = str(id)
+
+    return redirect("/my_project/" + new_rating + "/all_ideas")
 
 # @app.route("/view_ratings", methods=["GET", "POST"])
 # def view_ratings():
