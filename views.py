@@ -249,8 +249,8 @@ def my_project(id):
     # existing_project = session.get("existing_project")
     return render_template("/my_project.html", id=id)
 
-@app.route("/update_idea/<int:id>")
-def update_idea(id):
+@app.route("/my_project/<int:id>/create_idea")
+def create_idea(id):
 
     # NOTE: IF WE SEARCH PROJECT AND AUTHENTICATE OURSELVES, WE ARE DIRECTED TO PROJECT BUT HAVE WRONG BASE TEXT!!
     # existing_project = session.get("existing_project")
@@ -296,8 +296,8 @@ def update_idea(id):
 
     return render_template("/update_idea.html", form=form, word_list = word_list, like_list = like_list, project_generator=project_generator)
 
-@app.route("/save_updated_idea", methods=["GET", "POST"])
-def save_updated_idea():
+@app.route("/my_project/<int:id>/save_idea", methods=["GET", "POST"])
+def save_idea(id):
 
     # existing_project = session.get("existing_project")
 
@@ -305,14 +305,18 @@ def save_updated_idea():
 
     if form.validate_on_submit():
         # register_idea = model.Idea(id = None, idea = form.idea.data, creator_id = g.user.id, project_id = existing_project)
-        register_idea = model.Idea(id = None, idea = form.idea.data, creator_id = g.user.id)
-        # NEED TO ADD IN ID
+        register_idea = model.Idea(id = None, idea = form.idea.data, creator_id = g.user.id, project_id = id) 
         model.session.add(register_idea)
         model.session.commit()
         model.session.refresh(register_idea)
+        
+        new_idea = str(id)
+
         # session["idea"] = register_idea.id
 
-    return redirect("/rate_idea")
+    # return redirect("/rate_idea")
+
+    return redirect("/my_project/" + new_idea + "/create_idea")
 
 @app.route("/rate_idea")
 def add_rating():

@@ -11,6 +11,7 @@
 
         <p>BASE TEXT:</p> 
         {{extract.base_text}}
+        {{extract.id}}
     {% endfor %}
 
     <p>RANDOM:</p>
@@ -48,7 +49,7 @@
     {% endfor %}
 
 
-	<form action="/save_updated_idea" form method="POST">
+	<form action="save_idea" form method="POST">
         <!-- iterate through form, which is taken the "form" taken from views -->
         {% for field in form %}
 
