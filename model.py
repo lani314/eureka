@@ -55,7 +55,7 @@ class Idea(Base):
     project_id = Column(Integer, ForeignKey('projects.id'))
     creator_id = Column(Integer, ForeignKey('users.id'))
     idea = Column(String, nullable = True)
-    averate_rating = Column(Integer, nullable = True)
+    average_rating = Column(Integer, nullable = True)
     total_ratings = Column(Integer, nullable = True)
 
 

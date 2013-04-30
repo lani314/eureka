@@ -365,7 +365,17 @@ def save_rating(id, idea):
             current_count = current_idea_update.total_ratings
             # add one to current count
             current_idea_update.total_ratings = current_count + 1
-        
+
+    for average_counter in model.session.query(model.Idea).filter_by(id=idea):
+        if average_counter.average_rating == None:
+            current_average = model.session.query(model.Idea).get(idea)
+            current_average.average_rating = form.rating.data
+        else: 
+            current_average_update = model.session.query(model.Idea).get(idea)
+            average_base = current_average_update.average_rating
+            total_count = current_average_update.total_ratings
+            current_average_update.average_rating = (form.rating.data + average_base) / total_count
+         
         model.session.commit()
 
     # new_rating = str(id)
