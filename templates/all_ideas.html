@@ -5,10 +5,11 @@
 <body>
      
     {% for individual in recent_ideas %}
-        Idea ID: <a href="{{url_for("rate_idea", id=individual.project_id, idea=individual.id)}}">Rate Idea</a><br>
-<!--         Idea ID: {{individual.id}}
- -->        Idea: {{individual.idea}}
-            Creator: {{individual.creator.username}}
+        Idea ID: {{individual.id}}
+        Idea: {{individual.idea}}
+        Creator: {{individual.creator.username}}
+        <p><a href="{{url_for("rate_idea", id=individual.project_id, idea=individual.id)}}">Rate Idea</a></p>
+<br>
      {% endfor %}
 </html>
 </body>

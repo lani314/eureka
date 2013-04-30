@@ -1,0 +1,31 @@
+<html>
+<head>
+    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.css') }}"  />
+</head>
+<body>
+     
+    {% for selection in selected_idea %}
+    Project: {{selection.idea_project.project_name}}
+    Idea: {{selection.idea}}
+    Creator: {{selection.creator.username}}
+    <!-- Average rating: {[selection.avg_rating]} -->
+    <br>
+
+     {% endfor %}
+
+    {% for info in all_ratings %}
+    Rater: {{info.rater.username}}
+    Rating: {{info.rating}}
+    Comments: {{info.rating_notes}}
+    <br>
+
+     {% endfor %}
+
+    {% for selection in selected_idea %}
+
+   <p><a href="{{url_for("all_ideas", id = selection.project_id)}}">Return to Project Ideas</a><br>
+
+    {% endfor %}
+
+</body>
+</html>

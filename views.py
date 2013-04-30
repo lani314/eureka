@@ -294,7 +294,7 @@ def create_idea(id):
 
     return render_template("/update_idea.html", form=form, word_list = word_list, like_list = like_list, project_generator=project_generator)
 
-@app.route("/my_project/<int:id>/save_idea", methods=["GET", "POST"])
+@app.route("/my_project/<int:id>/save_idea", methods=["POST"])
 def save_idea(id):
 
     # existing_project = session.get("existing_project")
@@ -329,18 +329,14 @@ def all_ideas(id):
 @app.route("/my_project/<int:id>/rate_idea/<int:idea>")
 def rate_idea(id, idea):
 
-    # recent_ideas = []
-
-    # for work in model.session.query(model.Idea).filter_by(project_id=id):
-    #     recent_ideas.append(work)
-
     form = forms.RateIdeaForm()
-    # return render_template("/rate_idea.html", form=form, recent_ideas=recent_ideas)
-    return render_template("/rate_idea.html", form=form)
+
+    idea=idea
+    id=id
+
+    return render_template("/rate_idea.html", form=form, id=id, idea=idea)
 
 @app.route("/my_project/<int:id>/rate_idea/<int:idea>/save_rating", methods=["POST"])
-# @app.route("/my_project/<int:id>/save_rating/<int:idea>", methods=["POST"])
-
 def save_rating(id, idea):
 
     # idea = session.get("idea")
@@ -357,6 +353,7 @@ def save_rating(id, idea):
 
     new_rating = str(id)
 
+    # return redirect("/my_project/" + new_rating + "/all_ideas")
     return redirect("/my_project/" + new_rating + "/all_ideas")
 
 # @app.route("/view_ratings", methods=["GET", "POST"])
@@ -375,31 +372,48 @@ def save_rating(id, idea):
 #     # return render_template("mypage.html", recent_work = recent_work)
 #     return render_template("view_ratings.html", idea_ratings = idea_ratings)
 
-@app.route("/project_ideas", methods=['GET'])
-def project_ideas():
+@app.route("/my_project/<int:id>/idea/<int:idea>")
+def idea(id, idea):
 
-    existing_project = session.get("existing_project")
+    selected_idea = []
 
-    idea = session.get("idea")
-
-    # create an empty list to append recent projects to
-    all_ideas = []
+    # Query for idea in idea table to receive idea name, creator and ratings
+    for selection in model.session.query(model.Idea).filter_by(id=idea):
+        selected_idea.append(selection)
 
     all_ratings = []
 
-    # Query for all projects that match user in membership table (project user = global user)
-    for each_idea in model.session.query(model.Idea).filter_by(project_id=existing_project):
-        all_ideas.append(each_idea)
+    # Query for idea in idea table to receive idea name, creator and ratings
+    for rating_info in model.session.query(model.Rating).filter_by(idea_id=idea):
+        all_ratings.append(rating_info)
 
-    # YOU HAVE TO GET THE PROPER IDEA ID SO YOU CAN PROPERLY FILTER TO WHICH IDEAS YOU WANT DISPLAYED HERE
-    for each_rating in model.session.query(model.Rating):
-        # indiv_rating = each_rating.rating
-        # each_rating = indiv_rating.sort
-        # each_rating = indiv_rating.sort()
-        all_ratings.append(each_rating)
+    return render_template("/idea.html", selected_idea = selected_idea, all_ratings = all_ratings)
 
-    # return render_template("mypage.html", recent_work = recent_work)
-    return render_template("project_ideas.html", all_ideas = all_ideas, all_ratings = all_ratings)
+# @app.route("/project_ideas", methods=['GET'])
+# def project_ideas():
+
+#     existing_project = session.get("existing_project")
+
+#     idea = session.get("idea")
+
+#     # create an empty list to append recent projects to
+#     all_ideas = []
+
+#     all_ratings = []
+
+#     # Query for all projects that match user in membership table (project user = global user)
+#     for each_idea in model.session.query(model.Idea).filter_by(project_id=existing_project):
+#         all_ideas.append(each_idea)
+
+#     # YOU HAVE TO GET THE PROPER IDEA ID SO YOU CAN PROPERLY FILTER TO WHICH IDEAS YOU WANT DISPLAYED HERE
+#     for each_rating in model.session.query(model.Rating):
+#         # indiv_rating = each_rating.rating
+#         # each_rating = indiv_rating.sort
+#         # each_rating = indiv_rating.sort()
+#         all_ratings.append(each_rating)
+
+#     # return render_template("mypage.html", recent_work = recent_work)
+#     return render_template("project_ideas.html", all_ideas = all_ideas, all_ratings = all_ratings)
 
 @app.route("/about", methods=['GET'])
 def about():

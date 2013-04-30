@@ -56,6 +56,8 @@ class Idea(Base):
     creator_id = Column(Integer, ForeignKey('users.id'))
     inspiration = Column(String, nullable = True)
     idea = Column(String, nullable = True)
+    # averate_rating = (Integer, nullable = True)
+
 
     # load corresponding project object
     idea_project = relationship("Project", backref=backref("ideas", order_by=id))
