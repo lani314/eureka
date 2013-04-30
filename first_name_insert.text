@@ -1,1 +1,4 @@
 INSERT INTO users VALUES (null, "ilana.fried@gmail.com", "lani314", "try");
+
+sqlite> .mode column
+sqlite> .headers on

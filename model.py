@@ -54,15 +54,16 @@ class Idea(Base):
     id = Column(Integer, primary_key = True)
     project_id = Column(Integer, ForeignKey('projects.id'))
     creator_id = Column(Integer, ForeignKey('users.id'))
-    inspiration = Column(String, nullable = True)
     idea = Column(String, nullable = True)
-    # averate_rating = (Integer, nullable = True)
+    averate_rating = Column(Integer, nullable = True)
+    total_ratings = Column(Integer, nullable = True)
 
 
     # load corresponding project object
     idea_project = relationship("Project", backref=backref("ideas", order_by=id))
     creator = relationship("User", backref=backref("ideas", order_by=id))
 
+    # NOTE: MAYBE INCLUDE INSPIRATION LATER ON
 
 class Rating(Base):
     __tablename__ = "ratings"
