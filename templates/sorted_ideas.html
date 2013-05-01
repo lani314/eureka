@@ -1,0 +1,13 @@
+<html>
+<head>
+    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.css') }}"  />
+</head>
+<body>  
+    {% for each in ideas_to_sort|sort(attribute='average_rating', reverse=True) %}
+       {{each.average_rating}}
+       {{each.idea}}
+       {{each.creator.username}}<br>
+     {% endfor %}
+</html>
+</body>
+</html>

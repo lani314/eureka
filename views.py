@@ -78,7 +78,7 @@ def add_user():
 
         # user = g.user.id
         # str_newuser = str(user)
-        return redirect("/mypage")
+        return redirect("/")
         # return redirect("/")
     return render_template("/new_user.html", form=form)
 
@@ -139,78 +139,6 @@ def add_project():
         # return redirect("/new_idea")
     return render_template("/mypage")
 
-# @app.route("/new_idea")
-# def add_idea():
-# # def add_idea(project):
-
-#     project = session.get("project")
-#     # kwords = session.get("kword")
-
-#     # split_kwords = split(kwords)
-#     # print "HERE ARE MY KWORDS:" 
-#     # print kwords
-
-#     project_generator = []
-
-#     for my_text in model.session.query(model.Project).filter_by(id=project):
-#         project_generator.append(my_text)
-
-
-#     # for my_text in model.session.query(model.Project).filter_by(id=project):
-#     #     keyword_generator.append(my_text)
-
-#     form = forms.AddIdeaForm()
-
-#     # my_words = urlopen('http://api.wordnik.com/v4)
-#     # response = my_words.read()
-
-#     word_list = []
-
-#     wordsApi = WordsApi.WordsApi(client)
-#     random_word = wordsApi.getRandomWord()
-#     word_list.append(random_word)
-
-#     like_list = []
-
-
-#     wordApi = WordApi.WordApi(client)
-
-
-#     # query for correct project in project table
-#     for kword_search in model.session.query(model.Project).filter_by(id=project):
-#         # retrieve keywords that match project
-#         fromlist = kword_search.keywords
-#         # split keywords into individual elements in a list
-#         splitlist = fromlist.split()
-#         # randomly select an element/keyword from list and assign it to a variable
-#         random_index = randrange(0,len(splitlist))
-#         random_keyword = splitlist[random_index]
-
-#     #     # access API client
-#     #     # apply random keyword to word, select synonym and one each
-#         synonym = wordApi.getRelatedWords(word = random_keyword, relationshipTypes='synonym', limitPerRelationshipType=1)
-#     #     # append to list to be displayed in HTML page
-#         like_list.append(synonym)
-
-#     # return render_template("/new_idea.html", form=form, word_list = word_list)
-#     return render_template("/new_idea.html", form=form, word_list = word_list, project_generator = project_generator, like_list = like_list)
-
-# @app.route("/save_idea", methods=["GET", "POST"])
-# def save_idea():
-
-#     project = session.get("project")
-
-#     form = forms.AddIdeaForm()
-
-#     if form.validate_on_submit():
-#         register_idea = model.Idea(id = None, idea = form.idea.data, project_id = project, creator_id = g.user.id)
-#         model.session.add(register_idea)
-#         model.session.commit()
-#         # model.session.refresh(register_idea)
-#         session["idea"] = register_idea.id
-
-#     return redirect("/rate_idea")
-
 @app.route("/search_project", methods=["GET"])
 def display_search():
     return render_template("search_project.html")
@@ -266,12 +194,12 @@ def create_idea(id):
     # my_words = urlopen('http://api.wordnik.com/v4)
     # response = my_words.read()
 
-    word_list = []
+    # word_list = []
     # like_list = []
 
     wordsApi = WordsApi.WordsApi(client)
-    random_word = wordsApi.getRandomWord()
-    word_list.append(random_word)
+    random_word = wordsApi.getRandomWord().word
+    # word_list.append(random_word)
 
     like_list = []
 
@@ -293,9 +221,15 @@ def create_idea(id):
     #     # apply random keyword to word, select synonym and one each
         synonym = wordApi.getRelatedWords(word = random_keyword, relationshipTypes='synonym', limitPerRelationshipType=1)
     #     # append to list to be displayed in HTML page
-        like_list.append(synonym)
+        if synonym:
+            like_list.append(synonym[0].words[0])
 
-    return render_template("/update_idea.html", form=form, word_list = word_list, like_list = like_list, project_generator=project_generator)
+    if like_list:
+        random_combo = "%s %s"%(random_word, choice(like_list))
+    else:
+        random_combo = "No suggestions sad face :("
+            
+    return render_template("/update_idea.html", form=form, random_word = random_word, like_list = like_list, project_generator=project_generator, random_combo = random_combo)
 
 @app.route("/my_project/<int:id>/save_idea", methods=["POST"])
 def save_idea(id):
@@ -329,6 +263,18 @@ def all_ideas(id):
    
     return render_template("/all_ideas.html", recent_ideas=recent_ideas)
 
+@app.route("/my_project/<int:id>/sorted_ideas", methods=["GET"])
+def sorted_ideas(id):
+
+    ideas_to_sort = []
+
+    for each in model.session.query(model.Idea).filter_by(project_id=id):
+        # sorted_version = sorted(each.average_rating)
+        ideas_to_sort.append(each)
+   
+    return render_template("/sorted_ideas.html", ideas_to_sort=ideas_to_sort)
+
+
 @app.route("/my_project/<int:id>/rate_idea/<int:idea>")
 def rate_idea(id, idea):
 
@@ -350,6 +296,7 @@ def save_rating(id, idea):
         register_rating = model.Rating(id = None, idea_id = idea, rater_id = g.user.id, rating = form.rating.data, rating_notes = form.rating_notes.data)
         model.session.add(register_rating)
 
+    # IMPLEMENT AND INSERT COUNTER
     # query for appropriate idea row, according to matching id 
     for counter in model.session.query(model.Idea).filter_by(id=idea):
         # if the total_ratings table is None
@@ -366,6 +313,8 @@ def save_rating(id, idea):
             # add one to current count
             current_idea_update.total_ratings = current_count + 1
 
+    # CALCULATE AND INSERT AVERAGE
+    # query for appropriate idea row
     for average_counter in model.session.query(model.Idea).filter_by(id=idea):
         if average_counter.average_rating == None:
             current_average = model.session.query(model.Idea).get(idea)
@@ -378,64 +327,16 @@ def save_rating(id, idea):
          
         model.session.commit()
 
-    # new_rating = str(id)
-    project_rate = str(id)
+    # project_rate = str(id)
 
-    idea_rate = str(idea)
+    # idea_rate = str(idea)
 
-    input_rate = str(form.rating.data)
+    # input_rate = str(form.rating.data)
 
     # return redirect("/my_project/" + new_rating + "/all_ideas")
-    return redirect("/my_project/" + project_rate + "/rate_idea/" + idea_rate + "/rate_info_input/" + input_rate)
+    # return redirect("/my_project/" + project_rate + "/rate_idea/" + idea_rate + "/rate_info_input/" + input_rate)
 
-@app.route("/my_project/<int:id>/rate_idea/<int:idea>/rate_info_input/<int:rating>", methods=["GET"])
-def rate_info_input(id, idea, rating):
-
-    # form = forms.RateIdeaForm()
-
-    # UPDATE COUNT
-    # for counter in model.session.query(model.Idea).filter_by(id=idea):
-    #     print counter.idea
-    #     if counter.total_ratings == None:
-    #         if form.validate_on_submit():
-    #             register_first_counter = model.Idea(total_ratings = 1)
-    #             model.session.add(register_first_count)
-    #             model.session.commit()
-        # else:
-        #     pass
-        #     for new_counter in model.session.query(model.Idea).filter_by(id=idea):
-                # current_count = new_counter.total_ratings
-                # register_second_counter = model.Idea(total_ratings = current_count + 1)
-                # model.session.add(register_second_counter)
-                # model.session.commit()
-
-        return redirect("/mypage")
-
-    # DETERMINE NEW AVERAGE RATING
-    # new_avg_rating = rating + avg_rating / total_ratings
-
-    # for i in model.session.query(model.Idea).filter_by(id=idea):
-    #     current_avg = i.average_rating
-    #     current_count = i.count
-    #     new_avg_rating = (rating + (current_avg)) / current_count
-    #     update_avg = model.Idea(avg_rating = new_avg_rating)
-
-
-# @app.route("/view_ratings", methods=["GET", "POST"])
-# def view_ratings():
-
-#     idea = session.get("idea")
-#     # project = session.get("project")
-
-#     idea_ratings = []
-
-#     for viewer in model.session.query(model.Rating).filter_by(idea_id = idea):
-#         idea_ratings.append(viewer.idea)
-#         # idea_ratings.append(viewer.rating)
-#         # idea_ratings.append(viewer.rater)
-
-#     # return render_template("mypage.html", recent_work = recent_work)
-#     return render_template("view_ratings.html", idea_ratings = idea_ratings)
+    return redirect("/mypage")
 
 @app.route("/my_project/<int:id>/idea/<int:idea>")
 def idea(id, idea):
@@ -453,32 +354,6 @@ def idea(id, idea):
         all_ratings.append(rating_info)
 
     return render_template("/idea.html", selected_idea = selected_idea, all_ratings = all_ratings)
-
-# @app.route("/project_ideas", methods=['GET'])
-# def project_ideas():
-
-#     existing_project = session.get("existing_project")
-
-#     idea = session.get("idea")
-
-#     # create an empty list to append recent projects to
-#     all_ideas = []
-
-#     all_ratings = []
-
-#     # Query for all projects that match user in membership table (project user = global user)
-#     for each_idea in model.session.query(model.Idea).filter_by(project_id=existing_project):
-#         all_ideas.append(each_idea)
-
-#     # YOU HAVE TO GET THE PROPER IDEA ID SO YOU CAN PROPERLY FILTER TO WHICH IDEAS YOU WANT DISPLAYED HERE
-#     for each_rating in model.session.query(model.Rating):
-#         # indiv_rating = each_rating.rating
-#         # each_rating = indiv_rating.sort
-#         # each_rating = indiv_rating.sort()
-#         all_ratings.append(each_rating)
-
-#     # return render_template("mypage.html", recent_work = recent_work)
-#     return render_template("project_ideas.html", all_ideas = all_ideas, all_ratings = all_ratings)
 
 @app.route("/about", methods=['GET'])
 def about():

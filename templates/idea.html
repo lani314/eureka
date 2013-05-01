@@ -4,20 +4,32 @@
 </head>
 <body>
      
+    <p>PROJECT INFORMATION:</p>
+
     {% for selection in selected_idea %}
     Project: {{selection.idea_project.project_name}}
     Idea: {{selection.idea}}
     Creator: {{selection.creator.username}}
+
+    <p></p>
+
+
+    <p>RATING SUMMARY:</p>
+
+    Average Rating: {{selection.average_rating}}
+    Total Ratings: {{selection.total_ratings}}
     <!-- Average rating: {[selection.avg_rating]} -->
-    <br>
 
      {% endfor %}
+
+     <p></p>
+
+    <p>RATING DETAILS:</p>
 
     {% for info in all_ratings %}
     Rater: {{info.rater.username}}
     Rating: {{info.rating}}
     Comments: {{info.rating_notes}}
-    <br>
 
      {% endfor %}
 

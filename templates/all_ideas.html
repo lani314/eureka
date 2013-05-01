@@ -9,6 +9,8 @@
         Idea: {{individual.idea}}
         Creator: {{individual.creator.username}}
         <p><a href="{{url_for("rate_idea", id=individual.project_id, idea=individual.id)}}">Rate Idea</a></p>
+        <p><a href="{{url_for("idea", id=individual.project_id, idea=individual.id)}}">See all Idea Information</a></p>
+        <p><a href="{{url_for("sorted_ideas", id=individual.project_id)}}">See all Ideas Sorted By Rating</a><br>
 <br>
      {% endfor %}
 </html>

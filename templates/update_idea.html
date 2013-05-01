@@ -1,14 +1,19 @@
 <html>
 <head>
     <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.css') }}"  />
+
+<!-- <script type = "text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+<script type="text/javascript"
+
+$(window).on(‘load’, function(){
+    alert("You are ready to begin");
+})
+
+</script>
+ -->
 </head>
 <body>
-<!-- Access Google JQuery -->
-<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
-<!-- $.get() -->
 
-    
-</script>
         <h1>Ideas</h1>
 
     <p>Create a new idea for your project!</p>
@@ -26,11 +31,9 @@
     <p>RANDOM:</p>
     <!-- How do we retrieve the random word? -->
 
-    {% for individual in word_list %}
-        {{individual.word}}
-        <br>Don't know the word? See the dictionary definition <a href="http://dictionary.reference.com/browse/{{individual.word}}" target="_blank">HERE.</a>
-    {% endfor %}
-
+    {{random_word}}
+        <br>Don't know the word? See the dictionary definition <a href="http://dictionary.reference.com/browse/{{random_word}}" target="_blank">HERE.</a>
+    
 <!-- 
     <p>KEYWORDS:</p>
 
@@ -42,20 +45,21 @@
 
     <p>LIKE:</p>
 
-
+{#
     {% for each in like_list %}
+        {% if not each %}
+        Something broke
+        {% else %}
         {{each[0].words[0]}} <br>
-    <br>Don't know the word? See the dictionary definition <a href="http://dictionary.reference.com/browse/{{each[0].words[0]}}" target="_blank">HERE.</a>
+        <br>Don't know the word? See the dictionary definition <a href="http://dictionary.reference.com/browse/{{each[0].words[0]}}" target="_blank">HERE.</a>
+        {% endif %}
+    {% else %}
+    Whoops, couldn't find anything
     {% endfor %}
-
+#}
     <p>MIX:</p>
 
-    {% for individual in word_list %}
-        {{individual.word}}
-    {% endfor %}
-     {% for each in like_list %}
-        {{each[0].words[0]}} <br>
-    {% endfor %}
+    {{random_combo}}
 
 
 	<form action="save_idea" form method="POST">
