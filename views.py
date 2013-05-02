@@ -32,7 +32,8 @@ def before_request():
 @app.route("/")
 def login():
     form = forms.LoginUserForm()
-    return render_template("login.html", form=form)
+    form_add = forms.AddUserForm()
+    return render_template("login.html", form=form, form_add=form_add)
 
 @app.route("/logout")
 def logout():
@@ -57,7 +58,7 @@ def new_user():
     return render_template("new_user.html", form=form)
 
 @app.route("/save_user", methods=["GET", "POST"])
-def add_user():
+def save_user():
 
     form = forms.AddUserForm()
     if form.validate_on_submit():
@@ -80,7 +81,8 @@ def add_user():
         # str_newuser = str(user)
         return redirect("/")
         # return redirect("/")
-    return render_template("/new_user.html", form=form)
+    # return render_template("/new_user.html", form=form)
+    return redirect("/")
 
 
 @app.route("/mypage", methods=['GET'])
@@ -185,6 +187,57 @@ def my_project(id):
                 collaborators.append(my_people)
 
     return render_template("/my_project.html", id=id, project_generator=project_generator, collaborators=collaborators)
+
+@app.route("/my_project/<int:id>/edit", methods =["POST", "GET"])
+def edit_project(id):
+
+    project_generator = []
+    for project in model.session.query(model.Project).filter_by(id=id):
+        project_generator.append(project)
+
+    form = forms.AddProjectForm()
+
+    current_user = g.user.id
+
+    return render_template("edit.html", form=form, project_generator=project_generator, current_user=current_user)
+
+# @app.route("/my_project/<int:id>/editor_authentication", methods=["POST"])
+# def editor_authentication(id):
+
+#     return_id = str(id)
+
+#     form = forms.AddProjectForm()
+#     if form.validate_on_submit():
+#        for code in model.session.query(model.Project).filter_by(id=id):
+#             for  code.project_master.password = form.editor_password.data:
+#                 return redirect("my_project/" + return_id + "/save_project_edits")
+#             else:
+#                 return redirect("/my_project/" + return_id)
+#                 flash("Sorry, you do not have permission to edit")
+
+@app.route("/my_project/<int:id>/save_project_edits", methods=["POST", "GET"])
+def save_project_edits(id):
+
+    form = forms.AddProjectForm()
+
+    pass_id = str(id)
+
+    if form.validate_on_submit():
+       for project in model.session.query(model.Project).filter_by(id=id):
+
+            project_update = model.session.query(model.Project).get(id)
+            if form.name.data:
+                project_update.project_name = form.name.data
+            if form.password.data:
+                project_update.project_password = form.password.data
+            if form.base_text.data:
+                project_update.base_text = form.base_text.data
+            if form.keywords.data:
+                project_update.keywords = form.keywords.data
+            model.session.commit()
+
+
+    return redirect("/my_project/" + pass_id)
 
 @app.route("/my_project/<int:id>/create_idea")
 def create_idea(id):

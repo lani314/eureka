@@ -222,12 +222,42 @@ textarea {
 }
 
 body {
-  margin: 40px;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 14px;
   line-height: 20px;
   color: #333333;
-  background-color: #75D19D;
+/*  background-color: #75D19D;*/
+  background-color: #C9EDD9;
+  padding: 20px;
+}
+
+ .art_image {
+  background-image: url('../images/pollock.jpg');
+  background-color: black;
+  background-image: url("../img/pollock.jpg");
+  background-repeat: no-repeat;
+  background-position: right;
+  min-height: 200px;
+  width: 100%;
+}
+
+.eureka_title {
+  padding-top: 80px;
+  padding-left: 40px;
+  font-size: 6em;
+  color: white;
+
+
+}
+
+.project_selectors {
+  display: inline-block;
+  display: inline;
+  white-space: nowrap;
+  vertical-align: middle;
+  zoom: 1;
+ /* margin-left: 220px;
+  margin-right: auto;*/
 }
 
 .darkphototext {
@@ -2018,6 +2048,7 @@ legend + .control-group {
 
 .form-horizontal .form-actions {
   padding-left: 180px;
+  padding-right: 180px;
 }
 
 table {
@@ -2210,6 +2241,15 @@ table th[class*="span"],
   width: 284px;
   margin-left: 0;
 }
+
+.table td.extra_feature,
+.table th.extra_feature {
+  float: none;
+  width: 70%;
+  margin-left:auto;
+  margin-right: auto;
+}
+
 
 .table td.span5,
 .table th.span5 {
@@ -4387,7 +4427,9 @@ input[type="submit"].btn.btn-mini {
 }
 
 .navbar-inner {
-  min-height: 40px;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
   padding-right: 20px;
   padding-left: 20px;
   background-color: #fafafa;
@@ -6135,7 +6177,10 @@ a.badge:focus {
 }
 
 .hero-unit {
-  padding: 60px;
+  margin-left:auto;
+  margin-right:auto;
+  width:100%;
+  padding: 10px;
   margin-bottom: 30px;
   font-size: 18px;
   font-weight: 200;

@@ -3,13 +3,7 @@
 <head>
     <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.css') }}"  />
 </head>
-
 <body>
-<div class = "art_image">
-<div class = "eureka_title">
-    EUREKA
-</div>
-</div>
 
   <div class="container">
     <header class="row">
@@ -18,7 +12,7 @@
           <div class="navbar-inner">
             <a class="brand">Eureka</a>
               <ul class="nav">
-              <li class="active"><a href="http://localhost:5000/mypage">Home</a></li>
+              <li class="active"><a href="#">Home</a></li>
               <li class="divider-vertical"></li>
               <li><a href="http://localhost:5000/new_project">Start Project</a></li>
               <li class="divider-vertical"></li>
@@ -30,18 +24,16 @@
         </div></div>
     </div>
 
-  <div class="container">
-  <div class="hero-unit">
-
-	<h1>Project</h1>
-    <p>Create a new idea for your project!</p>
-    <p>Feel inspired by the unexpected, surreal and absurd</p>
-
+  <h1>Project</h1>
+    
+    <p>Current Information</p>
 
     {% for extract in project_generator %}
 
-     <p>BASE TEXT:</p> 
+     {{extract.project_name}}
+     {{extract.project_password}}
      {{extract.base_text}}
+     {{extract.keywords}}
 
      <p>PROJECT CREATOR</p>
      {{extract.master.username}}
@@ -56,18 +48,22 @@
 
     {% endfor %}
 
-</div>
-<div class="row">
-  <div class="span9">
-<!-- <div class="btn-group"> -->
-<div class="project_selectors">
-  <a href="{{url_for("create_idea", id=id)}}" class="btn btn-info btn-large active"><i class="icon-white icon-pencil"></i> Create New Idea</a>
-  <a href="{{url_for("all_ideas", id=id)}}" class="btn btn-info btn-large active"><i class="icon-white icon-eye-open"></i> Review All Ideas</a>
-  <a href="{{url_for("edit_project", id=id)}}" class="btn btn-info btn-large active"><i class="icon-white icon-edit"></i> Edit Project Settings</a>
-</div>
-<!-- </div>
-</div>
-</div> -->
-</container>
+    {% for extract in project_generator %}
+
+    <form action = {{url_for("save_project_edits", id=extract.id)}} form method="POST">
+        <!-- iterate through form, which is taken the "form" taken from views -->
+        {% for field in form %}
+
+            {% for error in field.errors %}
+            <!-- print error message -->
+            <p style="color:red">{{error}}</p>
+            {% endfor %}
+        <!-- represent the field and its respective label, such as "email" or "password" -->
+            {{ field.label }}
+            {{ field }}<br>
+        {% endfor %}
+        <input type="submit">
+    </form>
+{% endfor %}
 </body>
 </html>

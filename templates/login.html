@@ -6,11 +6,15 @@
     <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.css') }}"  />
 </head>
 <body>
-<h1>WELCOME TO EUREKA</h1>
-<div style="position:relative">  
-<!--     <img class = "resize" src="http://www.lostsomewhere.com/wp-content/uploads/2010/10/in_fatih.jpg" alt="fatih">
-      <div style="position:absolute;left:10;top:0;"> -->
-   <form class="darkphototext" form action="/authenticate" form method="POST">
+    <div class = "art_image">
+<div class = "eureka_title">
+    EUREKA
+</div>
+</div>
+<div class="container">
+    <div style="position:left">  
+  <div class="row">
+   <form class="form-horizontal" form action="/authenticate" form method="POST">
         <!-- iterate through form, which is taken the "form" taken from views -->
         {% for field in form %}
 
@@ -25,11 +29,33 @@
         <label class="checkbox">
             <input type="checkbox">remember me
         </label>
-        <input type="submit" class="btn btn-primary" value="login"> 
-        <a class="btn btn-info" href="http://localhost:5000/new_user">register</a>
+            <div class="row">
+  <div class="span4">
+
+        <input type="submit" class="btn btn-info btn-large active"></i></a> 
+    </div>
+
+  <div class="span4">
+<div class="btn-group">
+    <a href="{{url_for("new_user")}}" class="btn btn-info btn-large"></i>Join Eureka</a>
+</div>
+    </div>
     </form>
-</html>
+</div>
+</div>
+ <div style="position:right">  
+  <div class="row">
+<div class="span8">
+<p>Eureka is a web application that allows you to experiment and find creative solutions.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
 </body>
+</html>
+
 
 <!-- OLD VERSION:
  -->

@@ -33,3 +33,6 @@ class AllIdeaForm(Form):
 	idea = TextField("idea", validators=[v.required()])
 	rating = IntegerField("rating", validators=[v.required()])
 	rating_notes = TextField("rating_notes", validators=[v.required()])
+
+class EditorForm(Form):
+	editor_password = idea = TextField("editor", validators=[v.required()])
