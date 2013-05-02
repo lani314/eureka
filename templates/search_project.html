@@ -1,7 +1,9 @@
+<!doctype html>
 <html>
 <head>
     <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.css') }}"  />
 </head>
+<body>
 	<h1>Search</h1>
     <p>Look for projects by typing in all of part of the project name below</p>
 <form action="{{url_for("search")}}" method="POST">

@@ -91,9 +91,8 @@ def my_page():
 
     # Query for all projects that match user in membership table (project user = global user)
     for my_membership in model.session.query(model.Membership).filter_by(user_id=g.user.id):
-        recent_work.append(my_membership.project)
+        recent_work.append(my_membership)
 
-    # return render_template("mypage.html", recent_work = recent_work)
     return render_template("mypage.html", recent_work = recent_work)
 
 @app.route("/new_project")
@@ -106,7 +105,7 @@ def add_project():
 
     form = forms.AddProjectForm()
     if form.validate_on_submit():
-        register_project = model.Project(id = None, project_name = form.name.data, project_password = form.password.data, base_text = form.base_text.data, keywords = form.keywords.data)
+        register_project = model.Project(id = None, project_master = g.user.id, project_name = form.name.data, project_password = form.password.data, base_text = form.base_text.data, keywords = form.keywords.data)
         model.session.add(register_project)
         
         # query in Projects to get the id of the currently registered project's id
@@ -175,9 +174,16 @@ def member_authenticate():
 @app.route("/my_project/<int:id>", methods=["GET"])
 def my_project(id):
 
-    # session["existing_project"] = id
-    # existing_project = session.get("existing_project")
-    return render_template("/my_project.html", id=id)
+    project_generator = []
+    collaborators = []
+
+    for my_text in model.session.query(model.Project).filter_by(id=id):
+        project_generator.append(my_text)
+        for my_people in model.session.query(model.Membership).filter_by(project_id=id):
+            collaborators.append(my_people)
+
+
+    return render_template("/my_project.html", id=id, project_generator=project_generator, collaborators=collaborators)
 
 @app.route("/my_project/<int:id>/create_idea")
 def create_idea(id):

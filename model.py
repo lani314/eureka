@@ -22,11 +22,13 @@ class User(Base):
 class Project(Base):
     __tablename__ = "projects"
     id = Column(Integer, primary_key = True)
+    project_master = Column(Integer, ForeignKey('users.id'))
     project_name = Column(String(80), nullable=True)
     project_password = Column(String, nullable=True)
     base_text = Column(String, nullable=True)
     keywords = Column(String, nullable=True)
 
+    master = relationship("User", backref=backref("projects", order_by=id))
 
 # ASSOCIATION TABLE
 # We need this b/c of the many-many relationship

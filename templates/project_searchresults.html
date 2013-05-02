@@ -1,7 +1,9 @@
+<!doctype html>
 <html>
 <head>
     <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.css') }}"  />
 </head>
+<body>
         <!-- iterate through form, which is taken the "form" taken from views -->
         <h1>Search Results</h1>
 
@@ -24,4 +26,5 @@
         {% endfor %}
         <input type="submit">
     </form>
+</body>
 </html>

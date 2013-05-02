@@ -1,3 +1,4 @@
+<!doctype html>
 <html>
 <head>
     <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.css') }}"  />
@@ -8,18 +9,20 @@
     <p>Feel inspired by the unexpected, surreal and absurd</p>
 
 
-<!-- 	{% for project in project_info %}
+    {% for extract in project_generator %}
 
-		{{project.id}}
-		{{project.project_name}}
+     <p>BASE TEXT:</p> 
+     {{extract.base_text}}
 
-	{% endfor %} -->
+    {% endfor %}
 
-<!-- The problem with this is that I am not passing the project ID to new idea -- how can this be done PROPERLY?
- -->
-<!-- <p><a href="http://localhost:5000/myproject/<int:id>/update_idea">Create New Idea For Project</a></p>
- -->
+    <p>COLLABORATORS:</p>
 
+    {% for person in collaborators %}
+
+        {{person.user.username}}
+
+    {% endfor %}
 <p><a href="{{url_for("create_idea", id=id)}}">Create New Idea For Project</a><br>
 
 <p><a href="{{url_for("all_ideas", id=id)}}">Review Ideas</a></p>

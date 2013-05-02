@@ -1,42 +1,51 @@
+<!doctype html>
 <html>
 <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device=width, intitial-scale=1.0">
+    <title></title>
     <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.css') }}"  />
 </head>
 <body>
 
-<div class="navbar">
-  <div class="navbar-inner">
-    <a class="brand" href="#">Title</a>
-    <ul class="nav">
-      <li class="active"><a href="#">Home</a></li>
-      <li><a href="http://localhost:5000/about">About</a></li>
-      <li><a href="http://localhost:5000/mypage">My Page</a></li>
-      <li><a href="http://localhost:5000/logout">Logout</a></li>
-      <li><a href="#">Link</a></li>
-    </ul>
-  </div>
-</div>
+  <div class="container">
+    <header class="row">
+      <div class ="span12">
+        <div class="navbar">
+          <div class="navbar-inner">
+            <a class="brand">Eureka</a>
+              <ul class="nav">
+              <li class="active"><a href="#">Home</a></li>
+              <li class="divider-vertical"></li>
+              <li><a href="http://localhost:5000/new_project">Start Project</a></li>
+              <li class="divider-vertical"></li>
+              <li><a href="http://localhost:5000/search_project">Find Projects</a></li>
+              <li class="divider-vertical"></li>
+              <li><a href="http://localhost:5000/logout">Logout</a></li>
+            </ul>
+          </div>
+        </div></div>
+    </div>
+     
+    <table class="table table-bordered table-hover table-condensed table-bordered">
+    <caption>My Projects</caption>
+    <thead>
+      <tr>
+        <th>Project ID</th>
+        <th>Project Name</th>
+        <th>Project Creator</th>
+      </tr>
+    </thead>
+    <tbody>
+       {% for project in recent_work %}
+      <tr>
+      <td>{{project.project.id}}</td>
+      <td><a href="{{url_for("my_project", id=project.id)}}">{{project.project.project_name}}</a></td>
+      <td>{{project.project.master.username}}</td>
+      {% endfor %}
+      </tr>
+    <tbody>
+</table>
 
-	<h1>MY PAGE</h1>
-	<p>My Projects</p>
-
-	{% for project in recent_work %}
-
-
-
-		<p>PROJECT ID: <a href="{{url_for("my_project", id=project.id)}}">{{project.id}}</a><br>
-		<p>PROJECT NAME: {{project.project_name}}</p>
-	{% endfor %}
-
-
-<!-- 	{% for name in recentwork_name %}
-		<p>Project ID: {{name.name}}</p>
-	{% endfor %} -->
-
-	<!-- <p><a href="http://localhost:5000/new_project">Start New Project</a></p -->>
-	<a href="{{url_for("new_project")}}">Start a New Project</a><br>
-
-
-	<p><a href="http://localhost:5000/search_project">Search for an Existing Project</a></p>
 </body>
 </html>

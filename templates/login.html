@@ -1,11 +1,15 @@
+<!doctype html>
 <html>
 <head>
+    <meta charset="utf-8">
+    <title></title>
     <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.css') }}"  />
 </head>
+<body>
 <h1>WELCOME TO EUREKA</h1>
 <div style="position:relative">  
-    <img class = "resize" src="http://www.lostsomewhere.com/wp-content/uploads/2010/10/in_fatih.jpg" alt="fatih">
-      <div style="position:absolute;left:10;top:0;">
+<!--     <img class = "resize" src="http://www.lostsomewhere.com/wp-content/uploads/2010/10/in_fatih.jpg" alt="fatih">
+      <div style="position:absolute;left:10;top:0;"> -->
    <form class="darkphototext" form action="/authenticate" form method="POST">
         <!-- iterate through form, which is taken the "form" taken from views -->
         {% for field in form %}
@@ -18,12 +22,14 @@
             {{ field.label }}
             {{ field }}<br>
         {% endfor %}
-        <input type="submit">
+        <label class="checkbox">
+            <input type="checkbox">remember me
+        </label>
+        <input type="submit" class="btn btn-primary" value="login"> 
+        <a class="btn btn-info" href="http://localhost:5000/new_user">register</a>
     </form>
-<!--     <p class="informational">Already registered? Login!</p>
- -->    <p class="informational">New user?<a href="http://localhost:5000/new_user"> Register Now</a></p>
-</p>
 </html>
+</body>
 
 <!-- OLD VERSION:
  -->
