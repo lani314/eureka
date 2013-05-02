@@ -179,9 +179,10 @@ def my_project(id):
 
     for my_text in model.session.query(model.Project).filter_by(id=id):
         project_generator.append(my_text)
+        master = my_text.project_master
         for my_people in model.session.query(model.Membership).filter_by(project_id=id):
-            collaborators.append(my_people)
-
+            if my_people.user_id != master:
+                collaborators.append(my_people)
 
     return render_template("/my_project.html", id=id, project_generator=project_generator, collaborators=collaborators)
 
