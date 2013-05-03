@@ -89,11 +89,11 @@ def save_user():
 def my_page():
 
     # create an empty list to append recent projects to
-    recent_work = []
+    # recent_work = []
 
     # Query for all projects that match user in membership table (project user = global user)
-    for my_membership in model.session.query(model.Membership).filter_by(user_id=g.user.id):
-        recent_work.append(my_membership)
+    recent_work = model.session.query(model.Membership).filter_by(user_id=g.user.id).all()
+        # recent_work.append(my_membership)
 
     return render_template("mypage.html", recent_work = recent_work)
 
@@ -176,30 +176,22 @@ def member_authenticate():
 @app.route("/my_project/<int:id>", methods=["GET"])
 def my_project(id):
 
-    project_generator = []
     collaborators = []
 
-    for my_text in model.session.query(model.Project).filter_by(id=id):
-        project_generator.append(my_text)
-        master = my_text.project_master
-        for my_people in model.session.query(model.Membership).filter_by(project_id=id):
-            if my_people.user_id != master:
-                collaborators.append(my_people)
+    project = model.session.query(model.Project).filter_by(id=id).one()
+        # for my_people in model.session.query(model.Membership).filter_by(project_id=id):
+        #     if my_people.user_id != master:
+        #         collaborators.append(my_people)
 
-    return render_template("/my_project.html", id=id, project_generator=project_generator, collaborators=collaborators)
+    return render_template("/my_project.html", id=id, project = project)
 
 @app.route("/my_project/<int:id>/edit", methods =["POST", "GET"])
 def edit_project(id):
 
-    project_generator = []
-    for project in model.session.query(model.Project).filter_by(id=id):
-        project_generator.append(project)
-
+    project = model.session.query(model.Project).filter_by(id=id, project_master=g.user.id).one()
     form = forms.AddProjectForm()
-
-    current_user = g.user.id
-
-    return render_template("edit.html", form=form, project_generator=project_generator, current_user=current_user)
+  
+    return render_template("edit.html", form=form, project=project)
 
 # @app.route("/my_project/<int:id>/editor_authentication", methods=["POST"])
 # def editor_authentication(id):

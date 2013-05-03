@@ -28,29 +28,16 @@
     
     <p>Current Information</p>
 
-    {% for extract in project_generator %}
 
-     {{extract.project_name}}
-     {{extract.project_password}}
-     {{extract.base_text}}
-     {{extract.keywords}}
+     {{project.project_name}}
+     {{project.project_password}}
+     {{project.base_text}}
+     {{project.keywords}}
 
      <p>PROJECT CREATOR</p>
-     {{extract.master.username}}
+     {{project.master.username}}
 
-    {% endfor %}
-
-    <p>COLLABORATORS:</p>
-
-    {% for person in collaborators %}
-
-        {{person.user.username}}
-
-    {% endfor %}
-
-    {% for extract in project_generator %}
-
-    <form action = {{url_for("save_project_edits", id=extract.id)}} form method="POST">
+    <form action = {{url_for("save_project_edits", id=project.id)}} method="POST">
         <!-- iterate through form, which is taken the "form" taken from views -->
         {% for field in form %}
 
@@ -64,6 +51,5 @@
         {% endfor %}
         <input type="submit">
     </form>
-{% endfor %}
 </body>
 </html>

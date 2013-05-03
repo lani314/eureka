@@ -14,7 +14,7 @@
 </div>
   <div class="container">
     <header class="row">
-      <div class ="span12">
+      <div class ="span">
         <div class="navbar">
           <div class="navbar-inner">
             <a class="brand">Eureka</a>
@@ -41,11 +41,11 @@
       </tr>
     </thead>
     <tbody>
-       {% for project in recent_work %}
+       {% for membership in recent_work %}
       <tr>
-      <td>{{project.project.id}}</td>
-      <td><a href="{{url_for("my_project", id=project.id)}}">{{project.project.project_name}}</a></td>
-      <td>{{project.project.master.username}}</td>
+      <td>{{membership.project_id}}</td>
+      <td><a href="{{url_for("my_project", id=membership.project_id)}}">{{membership.project.project_name}}</a></td>
+      <td>{{membership.project.master.username}}</td>
       {% endfor %}
       </tr>
     <tbody>
