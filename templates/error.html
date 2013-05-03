@@ -1,0 +1,22 @@
+<!doctype html>
+<html>
+<head>
+    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.css') }}"  />
+</head>
+</head>
+<body>
+	<div class = "error_page">
+	
+	<p>Oops! You've encountered an error!</p>
+
+	<p>This may be because you:<br>
+	* requested an unavailable page<br>
+	* did you not properly fill out a form (such, as the login)<br>
+	* somehow encountered an error</p>
+
+	<p>Please go back to the previous page or <a href="{{url_for("login")}}">Eureka login</a></</p>
+	<p>If you're already logged in, return to <a href="{{url_for("my_page")}}">Home</a></</p>.
+
+</div>
+</body>
+</html>

@@ -228,9 +228,12 @@ body {
   color: #333333;
 /*  background-color: #75D19D;*/
   background-color: #C9EDD9;
-  padding: 20px;
+  padding: 5px;
 }
 
+p {
+  font-weight: bold;
+}
  .art_image {
   background-color: black;
   background-image: url("../img/pollock.jpg");
@@ -245,8 +248,14 @@ body {
   padding-left: 40px;
   font-size: 6em;
   color: white;
+}
 
-
+.error_page {
+  background-image: url("../img/faded_paint.jpg");
+  background-color: black;
+  height: 1000px;
+  color: black;
+  font-size: 2em;
 }
 
 .project_selectors {
@@ -258,6 +267,8 @@ body {
  /* margin-left: 220px;
   margin-right: auto;*/
 }
+
+
 
 .darkphototext {
 color: white;
@@ -340,11 +351,36 @@ a:focus {
   margin-left: 20px;
 }
 
+.navbar-wider{
+  width: 100%;
+}
+
 .container,
 .navbar-static-top .container,
 .navbar-fixed-top .container,
 .navbar-fixed-bottom .container {
+/*  width: 1000px;*/
+/*  width: 940px;*/
+  width: 1200px;
+}
+
+.container-original{
   width: 940px;
+  border: solid black;
+}
+
+.container-small,
+.navbar-static-top .container,
+.navbar-fixed-top .container,
+.navbar-fixed-bottom .container {
+/*  width: 1000px;*/
+/*  width: 940px;*/
+  width: 800px;
+}
+
+
+.span13 {
+  width: 1200px;
 }
 
 .span12 {
@@ -369,6 +405,10 @@ a:focus {
 
 .span7 {
   width: 540px;
+}
+
+.span6ish {
+  width: 510px;
 }
 
 .span6 {

@@ -4,14 +4,39 @@
     <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.css') }}"  />
 </head>
 <body>
-     
+	<div class = "art_image">
+<div class = "eureka_title">
+    EUREKA
+</div>
+</div>
+  <div class="container">
+    <header class="row">
+      <div class ="span">
+        <div class="navbar">
+          <div class="navbar-inner">
+            <a class="brand">Eureka</a>
+              <ul class="nav">
+              <li class="active"><a href="#">Home</a></li>
+              <li class="divider-vertical"></li>
+              <li><a href="http://localhost:5000/new_project">Start Project</a></li>
+              <li class="divider-vertical"></li>
+              <li><a href="http://localhost:5000/search_project">Find Projects</a></li>
+              <li class="divider-vertical"></li>
+              <li><a href="http://localhost:5000/logout">Logout</a></li>
+            </ul>
+          </div>
+        </div></div>
+    </div>
+<!--      <table class="table table-bordered table-hover table-condensed table-bordered">
+    <caption>My Projects</caption> -->
     {% for individual in recent_ideas %}
-        Idea ID: {{individual.id}}
-        Idea: {{individual.idea}}
-        Creator: {{individual.creator.username}}
-        <p><a href="{{url_for("rate_idea", id=individual.project_id, idea=individual.id)}}">Rate Idea</a></p>
-        <p><a href="{{url_for("idea", id=individual.project_id, idea=individual.id)}}">See all Idea Information</a></p>
-        <p><a href="{{url_for("sorted_ideas", id=individual.project_id)}}">See all Ideas Sorted By Rating</a><br>
+        <b>Idea ID</b>: {{individual.id}}
+        <b>Idea</b>: {{individual.idea}}
+        <b>Creator</b>: {{individual.creator.username}}
+        <br>
+        <a href="{{url_for("rate_idea", id=individual.project_id, idea=individual.id)}}" class="btn btn-info btn-large active"><i class="icon-white icon-pencil"></i> Rate Idea</a>
+        <a href="{{url_for("idea", id=individual.project_id, idea=individual.id)}}" class="btn btn-info btn-large active"><i class="icon-white icon-pencil"></i>View Idea Details</a>
+        <a href="{{url_for("sorted_ideas", id=individual.project_id)}}" class="btn btn-info btn-large active"><i class="icon-white icon-pencil"></i>View Ideas by Highest</a>
 <br>
      {% endfor %}
 </html>

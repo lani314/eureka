@@ -6,14 +6,17 @@
     <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.css') }}"  />
 </head>
 <body>
-    <div class = "art_image">
+    <div class="container">
+<div class = "art_image">
 <div class = "eureka_title">
     EUREKA
 </div>
 </div>
-<div class="container">
-    <div style="position:left">  
-  <div class="row">
+
+    <div class="container">
+        <div class="hero-unit">
+   <div class="row">
+   <div class="span6">
    <form class="form-horizontal" form action="/authenticate" form method="POST">
         <!-- iterate through form, which is taken the "form" taken from views -->
         {% for field in form %}
@@ -29,12 +32,10 @@
         <label class="checkbox">
             <input type="checkbox">remember me
         </label>
-            <div class="row">
-  <div class="span4">
-
         <input type="submit" class="btn btn-info btn-large active"></i></a> 
     </div>
 </form>
+  <div class="span9">
 <form class="form-horizontal" form action="save_user" form method="POST">
         <!-- iterate through form, which is taken the "form" taken from views -->
         {% for field in add_form %}
@@ -50,23 +51,19 @@
         <label class="checkbox">
             <input type="checkbox">remember me
         </label>
-            <div class="row">
-  <div class="span4">
 
         <input type="submit" class="btn btn-info btn-large active"></i></a> 
     </div>
 </form>
-  <div class="span4">
-    </div>
-    </form>
-</div>
+<!-- </div>
 </div>
 
 
-
+ -->
+<!-- </div> -->
 </div>
 </div>
-</div>
+</container>
 </body>
 </html>
 

@@ -7,19 +7,19 @@
     <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.css') }}"  />
 </head>
 <body>
+    <div class="container">
 <div class = "art_image">
 <div class = "eureka_title">
     EUREKA
 </div>
 </div>
-  <div class="container">
     <header class="row">
-      <div class ="span">
+      <div class ="span6ish">
         <div class="navbar">
           <div class="navbar-inner">
-            <a class="brand">Eureka</a>
+            <a class="brand" href="http://localhost:5000/mypage">Home</a>
               <ul class="nav">
-              <li class="active"><a href="#">Home</a></li>
+<!--               <li class="active"><a href="#">Home</a></li> -->
               <li class="divider-vertical"></li>
               <li><a href="http://localhost:5000/new_project">Start Project</a></li>
               <li class="divider-vertical"></li>
@@ -31,8 +31,10 @@
         </div></div>
     </div>
      
+  <div class="container">
+  <div class="hero-unit">
     <table class="table table-bordered table-hover table-condensed table-bordered">
-    <caption>My Projects</caption>
+    <caption><p>Existing Projects:</p></caption>
     <thead>
       <tr>
         <th>Project ID</th>
@@ -48,8 +50,9 @@
       <td>{{membership.project.master.username}}</td>
       {% endfor %}
       </tr>
-    <tbody>
+    </tbody>
 </table>
-
+</container>
+</div>
 </body>
 </html>

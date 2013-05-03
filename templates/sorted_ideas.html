@@ -4,11 +4,39 @@
     <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.css') }}"  />
 </head>
 <body>
+	<div class = "art_image">
+<div class = "eureka_title">
+    EUREKA
+</div>
+</div>
+  <div class="container">
+    <header class="row">
+      <div class ="span">
+        <div class="navbar">
+          <div class="navbar-inner">
+            <a class="brand">Eureka</a>
+              <ul class="nav">
+              <li class="active"><a href="http://localhost:5000/mypage">Home</a></li>
+              <li class="divider-vertical"></li>
+              <li><a href="http://localhost:5000/new_project">Start Project</a></li>
+              <li class="divider-vertical"></li>
+              <li><a href="http://localhost:5000/search_project">Find Projects</a></li>
+              <li class="divider-vertical"></li>
+              <li><a href="http://localhost:5000/logout">Logout</a></li>
+            </ul>
+          </div>
+        </div></div>
+    </div>
+     
+<div class="container">
+  <div class="hero-unit">
     {% for each in ideas_to_sort|sort(attribute='average_rating', reverse=True) %}
        {{each.average_rating}}
        {{each.idea}}
        {{each.creator.username}}<br>
      {% endfor %}
+     </container>
+ </div>
 </html>
 </body>
 </html>

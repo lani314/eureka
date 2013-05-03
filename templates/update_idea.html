@@ -4,6 +4,32 @@
     <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.css') }}"  />
 </head>
 <body>
+<div class = "art_image">
+<div class = "eureka_title">
+    EUREKA
+</div>
+</div>
+  <div class="container">
+    <header class="row">
+      <div class ="span">
+        <div class="navbar">
+          <div class="navbar-inner">
+            <a class="brand">Eureka</a>
+              <ul class="nav">
+              <li class="active"><a href="#">Home</a></li>
+              <li class="divider-vertical"></li>
+              <li><a href="http://localhost:5000/new_project">Start Project</a></li>
+              <li class="divider-vertical"></li>
+              <li><a href="http://localhost:5000/search_project">Find Projects</a></li>
+              <li class="divider-vertical"></li>
+              <li><a href="http://localhost:5000/logout">Logout</a></li>
+            </ul>
+          </div>
+        </div></div>
+    </div>
+     
+<div class="container">
+  <div class="hero-unit">
 
         <h1>Ideas</h1>
 
@@ -33,10 +59,10 @@
         {{extract.keywords}}
         
     {% endfor %} -->
-
+{#
     <p>LIKE:</p>
 
-{#
+
     {% for each in like_list %}
         {% if not each %}
         Something broke
@@ -70,12 +96,19 @@
 
 {% for id_finder in project_generator %}
 
-<p><a href="{{url_for("all_ideas", id=id_finder.id)}}">Review all Ideas For Project</a></p>
-
-<p><a href="{{url_for("my_project", id=id_finder.id)}}">Return to Project</a><br>
-
+<div class="row">
+  <div class="span9">
+<!-- <div class="btn-group"> -->
+<div class="project_selectors">
+  <a href="{{url_for("all_ideas", id=id_finder.id)}}" class="btn btn-info btn-large active"><i class="icon-white icon-eye-open"></i>Review All Ideas</a>
+  <a href="{{url_for("my_project", id=id_finder.id)}}" class="btn btn-info btn-large active"><i class="icon-white icon-plane"></i>Return to Project</a>
+</div>
+</div>
+</div>
 {% endfor %}
 
+</div>
+</container>
 </html>
 </body>
 </html>

@@ -35,10 +35,14 @@ def login():
     add_form = forms.AddUserForm()
     return render_template("login.html", form=form, add_form=add_form)
 
+@app.route("/error")
+def error():
+    return render_template("error.html")
+
 @app.route("/logout")
 def logout():
     session.pop("id")
-    return "Logged out"
+    return "Thanks for visiting Eureka"
 
 @app.route("/authenticate", methods=["POST"])
 def authenticate():
@@ -49,6 +53,8 @@ def authenticate():
         if user:
             session['id'] = user.id
             return redirect("/mypage")
+        else: 
+            return redirect("/error")
     else:
         return redirect("/")
 
@@ -78,6 +84,11 @@ def save_user():
         model.session.add(register_user)
         model.session.commit()
         model.session.refresh(register_user)
+        
+        user = model.session.query(model.User).filter_by(username=form.username.data, password=form.password.data).first()
+        if user:
+            session['id'] = user.id
+            return redirect("/mypage")
 
         # userid_generator = model.session.query(model.User).get(register_user.id)
 
@@ -88,11 +99,11 @@ def save_user():
 
 
         # WHY IS THE FLASH NOT WORKING?
-        flash("Thanks for registering. Please login now.")
+        # flash("Thanks for registering. Please login now.")
 
         # user = g.user.id
         # str_newuser = str(user)
-        return redirect("/mypage")
+        
         # return redirect("/")
     # return render_template("/new_user.html", form=form)
     return redirect("/")
@@ -151,7 +162,7 @@ def add_project():
 
         return redirect("/my_project/" + st_project)
         # return redirect("/new_idea")
-    return render_template("/mypage")
+    return redirect("/error")
 
 @app.route("/search_project", methods=["GET"])
 def display_search():
@@ -184,6 +195,8 @@ def member_authenticate():
                 pro = form.project_id.data
                 mem_project = str(form.project_id.data)
                 return redirect("/my_project/" + mem_project)
+    else:   
+        return redirect("/error")
 
 @app.route("/my_project/<int:id>", methods=["GET"])
 def my_project(id):
@@ -291,7 +304,7 @@ def create_idea(id):
     if like_list:
         random_combo = "%s %s"%(random_word, choice(like_list))
     else:
-        random_combo = "No suggestions sad face :("
+        random_combo = "No suggestions"
             
     return render_template("/update_idea.html", form=form, random_word = random_word, like_list = like_list, project_generator=project_generator, random_combo = random_combo)
 
@@ -315,7 +328,9 @@ def save_idea(id):
 
     # return redirect("/rate_idea")
 
-    return redirect("/my_project/" + new_idea + "/create_idea")
+        return redirect("/my_project/" + new_idea + "/create_idea")
+    else:
+        return redirect("/error")
 
 @app.route("/my_project/<int:id>/all_ideas", methods=["GET"])
 def all_ideas(id):
