@@ -34,22 +34,36 @@
 
         <input type="submit" class="btn btn-info btn-large active"></i></a> 
     </div>
+</form>
+<form class="form-horizontal" form action="save_user" form method="POST">
+        <!-- iterate through form, which is taken the "form" taken from views -->
+        {% for field in add_form %}
 
+            {% for error in field.errors %}
+            <!-- print error message -->
+            <p style="color:red">{{error}}</p>
+            {% endfor %}
+        <!-- represent the field and its respective label, such as "email" or "password" -->
+            {{ field.label }}
+            {{ field }}<br>
+        {% endfor %}
+        <label class="checkbox">
+            <input type="checkbox">remember me
+        </label>
+            <div class="row">
   <div class="span4">
-<div class="btn-group">
-    <a href="{{url_for("new_user")}}" class="btn btn-info btn-large"></i>Join Eureka</a>
-</div>
+
+        <input type="submit" class="btn btn-info btn-large active"></i></a> 
+    </div>
+</form>
+  <div class="span4">
     </div>
     </form>
 </div>
 </div>
- <div style="position:right">  
-  <div class="row">
-<div class="span8">
-<p>Eureka is a web application that allows you to experiment and find creative solutions.</p>
-</div>
-</div>
-</div>
+
+
+
 </div>
 </div>
 </div>

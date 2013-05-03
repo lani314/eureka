@@ -232,7 +232,6 @@ body {
 }
 
  .art_image {
-  background-image: url('../images/pollock.jpg');
   background-color: black;
   background-image: url("../img/pollock.jpg");
   background-repeat: no-repeat;

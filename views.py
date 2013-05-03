@@ -32,8 +32,8 @@ def before_request():
 @app.route("/")
 def login():
     form = forms.LoginUserForm()
-    form_add = forms.AddUserForm()
-    return render_template("login.html", form=form, form_add=form_add)
+    add_form = forms.AddUserForm()
+    return render_template("login.html", form=form, add_form=add_form)
 
 @app.route("/logout")
 def logout():
@@ -43,19 +43,31 @@ def logout():
 @app.route("/authenticate", methods=["POST"])
 def authenticate():
 
-    form = forms.AddUserForm()
+    form = forms.LoginUserForm()
     if form.validate_on_submit():
-        user = model.session.query(model.User).filter_by(email=form.email.data,username=form.username.data, password=form.password.data).first()
+        user = model.session.query(model.User).filter_by(username=form.username.data, password=form.password.data).first()
         if user:
             session['id'] = user.id
             return redirect("/mypage")
     else:
         return redirect("/")
 
-@app.route("/new_user")
-def new_user():
-    form = forms.AddUserForm()
-    return render_template("new_user.html", form=form)
+# @app.route("/new_user")
+# def new_user():
+#     form = forms.AddUserForm()
+#     return render_template("new_user.html", form=form)
+
+# @app.route("/authenticate_new_user", methods=["POST"])
+# def authenticate():
+
+#     form = forms.AddUForm()
+#     if form.validate_on_submit():
+#         user = model.session.query(model.User).filter_by(email=form.email.data, password=form.password.data).first()
+#         if user:
+#             session['id'] = user.id
+#             return redirect("/mypage")
+#     else:
+#         return redirect("/")
 
 @app.route("/save_user", methods=["GET", "POST"])
 def save_user():
@@ -65,6 +77,7 @@ def save_user():
         register_user = model.User(email = form.email.data, username = form.username.data, password = form.password.data)
         model.session.add(register_user)
         model.session.commit()
+        model.session.refresh(register_user)
 
         # userid_generator = model.session.query(model.User).get(register_user.id)
 
@@ -79,7 +92,7 @@ def save_user():
 
         # user = g.user.id
         # str_newuser = str(user)
-        return redirect("/")
+        return redirect("/mypage")
         # return redirect("/")
     # return render_template("/new_user.html", form=form)
     return redirect("/")
@@ -161,17 +174,16 @@ def member_authenticate():
     if form.validate_on_submit():
         group_project = model.session.query(model.Project).filter_by(id=form.project_id.data, project_name=form.project_name.data, project_password=form.project_password.data)
         if group_project:
-            register_member = model.Membership(user_id = g.user.id, project_id = form.project_id.data)
-        model.session.add(register_member)
-        model.session.commit()
-        # session["existing_project"] = id
-
-        pro = form.project_id.data
-        mem_project = str(form.project_id.data)
-        return redirect("/my_project/" + mem_project)
-        # return render_template("/my_project.html", id=form.project_id.data)
-    else:
-        return redirect("/mypage")
+            for checker in model.session.query(model.Membership).filter_by(project_id=form.project_id.data):
+                if checker.user_id == g.user.id:
+                    return redirect("/mypage")
+            else:
+                register_member = model.Membership(user_id = g.user.id, project_id = form.project_id.data)
+                model.session.add(register_member)
+                model.session.commit()
+                pro = form.project_id.data
+                mem_project = str(form.project_id.data)
+                return redirect("/my_project/" + mem_project)
 
 @app.route("/my_project/<int:id>", methods=["GET"])
 def my_project(id):

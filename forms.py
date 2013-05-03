@@ -7,7 +7,7 @@ class AddUserForm(Form):
 	password = TextField("password", validators=[v.required()])
 
 class LoginUserForm(Form):
-	email = TextField("email", validators=[v.required()])
+	# email = TextField("email", validators=[v.required()])
 	username = TextField("username", validators=[v.required()])
 	password = TextField("password", validators=[v.required()])
 
