@@ -59,6 +59,7 @@ class Idea(Base):
     idea = Column(String, nullable = True)
     average_rating = Column(Integer, nullable = True)
     total_ratings = Column(Integer, nullable = True)
+    ratings_sum = Column(Integer, nullable = True)
 
 
     # load corresponding project object

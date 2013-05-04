@@ -198,6 +198,8 @@ def search_results():
 @app.route("/authenticate_member", methods=["POST"])
 def authenticate_member():
 
+    # user = g.user.id
+
     form = forms.JoinProjectForm()
     if form.validate_on_submit():
         group_project = model.session.query(model.Project).filter_by(id=form.project_id.data, project_name=form.project_name.data, project_password=form.project_password.data).first()
@@ -242,19 +244,6 @@ def edit_project(id):
   
     return render_template("edit.html", form=form, project=project)
 
-# @app.route("/my_project/<int:id>/editor_authentication", methods=["POST"])
-# def editor_authentication(id):
-
-#     return_id = str(id)
-
-#     form = forms.AddProjectForm()
-#     if form.validate_on_submit():
-#        for code in model.session.query(model.Project).filter_by(id=id):
-#             for  code.project_master.password = form.editor_password.data:
-#                 return redirect("my_project/" + return_id + "/save_project_edits")
-#             else:
-#                 return redirect("/my_project/" + return_id)
-#                 flash("Sorry, you do not have permission to edit")
 
 @app.route("/my_project/<int:id>/save_project_edits", methods=["POST", "GET"])
 def save_project_edits(id):
@@ -282,8 +271,6 @@ def save_project_edits(id):
 
 @app.route("/my_project/<int:id>/create_idea")
 def create_idea(id):
-
-    # existing_project = session.get("existing_project")
 
     project_generator = []
 
@@ -393,65 +380,167 @@ def rate_idea(id, idea):
 @app.route("/my_project/<int:id>/rate_idea/<int:idea>/save_rating", methods=["POST"])
 def save_rating(id, idea):
 
-    # idea = session.get("idea")
-
     form = forms.RateIdeaForm()
 
     if form.validate_on_submit():
         if form.rating.data >= 0:
             if form.rating.data <= 10:
-                register_rating = model.Rating(id = None, idea_id = idea, rater_id = g.user.id, rating = form.rating.data, rating_notes = form.rating_notes.data)
-                model.session.add(register_rating)
+                rater_search = model.session.query(model.Rating).filter_by(idea_id=idea, rater_id=g.user.id).first()
+                if rater_search:
+                    str_id=str(id)
+                    str_idea=str(idea)
+                    flash("You've already rated this idea.")
+                    return redirect("/my_project/" + str_id + "/rate_idea/" + str_idea)   
+                else:
+                    exact_rating = float(form.rating.data)
+                    register_rating = model.Rating(id = None, idea_id = idea, rater_id = g.user.id, rating = exact_rating, rating_notes = form.rating_notes.data)
+                    model.session.add(register_rating)
+                    # model.session.commit()
+
+                    # IMPLEMENT AND INSERT COUNTER
+                    # query for appropriate idea row, according to matching id 
+                    for counter in model.session.query(model.Idea).filter_by(id=idea):
+                        # if the total_ratings table is None
+                        if counter.total_ratings == None:
+                            #  get the row for the idea
+                            current_idea = model.session.query(model.Idea).get(idea)
+                            # make total_ratings equal to 1
+                            current_idea.total_ratings = 1.0
+                        else:
+                            # get the row for the idea
+                            current_idea_update = model.session.query(model.Idea).get(idea)
+                            # retrieve current count from instance in table
+                            current_count = current_idea_update.total_ratings
+                            # add one to current count
+                            current_idea_update.total_ratings = current_count + 1.0
+
+                    
+                    # UPDATE SUM OF EVERY RATING SO FAR
+
+                    for counter in model.session.query(model.Idea).filter_by(id=idea):
+                        # if the total_ratings table is None
+                        if counter.ratings_sum == None:
+                            #  get the row for the idea
+                            current_sum = model.session.query(model.Idea).get(idea)
+                            # make total_ratings equal to 1
+                            current_sum.ratings_sum = exact_rating
+                        else:
+                            # get the row for the idea
+                            current_sum_update = model.session.query(model.Idea).get(idea)
+                            # retrieve current count from instance in table
+                            current_sum = current_sum_update.ratings_sum
+                            # add one to current count
+                            current_sum_update.ratings_sum = current_sum + exact_rating
+             
+
+                    # CALCULATE AND INSERT AVERAGE
+                    # average = (sum + new rating) / former total number of ratings + 1
+                    for average_counter in model.session.query(model.Idea).filter_by(id=idea):
+                        if average_counter.average_rating == None:
+                            current_average = model.session.query(model.Idea).get(idea)
+                            current_average.average_rating = exact_rating
+                            str_id = str(id)
+                            str_idea = str(idea)
+                            model.session.commit()
+                            flash("You've successfully added your rating")
+                            return redirect("/my_project/" + str_id + "/all_ideas")
+                        else: 
+                            str_id = str(id)
+                            str_idea = str(idea)
+                            return redirect("/my_project/" + str_id + "/rate_idea/" + str_idea + "/save_average")
+                            # current_average_update = model.session.query(model.Idea).get(idea)
+                            # current_sum = current_average_update.ratings_sum
+                            # # current_sum_float = float(current_sum)
+                            # # average_base = current_average_update.average_rating
+                            # current_count = current_average_update.total_ratings
+                            # # current_average_update.average_rating = (exact_rating + average_base) / total_count
+                            # # current_average_update.average_rating = (current_sum + exact_rating) / (current_count + 1.0)
+                            # current_average_update.average_rating = (current_sum + exact_rating) / (current_count + 1.0)
+
+                            # model.session.commit()
+
+                    # str_id = str(id)
+                    # str_idea = str(idea)
+                    # flash("You've successfully added your rating")
+                    # return redirect("/my_project/" + str_id + "/all_ideas")
     else:
         str_id = str(id)
         str_idea = str(idea)
         flash("Please enter a number between 1 and 10")
         return redirect("/my_project/" + str_id + "/rate_idea/" + str_idea)
 
-    # IMPLEMENT AND INSERT COUNTER
-    # query for appropriate idea row, according to matching id 
-    for counter in model.session.query(model.Idea).filter_by(id=idea):
-        # if the total_ratings table is None
-        if counter.total_ratings == None:
-            #  get the row for the idea
-            current_idea = model.session.query(model.Idea).get(idea)
-            # make total_ratings equal to 1
-            current_idea.total_ratings = 1
-        else:
-            # get the row for the idea
-            current_idea_update = model.session.query(model.Idea).get(idea)
-            # retrieve current count from instance in table
-            current_count = current_idea_update.total_ratings
-            # add one to current count
-            current_idea_update.total_ratings = current_count + 1
 
-    # CALCULATE AND INSERT AVERAGE
-    # query for appropriate idea row
-    for average_counter in model.session.query(model.Idea).filter_by(id=idea):
-        if average_counter.average_rating == None:
-            current_average = model.session.query(model.Idea).get(idea)
-            current_average.average_rating = form.rating.data
-        else: 
+@app.route("/my_project/<int:id>/rate_idea/<int:idea>/save_average", methods=["POST", "GET"])
+def save_average(id, idea):
+   
+    
             current_average_update = model.session.query(model.Idea).get(idea)
-            average_base = current_average_update.average_rating
-            total_count = current_average_update.total_ratings
-            current_average_update.average_rating = (form.rating.data + average_base) / total_count
+            current_sum = current_average_update.ratings_sum
+            current_count = current_average_update.total_ratings
+            current_average_update.average_rating = current_sum / current_count
+
+            model.session.commit()
+            str_id = str(id)
+            return redirect("/my_project/" + str_id + "/all_ideas")
+
+
+@app.route("/all_my_ratings/", methods=["POST", "GET"])
+def all_my_ratings():
+
+    my_ratings = []
+
+    for rate in model.session.query(model.Rating).filter_by(rater_id=g.user.id):
+        my_ratings.append(rate)
+
+
+    return render_template("/all_my_ratings.html", my_ratings=my_ratings)
+
+# @app.route("/my_project/<int:id>/change_rating/<int:idea>/", methods=["POST", "GET"])
+# def change_rating(id, idea):
+
+#     rate = model.session.query(model.Rating).filter_by(idea_id=idea, rater_id=g.user.id).one()
+#     if rate:
+#         form = forms.RateIdeaForm()
+#         return render_template("/change_rating.html", form=form, rate=rate)
+#     else:
+#         flash("You haven't rated this idea yet.")
+#     str_id = str(id)
+#     str_idea = str(idea)
+#     return redirect("/my_project/" + str_id + "/rate_idea/" + str_idea)
+
+# @app.route("/my_project/<int:id>/save_rating_edits/<int:idea>", methods=["POST", "GET"])
+# def save_rating_edits(id, idea):
+
+#     form = forms.RateIdeaForm()
+
+#     pass_id = str(id)
+#     pass_idea = str(idea)
+
+#     if form.validate_on_submit():
+#        for rate in model.session.query(model.Rating).filter_by(id=idea, rater_id=g.user.id):
+
+#             rating_update = model.session.query(model.Rating).get(id)
+#             if form.rating.data:
+#                 rating_update.rating = form.rating.data
+#                 rating_update.rater = g.user.id
+#             if form.rating_notes.data:
+#                 rating.rating_notes = form.rating_notes.data
+#             model.session.commit()
+
+
+    # for average_counter in model.session.query(model.Idea).filter_by(id=idea):
+
+
+    #         current_average_update = model.session.query(model.Idea).get(idea)
+    #         average_base = current_average_update.average_rating
+    #         total_count = current_average_update.total_ratings
+    #         current_average_update.average_rating = (form.rating.data + average_base) / total_count
          
-        model.session.commit()
+    #     model.session.commit()
 
-    # project_rate = str(id)
 
-    # idea_rate = str(idea)
 
-    # input_rate = str(form.rating.data)
-
-    # return redirect("/my_project/" + new_rating + "/all_ideas")
-    # return redirect("/my_project/" + project_rate + "/rate_idea/" + idea_rate + "/rate_info_input/" + input_rate)
-        str_id = str(id)
-        str_idea = str(idea)
-        return redirect("/my_project/" + str_id + "/idea/" + str_idea)
-    else:
-        return redirect("/mypage")
+#     return redirect("/my_project/" + pass_id + "/change_rating/" + pass_idea)
 
 @app.route("/my_project/<int:id>/idea/<int:idea>")
 def idea(id, idea):

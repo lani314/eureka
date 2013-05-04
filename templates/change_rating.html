@@ -4,14 +4,10 @@
     <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.css') }}"  />
 </head>
 <body>
-        <div class = "art_image">
-<div class = "eureka_title">
-    EUREKA
-</div>
-</div>
+
   <div class="container">
     <header class="row">
-      <div class ="span">
+      <div class ="span12">
         <div class="navbar">
           <div class="navbar-inner">
             <a class="brand">Eureka</a>
@@ -27,15 +23,17 @@
           </div>
         </div></div>
     </div>
-<!--      <table class="table table-bordered table-hover table-condensed table-bordered">
-    <caption>My Projects</caption> -->
-  <div class="container">
-  <div class="hero-unit">
-    <h1>Rate</h1>
-    <p>Rate the idea you created(1-10)</p>
-    <p>You may provide an optional note about your rating, which may help other users</p>
 
-      <form action = {{url_for("save_rating", id=id, idea=idea)}} form method="POST">
+  <h1>Project</h1>
+
+    <p>Current Information</p>
+
+
+     {{rate.idea.idea}}
+     {{rate.rating}}
+     {{rate.rating_notes}}
+
+    <form action = {{url_for("save_rating_edits", id=rate.idea.project_id, idea=rate.idea_id)}} method="POST">
         <!-- iterate through form, which is taken the "form" taken from views -->
         {% for field in form %}
 
@@ -49,21 +47,5 @@
         {% endfor %}
         <input type="submit">
     </form>
-{% with messages = get_flashed_messages() %}
-{% if messages %}
-<ul>
-{% for message in messages %}
-  <li>{{ message }}</li>
-{% endfor %}
-</ul>
-{% endif %}
-{% endwith %}
-
-<p><a href="{{url_for("idea", id=id, idea=idea)}}">See all Ratings for this Idea</a></p>
-<p><a href="{{url_for("all_ideas", id=id, idea=idea)}}">Return to Project Ideas</a><br>
-<p><a href="{{url_for("all_my_ratings")}}">See All My Ratings</a><br>
-</div>
-</div>
-</html>
 </body>
 </html>

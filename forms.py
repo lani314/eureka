@@ -22,7 +22,7 @@ class AddIdeaForm(Form):
 
 class RateIdeaForm(Form):
 	rating = IntegerField("rating", validators=[v.NumberRange(min=1, max=10, message=(u"Enter number 1-10"))])
-	rating_notes = TextField("rating_notes", validators=[v.required()])
+	rating_notes = TextField("rating_notes")
 
 class JoinProjectForm(Form):
 	project_id = TextField("project_id", validators=[v.required()])
