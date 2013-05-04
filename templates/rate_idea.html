@@ -4,6 +4,33 @@
     <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.css') }}"  />
 </head>
 <body>
+        <div class = "art_image">
+<div class = "eureka_title">
+    EUREKA
+</div>
+</div>
+  <div class="container">
+    <header class="row">
+      <div class ="span">
+        <div class="navbar">
+          <div class="navbar-inner">
+            <a class="brand">Eureka</a>
+              <ul class="nav">
+              <li class="active"><a href="#">Home</a></li>
+              <li class="divider-vertical"></li>
+              <li><a href="http://localhost:5000/new_project">Start Project</a></li>
+              <li class="divider-vertical"></li>
+              <li><a href="http://localhost:5000/search_project">Find Projects</a></li>
+              <li class="divider-vertical"></li>
+              <li><a href="http://localhost:5000/logout">Logout</a></li>
+            </ul>
+          </div>
+        </div></div>
+    </div>
+<!--      <table class="table table-bordered table-hover table-condensed table-bordered">
+    <caption>My Projects</caption> -->
+  <div class="container">
+  <div class="hero-unit">
     <h1>Rate</h1>
     <p>Rate the idea you created(1-10)</p>
     <p>You may provide an optional note about your rating, which may help other users</p>
@@ -22,11 +49,21 @@
         {% endfor %}
         <input type="submit">
     </form>
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+<ul>
+{% for message in messages %}
+  <li>{{ message }}</li>
+{% endfor %}
+</ul>
+{% endif %}
+{% endwith %}
 
 <p><a href="{{url_for("idea", id=id, idea=idea)}}">See all Ratings for this Idea</a></p>
 
 <p><a href="{{url_for("all_ideas", id=id, idea=idea)}}">Return to Project Ideas</a><br>
-
+</div>
+</div>
 </html>
 </body>
 </html>

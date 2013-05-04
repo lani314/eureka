@@ -25,7 +25,6 @@ class Project(Base):
     project_master = Column(Integer, ForeignKey('users.id'))
     project_name = Column(String(80), nullable=True)
     project_password = Column(String, nullable=True)
-    # editor_password = Column(String, nullable=True)
     base_text = Column(String, nullable=True)
     keywords = Column(String, nullable=True)
 

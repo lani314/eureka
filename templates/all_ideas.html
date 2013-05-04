@@ -29,6 +29,8 @@
     </div>
 <!--      <table class="table table-bordered table-hover table-condensed table-bordered">
     <caption>My Projects</caption> -->
+  <div class="container">
+  <div class="hero-unit">
     {% for individual in recent_ideas %}
         <b>Idea ID</b>: {{individual.id}}
         <b>Idea</b>: {{individual.idea}}
@@ -39,6 +41,8 @@
         <a href="{{url_for("sorted_ideas", id=individual.project_id)}}" class="btn btn-info btn-large active"><i class="icon-white icon-pencil"></i>View Ideas by Highest</a>
 <br>
      {% endfor %}
+   </div>
+ </div>
 </html>
 </body>
 </html>

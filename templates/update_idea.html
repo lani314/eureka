@@ -4,12 +4,13 @@
     <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.css') }}"  />
 </head>
 <body>
+      <div class="container">
+
 <div class = "art_image">
 <div class = "eureka_title">
     EUREKA
 </div>
 </div>
-  <div class="container">
     <header class="row">
       <div class ="span">
         <div class="navbar">
@@ -27,57 +28,46 @@
           </div>
         </div></div>
     </div>
-     
-<div class="container">
+     <div class="container">
   <div class="hero-unit">
 
         <h1>Ideas</h1>
 
     <p>Create a new idea for your project!</p>
-    <p>Feel inspired by the unexpected, surreal and absurd</p>
+
+     <table class="table table-bordered table-hover table-condensed table-bordered">
+    <thead>
+      <tr>
+        <th>Project</th>
+        <th>Base Text</th>
+      </tr>
+    </thead>
+    <tbody>
 
     {% for extract in project_generator %}
 
-      <p>Project:</p>
-        {{extract.project_name}}
-
-        <p>BASE TEXT:</p> 
-        {{extract.base_text}}
+     <tr>
+      <td>{{extract.project_name}}</td>
+      <td>{{extract.base_text}}</td>
     {% endfor %}
-
+  </tr>
+</tbody>
+</table>
     <p>RANDOM:</p>
     <!-- How do we retrieve the random word? -->
 
     {{random_word}}
+
         <br>Don't know the word? See the dictionary definition <a href="http://dictionary.reference.com/browse/{{random_word}}" target="_blank">HERE.</a>
-    
-<!-- 
-    <p>KEYWORDS:</p>
 
-     {% for extract in project_generator %}
-
-        {{extract.keywords}}
-        
-    {% endfor %} -->
-{#
-    <p>LIKE:</p>
-
-
-    {% for each in like_list %}
-        {% if not each %}
-        Something broke
-        {% else %}
-        {{each[0].words[0]}} <br>
-        <br>Don't know the word? See the dictionary definition <a href="http://dictionary.reference.com/browse/{{each[0].words[0]}}" target="_blank">HERE.</a>
-        {% endif %}
-    {% else %}
-    Whoops, couldn't find anything
-    {% endfor %}
-#}
+<!-- <div id="mixer" style="display:none;" class="answer_list" >Click to show mixed suggestion!</div>
+<input type="button" name="answer" onclick="ShowDiv()" />
+ -->
+<!--     <p id="mix"> -->
     <p>MIX:</p>
 
     {{random_combo}}
-
+<p>To skip a suggested word, simply submit</p>
 
 	<form action="save_idea" form method="POST">
         <!-- iterate through form, which is taken the "form" taken from views -->
@@ -93,7 +83,8 @@
         {% endfor %}
         <input type="submit">
     </form>
-
+<!-- </p>
+<button type="button" onclick="displayMixer()">Display Mixed Result</button> -->
 {% for id_finder in project_generator %}
 
 <div class="row">
@@ -106,9 +97,28 @@
 </div>
 </div>
 {% endfor %}
+    {% with messages = get_flashed_messages() %}
+{% if messages %}
+<ul>
+{% for message in messages %}
+  <li>{{ message }}</li>
+{% endfor %}
+</ul>
+{% endif %}
+{% endwith %}
 
 </div>
 </container>
 </html>
 </body>
 </html>
+
+<script>
+// function ShowDiv() {
+//     document.getElementById("mixer").style.display = "";
+// }
+function displayMixer()
+{
+document.getElementById("mixer").innerHTML=Mix();
+}
+</script>

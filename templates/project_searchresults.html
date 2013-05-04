@@ -4,6 +4,10 @@
     <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.css') }}"  />
 </head>
 <body>
+
+
+      <div class="container">
+  <div class="hero-unit">
         <!-- iterate through form, which is taken the "form" taken from views -->
         <h1>Search Results</h1>
 
@@ -12,7 +16,7 @@
         <p>Project ID: {{project.id}} <br>Project Name: {{project.project_name}}</p>
     {% endfor %}
 
- <form action="/authenticate_member" form method="POST">
+ <form action="authenticate_member" form method="POST">
         <!-- iterate through form, which is taken the "form" taken from views -->
         {% for field in form %}
 
@@ -26,5 +30,7 @@
         {% endfor %}
         <input type="submit">
     </form>
+</div>
+</div>
 </body>
 </html>

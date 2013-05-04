@@ -4,11 +4,50 @@
     <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.css') }}"  />
 </head>
 <body>
+	    <div class="container">
+<div class = "art_image">
+<div class = "eureka_title">
+    EUREKA
+</div>
+</div>
+    <header class="row">
+      <div class ="span6ish">
+        <div class="navbar">
+          <div class="navbar-inner">
+            <a class="brand" href="http://localhost:5000/mypage">Home</a>
+              <ul class="nav">
+<!--               <li class="active"><a href="#">Home</a></li> -->
+              <li class="divider-vertical"></li>
+              <li><a href="http://localhost:5000/new_project">Start Project</a></li>
+              <li class="divider-vertical"></li>
+              <li><a href="http://localhost:5000/search_project">Find Projects</a></li>
+              <li class="divider-vertical"></li>
+              <li><a href="http://localhost:5000/logout">Logout</a></li>
+            </ul>
+          </div>
+        </div>
+    </div>
+    </div>
+  <div class="container">
+  <div class="hero-unit">
 	<h1>Search</h1>
     <p>Look for projects by typing in all of part of the project name below</p>
-<form action="{{url_for("search")}}" method="POST">
+
+
+<form action="{{url_for("search_results")}}" method="POST">
     <input type="text" name="query">
     <input type="submit">
 </form>
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+<ul>
+{% for message in messages %}
+  <li>{{ message }}</li>
+{% endfor %}
+</ul>
+{% endif %}
+{% endwith %}
+</div>
+</div>
 </body>
 </html>

@@ -13,11 +13,12 @@
 </div>
 </div>
 
-    <div class="container">
+    <div class="container-two">
         <div class="hero-unit">
    <div class="row">
    <div class="span6">
    <form class="form-horizontal" form action="/authenticate" form method="POST">
+        {{form.hidden_tag()}}
         <!-- iterate through form, which is taken the "form" taken from views -->
         {% for field in form %}
 
@@ -39,7 +40,7 @@
 <form class="form-horizontal" form action="save_user" form method="POST">
         <!-- iterate through form, which is taken the "form" taken from views -->
         {% for field in add_form %}
-
+            {{form.hidden_tag()}}
             {% for error in field.errors %}
             <!-- print error message -->
             <p style="color:red">{{error}}</p>
@@ -55,6 +56,16 @@
         <input type="submit" class="btn btn-info btn-large active"></i></a> 
     </div>
 </form>
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+<ul>
+{% for message in messages %}
+  <li>{{ message }}</li>
+{% endfor %}
+</ul>
+{% endif %}
+{% endwith %}
+
 <!-- </div>
 </div>
 

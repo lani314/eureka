@@ -52,7 +52,7 @@
 
 </div>
 <div class="row">
-  <div class="span4">
+  <div class="span9">
 <!-- <div class="btn-group"> -->
 <div class="project_selectors">
   <a href="{{url_for("create_idea", id=id)}}" class="btn btn-info btn-large active"><i class="icon-white icon-pencil"></i> Create New Idea</a>
@@ -61,6 +61,7 @@
   {% if project.master == g.user %}
     <a href="{{url_for("edit_project", id=id)}}" class="btn btn-info btn-large active"><i class="icon-white icon-edit"></i> Edit Project Settings</a>
   {% endif %}
+</div>
 </div>
 </div>
 </div>

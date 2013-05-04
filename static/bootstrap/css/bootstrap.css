@@ -227,7 +227,8 @@ body {
   line-height: 20px;
   color: #333333;
 /*  background-color: #75D19D;*/
-  background-color: #C9EDD9;
+/*  background-color: #C9EDD9;*/
+  background-color: #333A33;
   padding: 5px;
 }
 
@@ -368,6 +369,12 @@ a:focus {
   width: 940px;
   border: solid black;
 }
+
+.container-two{
+  width: 1200px;
+  padding-top:10px;
+}
+
 
 .container-small,
 .navbar-static-top .container,

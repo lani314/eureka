@@ -11,6 +11,8 @@ apiUrl = 'http://api.wordnik.com/v4'
 apiKey = '3a764609677c7b0b4000408a0a905c1febd664dfa62363aaf'
 client = swagger.ApiClient(apiKey, apiUrl)
 
+CSRF_ENABLED = True
+SECRET_KEY = 'discover-other-things'
 
 app = Flask(__name__)
 app.secret_key = 'discovery'
@@ -56,6 +58,7 @@ def authenticate():
         else: 
             return redirect("/error")
     else:
+        flash("Please fill in all fields")
         return redirect("/")
 
 # @app.route("/new_user")
@@ -106,7 +109,9 @@ def save_user():
         
         # return redirect("/")
     # return render_template("/new_user.html", form=form)
-    return redirect("/")
+    else:
+        flash("Please fill in all fields")
+        return redirect("/")
 
 
 @app.route("/mypage", methods=['GET'])
@@ -122,12 +127,14 @@ def my_page():
     return render_template("mypage.html", recent_work = recent_work)
 
 @app.route("/new_project")
-def new_project():
+def new_project():    
     form = forms.AddProjectForm()
     return render_template("new_project.html", form=form)
 
 @app.route("/save_project", methods=["POST"])
 def add_project():
+
+    error = None
 
     form = forms.AddProjectForm()
     if form.validate_on_submit():
@@ -158,45 +165,62 @@ def add_project():
         st_project = str(project)
         # session["kwords"] = register_project.keywords
         
-        # flash("You have successfully created a new project.")
-
         return redirect("/my_project/" + st_project)
         # return redirect("/new_idea")
-    return redirect("/error")
+    else:
+        # error = flash("Please fill out all fields")
+        flash("Please correctly enter all fields")
+        return redirect("/new_project")
 
 @app.route("/search_project", methods=["GET"])
-def display_search():
+def search_project():
+
+    # form = forms.SearchForm()
     return render_template("search_project.html")
 
-@app.route("/search", methods=["POST"])
-def search():
+@app.route("/search_results", methods=["POST"])
+def search_results():
+
+    # form = forms.SearchForm()
     query = request.form['query']
-    projects = model.session.query(model.Project).\
+    if query:
+        projects = model.session.query(model.Project).\
             filter(model.Project.project_name.ilike("%" + query + "%")).all()
 
-    form = forms.JoinProjectForm()
+        form = forms.JoinProjectForm()
 
-    return render_template("project_searchresults.html", projects=projects, form=form)
+        return render_template("project_searchresults.html", projects=projects, form=form)
+    else:
+        flash("Please type in a project title to query")
+        return redirect("/search_project")
+        flash.refresh()
 
 @app.route("/authenticate_member", methods=["POST"])
-def member_authenticate():
+def authenticate_member():
 
     form = forms.JoinProjectForm()
     if form.validate_on_submit():
-        group_project = model.session.query(model.Project).filter_by(id=form.project_id.data, project_name=form.project_name.data, project_password=form.project_password.data)
+        group_project = model.session.query(model.Project).filter_by(id=form.project_id.data, project_name=form.project_name.data, project_password=form.project_password.data).first()
         if group_project:
-            for checker in model.session.query(model.Membership).filter_by(project_id=form.project_id.data):
-                if checker.user_id == g.user.id:
-                    return redirect("/mypage")
+            member_search = model.session.query(model.Membership).filter_by(project_id=form.project_id.data, user_id=g.user.id).first()
+            if member_search:
+                flash("You've already joined this project. Access it through your homepage.")
+                return redirect("/search_project")
             else:
-                register_member = model.Membership(user_id = g.user.id, project_id = form.project_id.data)
-                model.session.add(register_member)
-                model.session.commit()
-                pro = form.project_id.data
-                mem_project = str(form.project_id.data)
-                return redirect("/my_project/" + mem_project)
-    else:   
-        return redirect("/error")
+                for checker in model.session.query(model.Membership).filter_by(project_id=form.project_id.data):
+                    register_member = model.Membership(user_id = g.user.id, project_id = form.project_id.data)
+                    model.session.add(register_member)
+                    model.session.commit()
+                    pro = form.project_id.data
+                    mem_project = str(form.project_id.data)
+                    return redirect("/my_project/" + mem_project)
+            flash("Oops! Incorrect project information. Please search for the project again.")   
+            return redirect("/search_project")
+            flash.refresh()               
+    else:
+        flash("Oops! The form was incomplete! Please search for project again.")   
+        return redirect("/search_project")
+        flash.refresh
 
 @app.route("/my_project/<int:id>", methods=["GET"])
 def my_project(id):
@@ -330,7 +354,9 @@ def save_idea(id):
 
         return redirect("/my_project/" + new_idea + "/create_idea")
     else:
-        return redirect("/error")
+        # flash("Please correctly enter in all fields")
+        str_id = str(id)
+        return redirect("/my_project/" + str_id + "/create_idea")
 
 @app.route("/my_project/<int:id>/all_ideas", methods=["GET"])
 def all_ideas(id):
@@ -372,8 +398,15 @@ def save_rating(id, idea):
     form = forms.RateIdeaForm()
 
     if form.validate_on_submit():
-        register_rating = model.Rating(id = None, idea_id = idea, rater_id = g.user.id, rating = form.rating.data, rating_notes = form.rating_notes.data)
-        model.session.add(register_rating)
+        if form.rating.data >= 0:
+            if form.rating.data <= 10:
+                register_rating = model.Rating(id = None, idea_id = idea, rater_id = g.user.id, rating = form.rating.data, rating_notes = form.rating_notes.data)
+                model.session.add(register_rating)
+    else:
+        str_id = str(id)
+        str_idea = str(idea)
+        flash("Please enter a number between 1 and 10")
+        return redirect("/my_project/" + str_id + "/rate_idea/" + str_idea)
 
     # IMPLEMENT AND INSERT COUNTER
     # query for appropriate idea row, according to matching id 
@@ -414,8 +447,11 @@ def save_rating(id, idea):
 
     # return redirect("/my_project/" + new_rating + "/all_ideas")
     # return redirect("/my_project/" + project_rate + "/rate_idea/" + idea_rate + "/rate_info_input/" + input_rate)
-
-    return redirect("/mypage")
+        str_id = str(id)
+        str_idea = str(idea)
+        return redirect("/my_project/" + str_id + "/idea/" + str_idea)
+    else:
+        return redirect("/mypage")
 
 @app.route("/my_project/<int:id>/idea/<int:idea>")
 def idea(id, idea):
