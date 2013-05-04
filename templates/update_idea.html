@@ -2,6 +2,18 @@
 <html>
 <head>
     <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.css') }}"  />
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+    <script>
+
+
+$(document).ready(function(){
+  $("special").hide()
+  $("button").click(function(){
+    $("special").toggle('slow');
+  });
+});
+
+  </script>
 </head>
 <body>
       <div class="container">
@@ -53,20 +65,26 @@
   </tr>
 </tbody>
 </table>
+
     <p>RANDOM:</p>
-    <!-- How do we retrieve the random word? -->
 
     {{random_word}}
 
         <br>Don't know the word? See the dictionary definition <a href="http://dictionary.reference.com/browse/{{random_word}}" target="_blank">HERE.</a>
 
-<!-- <div id="mixer" style="display:none;" class="answer_list" >Click to show mixed suggestion!</div>
-<input type="button" name="answer" onclick="ShowDiv()" />
- -->
-<!--     <p id="mix"> -->
+   
     <p>MIX:</p>
+    Want some suggestions? Further inspiration?
+    <p></p>
+    <button>MIX:</button>
+    <p></p>
+    <special>
 
     {{random_combo}}
+
+</special>
+
+
 <p>To skip a suggested word, simply submit</p>
 
 	<form action="save_idea" form method="POST">
@@ -113,12 +131,3 @@
 </body>
 </html>
 
-<script>
-// function ShowDiv() {
-//     document.getElementById("mixer").style.display = "";
-// }
-function displayMixer()
-{
-document.getElementById("mixer").innerHTML=Mix();
-}
-</script>
