@@ -43,9 +43,9 @@
   <div class="hero-unit">
 
      <div class="row-fluid">
-      <div class="span1">
+      <div class="span2">
       </div>
-      <div class="span6">
+      <div class="span5">
         <p></p><p></p>
 <!--         <div class="alt_title">
  -->        <!--    <div class="row">
@@ -53,7 +53,7 @@
    <form class="form-horizontal" form action="/authenticate" form method="POST">
         {{form.hidden_tag()}}
         <!-- iterate through form, which is taken the "form" taken from views -->
-        {% for field in form %}
+        {% for field in form if field.widget.input_type != 'hidden' %}
 
             {% for error in field.errors %}
             <!-- print error message -->
@@ -71,12 +71,12 @@
 </form>
 <!--   <div class="span9"> -->
 <!--  </div> -->
-      <div class="span4">
+      <div class="span3">
         <div class="creation_form">
 
 <form class="form-horizontal" form action="save_user" form method="POST">
         <!-- iterate through form, which is taken the "form" taken from views -->
-        {% for field in add_form %}
+        {% for field in add_form if field.widget.input_type != 'hidden' %}
             {{form.hidden_tag()}}
             {% for error in field.errors %}
             <!-- print error message -->

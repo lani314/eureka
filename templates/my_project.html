@@ -1,50 +1,13 @@
-<!doctype html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device=width, intitial-scale=1.0">
-    <title>EUREKA</title>
-    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.css') }}"  />
-</head>
-<body>
-    <div class="container">
-<div class = "art_image">
-<div class = "eureka_title">
-    EUREKA
-</div>
-</div>
-    <header class="row">
-      <div class ="span13">
-        <div class="navbar">
-          <div class="navbar-inner">
-            <a class="brand" href="{{url_for("my_page")}}">HOME</a>
-              <ul class="nav">
-              <li class="divider-vertical"></li>
-              <li><a href="{{url_for("new_project")}}">NEW PROJECT</a></li>
-              <li class="divider-vertical"></li>
-              <li><a href="{{url_for("search_project")}}">SEARCH PROJECT</a></li>
-              <li class="divider-vertical"></li>
-              <li><a href="{{url_for("all_my_ratings")}}">MY RATINGS</a></li>
-              <li class="divider-vertical"></li>
-              <li><a href="{{url_for("about")}}">ABOUT EUREKA</a></li>
-              <li class="divider-vertical"></li>
-               <li><a href="{{url_for("contact")}}">CONTACT</a></li>
-              <li class="divider-vertical"></li>
-              <li><a href="{{url_for("logout")}}">LOGOUT</a></li>
-               <li class="divider-vertical"></li>
-              <li class="zest">imagine the surreal and absurd</li>
-            </ul>
-          </div>
-        </div></div>
-    </div>
+{% extends "base.html" %}
+  <style type="text/css">
+  </style>
     
-  <!-- <div class="container"> -->
-  <div class="container">
+      {% block content %}
+      <div class="container">
   <div class="hero-unit">
-    <div class="welcome_info">
      <div class="row-fluid">
       <div class="span9">
-    <table class="table table-bordered table-hover table-condensed table-bordered">
+<div class="general_text">
 
 	<h1>{{project.project_name}} </h1>
     <p>Create a new idea for your project!</p>
@@ -63,25 +26,22 @@
         {{membership.user.username}}
       {% endif %}
     {% endfor %}
-
-</div>
-</div>
-<div class="row-fluid">
-  <div class="span9">
-<!-- <div class="btn-group"> -->
-<div class="project_selectors">
-  <a href="{{url_for("create_idea", id=id)}}" class="btn btn-info btn-large active"><i class="icon-white icon-pencil"></i> Create New Idea</a>
-  <a href="{{url_for("all_ideas", id=id)}}" class="btn btn-info btn-large active"><i class="icon-white icon-eye-open"></i> View and Rate Ideas</a>
- <a href="{{url_for("sorted_ideas", id=id)}}" class="btn btn-info btn-large active"><i class="icon-white icon-eye-open"></i>View Ratings</a>
+</div></div>
+<div class="span3">
+    <div class="special_side_bar">
+ ------------------------------------------------------------------------------------------------
+<p><a href="{{url_for("create_idea", id=id)}}"> CREATE IDEA</a></p>
+ <p></p>
+ ------------------------------------------------------------------------------------------------
+  <p><a href="{{url_for("all_ideas", id=id)}}"> VIEW + RATE IDEAS</a></p>
+ ------------------------------------------------------------------------------------------------
+ <p><a href="{{url_for("sorted_ideas", id=id)}}"> VIEW HIGHEST RATED</a></p>
+ ------------------------------------------------------------------------------------------------
   {% if project.master == g.user %}
-    <a href="{{url_for("edit_project", id=id)}}" class="btn btn-info btn-large active"><i class="icon-white icon-edit"></i> Edit Project Settings</a>
+    <p><a href="{{url_for("edit_project", id=id)}}"> EDIT PROJECT SETTINGS (creator only)</a></p>
   {% endif %}
-</div>
-</div>
-</div>
-</div>
-</div>
-</body>
-</html>
+</div></div></div></div>
+{% endblock %}
+
 
 

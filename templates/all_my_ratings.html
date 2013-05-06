@@ -1,63 +1,46 @@
-<!doctype html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device=width, intitial-scale=1.0">
-    <title>EUREKA</title>
-    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.css') }}"  />
-</head>
-<body>
-    <div class="container">
-<div class = "art_image">
-<div class = "eureka_title">
-    EUREKA
-</div>
-</div>
-    <header class="row">
-      <div class ="span13">
-        <div class="navbar">
-          <div class="navbar-inner">
-            <a class="brand" href="{{url_for("my_page")}}">HOME</a>
-              <ul class="nav">
-              <li class="divider-vertical"></li>
-              <li><a href="{{url_for("new_project")}}">NEW PROJECT</a></li>
-              <li class="divider-vertical"></li>
-              <li><a href="{{url_for("search_project")}}">SEARCH PROJECT</a></li>
-              <li class="divider-vertical"></li>
-              <li><a href="{{url_for("all_my_ratings")}}">MY RATINGS</a></li>
-              <li class="divider-vertical"></li>
-              <li><a href="{{url_for("about")}}">ABOUT EUREKA</a></li>
-              <li class="divider-vertical"></li>
-               <li><a href="{{url_for("contact")}}">CONTACT</a></li>
-              <li class="divider-vertical"></li>
-              <li><a href="{{url_for("logout")}}">LOGOUT</a></li>
-               <li class="divider-vertical"></li>
-              <li class="zest">imagine the surreal and absurd</li>
-            </ul>
-          </div>
-        </div></div>
-    </div>
-    
+
+{% extends "base.html" %}
+{% block title %}EUREKA{% endblock %}
+  <style type="text/css">
+  </style>
+  {% block content %}
   <div class="container">
   <div class="hero-unit">
+<div class="general_text">
+     <div class="row-fluid">
     <div class="ratings_info">
      <div class="row-fluid">
-      <div class="span9">
+      <div class="span12">
     <h1>My Ratings</h1>
+    <p></p><p></p><p></p>
 
-
+    <table class="table table-bordered table-hover table-condensed table-bordered">
+      <tr>
+        <th>Rating ID</th>
+        <th>Project</th>
+        <th>Idea</th>
+        <th>Rating</th>
+        <th>Average Rating</th>
+        <th>Rating Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
     {% for rating in my_ratings %}
-     Project: {{rating.idea.idea_project.project_name}}<br>
-     Idea: {{rating.idea.idea}}<br>
-     My Rating: {{rating.rating}}<br>
-     Average Rating: {{rating.idea.average_rating}}<br>
-     Rating Notes: {{rating.rating_notes}}<p></p>
+      <td>{{rating.id}}</td>
+     <td>{{rating.idea.idea_project.project_name}}</td>
+     <td>{{rating.idea.idea}}</td>
+     <td>{{rating.rating}}</td>
+     <td>{{rating.idea.average_rating}}</td>
+     <td>{{rating.rating_notes}}</td>
+   </tr>
      {% endfor %}
-
+    </tbody>
+  </table>
 </div>
 </div>
 </div>
 </div>
 </div>
-</body>
+{% endblock %}
 </html>

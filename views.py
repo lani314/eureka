@@ -357,8 +357,9 @@ def all_ideas(id):
 
     for work in model.session.query(model.Idea).filter_by(project_id=id):
         recent_ideas.append(work)
+        name = work.idea_project.project_name
    
-    return render_template("/all_ideas.html", recent_ideas=recent_ideas)
+    return render_template("/all_ideas.html", recent_ideas=recent_ideas, name=name)
 
 @app.route("/my_project/<int:id>/sorted_ideas", methods=["GET"])
 def sorted_ideas(id):

@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+<head>
+{% block head %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device=width, intitial-scale=1.0">
+    <title>{% block title %}{% endblock %}EUREKA</title>
+    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.css') }}"  />
+{% endblock %}
+</head>
+<body>
+  <div id="header">
+    {% block header %}
+    <div class="container">
+<div class = "art_image">
+<div class = "eureka_title">
+    EUREKA
+</div>
+</div>
+    <header class="row">
+      <div class ="span13">
+        <div class="navbar">
+          <div class="navbar-inner">
+            <a class="brand" href="{{url_for("my_page")}}">HOME</a>
+              <ul class="nav">
+              <li class="divider-vertical"></li>
+              <li><a href="{{url_for("new_project")}}">NEW PROJECT</a></li>
+              <li class="divider-vertical"></li>
+              <li><a href="{{url_for("search_project")}}">SEARCH PROJECT</a></li>
+              <li class="divider-vertical"></li>
+              <li><a href="{{url_for("all_my_ratings")}}">MY RATINGS</a></li>
+              <li class="divider-vertical"></li>
+              <li><a href="{{url_for("about")}}">ABOUT EUREKA</a></li>
+              <li class="divider-vertical"></li>
+               <li><a href="{{url_for("contact")}}">CONTACT</a></li>
+              <li class="divider-vertical"></li>
+              <li><a href="{{url_for("logout")}}">LOGOUT</a></li>
+               <li class="divider-vertical"></li>
+              <li class="zest">imagine the surreal and absurd</li>
+            </ul>
+          </div>
+        </div></div>
+    </div>
+ {% endblock %}
+{% block content %}
+  <div id="content">
+<!--          <div class="container">
+  <div class="hero-unit">
+</div> -->
+{% endblock %}
+</body>
+</html>

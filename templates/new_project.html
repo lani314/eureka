@@ -1,47 +1,10 @@
-<!doctype html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device=width, intitial-scale=1.0">
-    <title>EUREKA</title>
-    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.css') }}"  />
-</head>
-<body>
-    <div class="container">
-<div class = "art_image">
-<div class = "eureka_title">
-    EUREKA
-</div>
-</div>
-    <header class="row">
-      <div class ="span13">
-        <div class="navbar">
-          <div class="navbar-inner">
-            <a class="brand" href="{{url_for("my_page")}}">HOME</a>
-              <ul class="nav">
-              <li class="divider-vertical"></li>
-              <li><a href="{{url_for("new_project")}}">NEW PROJECT</a></li>
-              <li class="divider-vertical"></li>
-              <li><a href="{{url_for("search_project")}}">SEARCH PROJECT</a></li>
-              <li class="divider-vertical"></li>
-              <li><a href="{{url_for("all_my_ratings")}}">MY RATINGS</a></li>
-              <li class="divider-vertical"></li>
-              <li><a href="{{url_for("about")}}">ABOUT EUREKA</a></li>
-              <li class="divider-vertical"></li>
-               <li><a href="{{url_for("contact")}}">CONTACT</a></li>
-              <li class="divider-vertical"></li>
-              <li><a href="{{url_for("logout")}}">LOGOUT</a></li>
-               <li class="divider-vertical"></li>
-              <li class="zest">imagine the surreal and absurd</li>
-            </ul>
-          </div>
-        </div></div>
-    </div>
-    
-  <!-- <div class="container"> -->
+
+{% extends "base.html" %}
+  <style type="text/css">
+  </style>
+  {% block content %}
   <div class="container">
   <div class="hero-unit">
-    <div class="colors">
 
      <div class="row-fluid">
       <div class="span1">
@@ -50,20 +13,15 @@
         <p></p><p></p>
         <div class="alt_title">
            <h1>New Project</h1>
-         </div>
-          <p>Please enter your new project information.</p>
-          <p>Be sure to fill out all fields.</p>
-        
-        <!-- <p></p><p></p>
-        <p>For information on starting a project:</p>
-          <p>visit the <a href="{{url_for("about")}}">About Section</a></p> -->
       </div>
-      <div class="span4">
+      <div class="span1"</div>
+      <div class="span6">
         <div class="creation_form">
 
-    <form action="/save_project" form method="POST">
+    <form class="form-horizontal" action="/save_project" form method="POST">
+      {{form.hidden_tag()}}
         <!-- iterate through form, which is taken the "form" taken from views -->
-        {% for field in form %}
+        {% for field in form if field.widget.input_type != 'hidden' %}
 
             {% for error in field.errors %}
             <!-- print error message -->
@@ -74,7 +32,6 @@
             {{ field }}<br>
         {% endfor %}
         <input type="submit">
-      Forgot your password? <p><a href="{{url_for("contact")}}">Contact Us</a></p>
     </form>
   </div>
 </div>
@@ -96,9 +53,5 @@
     </div></div> -->
 </div>
 </div>
-</div>
-</container>
-</div>
-</div>
-</div>
-</html>
+
+{% endblock %}
