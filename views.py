@@ -114,6 +114,11 @@ def save_user():
         return redirect("/")
 
 
+@app.route("/contact", methods=['GET'])
+def contact():
+
+    return render_template("contact.html")
+
 @app.route("/mypage", methods=['GET'])
 def my_page():
 
@@ -315,7 +320,7 @@ def create_idea(id):
     if like_list:
         random_combo = "%s %s"%(random_word, choice(like_list))
     else:
-        random_combo = "No suggestions"
+        random_combo = "No suggestions. Update your keywords."
             
     return render_template("/update_idea.html", form=form, random_word = random_word, like_list = like_list, project_generator=project_generator, random_combo = random_combo)
 
@@ -375,7 +380,13 @@ def rate_idea(id, idea):
     idea=idea
     id=id
 
-    return render_template("/rate_idea.html", form=form, id=id, idea=idea)
+    main_idea=[]
+
+    for each in model.session.query(model.Idea).filter_by(id=idea):
+        main_idea.append(each)
+
+
+    return render_template("/rate_idea.html", form=form, id=id, idea=idea, main_idea=main_idea)
 
 @app.route("/my_project/<int:id>/rate_idea/<int:idea>/save_rating", methods=["POST"])
 def save_rating(id, idea):
@@ -509,7 +520,7 @@ def all_my_ratings():
 #     return redirect("/my_project/" + str_id + "/rate_idea/" + str_idea)
 
 # @app.route("/my_project/<int:id>/save_rating_edits/<int:idea>", methods=["POST", "GET"])
-# def save_rating_edits(id, idea):
+# def save_rating_edits(id, idea, old_rating):
 
 #     form = forms.RateIdeaForm()
 
@@ -517,15 +528,26 @@ def all_my_ratings():
 #     pass_idea = str(idea)
 
 #     if form.validate_on_submit():
-#        for rate in model.session.query(model.Rating).filter_by(id=idea, rater_id=g.user.id):
+#        # for rate in model.session.query(model.Rating).filter_by(id=idea, rater_id=g.user.id):
+#         retrieve_rating = model.session.query(model.Rating).filter_by(idea_id=idea, rater_id=g.user.id).get()
 
-#             rating_update = model.session.query(model.Rating).get(id)
-#             if form.rating.data:
-#                 rating_update.rating = form.rating.data
-#                 rating_update.rater = g.user.id
-#             if form.rating_notes.data:
-#                 rating.rating_notes = form.rating_notes.data
-#             model.session.commit()
+#         rating_update = model.session.query(model.Rating).get(id)
+
+#         if form.rating.data:
+#             rating_update.rating = form.rating.data
+#         if form.rating_notes.data:
+#             rating.rating_notes = form.rating_notes.data
+
+#         average_update = model.session.query(model.Idea).get(idea)    
+#         old_sum = average_update.ratings_sum
+#         # old_rating = 
+#         modified_sum = old_sum - old_rating
+#         average_update.average_rating = (modified_sum + form.rating.data) / current_count
+
+
+#         model.session.commit()
+
+
 
 
     # for average_counter in model.session.query(model.Idea).filter_by(id=idea):
@@ -540,7 +562,7 @@ def all_my_ratings():
 
 
 
-#     return redirect("/my_project/" + pass_id + "/change_rating/" + pass_idea)
+        # return redirect("/my_project/" + pass_id + "/change_rating/" + pass_idea)
 
 @app.route("/my_project/<int:id>/idea/<int:idea>")
 def idea(id, idea):

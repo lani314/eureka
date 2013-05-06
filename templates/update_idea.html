@@ -16,65 +16,95 @@ $(document).ready(function(){
   </script>
 </head>
 <body>
-      <div class="container">
-
+     <!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device=width, intitial-scale=1.0">
+    <title>EUREKA</title>
+    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.css') }}"  />
+</head>
+<body>
+    <div class="container">
 <div class = "art_image">
 <div class = "eureka_title">
     EUREKA
 </div>
 </div>
     <header class="row">
-      <div class ="span">
+      <div class ="span13">
         <div class="navbar">
           <div class="navbar-inner">
-            <a class="brand">Eureka</a>
+            <a class="brand" href="{{url_for("my_page")}}">HOME</a>
               <ul class="nav">
-              <li class="active"><a href="#">Home</a></li>
               <li class="divider-vertical"></li>
-              <li><a href="http://localhost:5000/new_project">Start Project</a></li>
+              <li><a href="{{url_for("new_project")}}">NEW PROJECT</a></li>
               <li class="divider-vertical"></li>
-              <li><a href="http://localhost:5000/search_project">Find Projects</a></li>
+              <li><a href="{{url_for("search_project")}}">SEARCH PROJECT</a></li>
               <li class="divider-vertical"></li>
-              <li><a href="http://localhost:5000/logout">Logout</a></li>
+              <li><a href="{{url_for("all_my_ratings")}}">MY RATINGS</a></li>
+              <li class="divider-vertical"></li>
+              <li><a href="{{url_for("about")}}">ABOUT EUREKA</a></li>
+              <li class="divider-vertical"></li>
+               <li><a href="{{url_for("contact")}}">CONTACT</a></li>
+              <li class="divider-vertical"></li>
+              <li><a href="{{url_for("logout")}}">LOGOUT</a></li>
+               <li class="divider-vertical"></li>
+              <li class="zest">imagine the surreal and absurd</li>
             </ul>
           </div>
         </div></div>
     </div>
-     <div class="container">
+    
+  <!-- <div class="container"> -->
+  <div class="container">
   <div class="hero-unit">
-
-        <h1>Ideas</h1>
-
-    <p>Create a new idea for your project!</p>
-
-     <table class="table table-bordered table-hover table-condensed table-bordered">
-    <thead>
-      <tr>
-        <th>Project</th>
-        <th>Base Text</th>
-      </tr>
-    </thead>
-    <tbody>
-
+    <div class="idea_page">
+     <div class="row-fluid">
+      <div class="span3">
+        <h1>Ideas for:</h1>
+      </div>
+      <div class="span2">
     {% for extract in project_generator %}
+      <p></p> {{extract.project_name}} <p></p>
+    </div>
 
-     <tr>
-      <td>{{extract.project_name}}</td>
-      <td>{{extract.base_text}}</td>
+
+
+      <div class="span7">
+         {% for id_finder in project_generator %}
+<!--    <div class="special_side_bar"> -->
+<p></p><p></p>
+ <a href="{{url_for("all_ideas", id=id_finder.id)}}" class="btn btn-info btn-large active"></i>View Project Ideas</a>
+ <a href="{{url_for("sorted_ideas", id=id_finder.id)}}" class="btn btn-info btn-large active"></i>View Project  Ratings</a>
+   <a href="{{url_for("my_project", id=id_finder.id)}}" class="btn btn-info btn-large active"></i>Return to Project</a>
+{% endfor %}
+
+  </div>
+</div>
+  <p></p>
+
+  <div class="row-fluid">
+<!--   <div class="span1"></div>    
+ -->  <div class="span9">
+          <p>Base Text:</p> {{extract.base_text}}
     {% endfor %}
-  </tr>
-</tbody>
-</table>
+
+</div></div>
+  <div class="row-fluid">
+   <div class="span3"></div>   
+  <div class="span3">
 
     <p>RANDOM:</p>
 
     {{random_word}}
 
-        <br>Don't know the word? See the dictionary definition <a href="http://dictionary.reference.com/browse/{{random_word}}" target="_blank">HERE.</a>
+        <br><a href="http://dictionary.reference.com/browse/{{random_word}}" target="_blank">Don't know the word?</a>
 
-   
-    <p>MIX:</p>
-    Want some suggestions? Further inspiration?
+   </div>
+   <div class="span5">
+    <p>SYNONYM COMBO:</p>
+    Wanna mix it up?
     <p></p>
     <button>MIX:</button>
     <p></p>
@@ -83,39 +113,24 @@ $(document).ready(function(){
     {{random_combo}}
 
 </special>
-
-
-<p>To skip a suggested word, simply submit</p>
-
-	<form action="save_idea" form method="POST">
-        <!-- iterate through form, which is taken the "form" taken from views -->
+</div>
+</div>
+<div class="diff_row">
+<div class="row-fluid">
+<div class="span4"></div>
+<div class="span5">
+<form action="save_idea" form method="POST">
         {% for field in form %}
 
             {% for error in field.errors %}
-            <!-- print error message -->
             <p style="color:red">{{error}}</p>
             {% endfor %}
-        <!-- represent the field and its respective label, such as "email" or "password" -->
             {{ field.label }}
             {{ field }}<br>
         {% endfor %}
         <input type="submit">
     </form>
-<!-- </p>
-<button type="button" onclick="displayMixer()">Display Mixed Result</button> -->
-{% for id_finder in project_generator %}
-
-<div class="row">
-  <div class="span9">
-<!-- <div class="btn-group"> -->
-<div class="project_selectors">
-  <a href="{{url_for("all_ideas", id=id_finder.id)}}" class="btn btn-info btn-large active"><i class="icon-white icon-eye-open"></i>Review All Ideas</a>
-  <a href="{{url_for("my_project", id=id_finder.id)}}" class="btn btn-info btn-large active"><i class="icon-white icon-plane"></i>Return to Project</a>
-</div>
-</div>
-</div>
-{% endfor %}
-    {% with messages = get_flashed_messages() %}
+     {% with messages = get_flashed_messages() %}
 {% if messages %}
 <ul>
 {% for message in messages %}
@@ -124,10 +139,17 @@ $(document).ready(function(){
 </ul>
 {% endif %}
 {% endwith %}
+</div>
+</div>
+
+
 
 </div>
+<!-- </div> -->
+</div>
+</div>
 </container>
-</html>
+</div>
 </body>
 </html>
 

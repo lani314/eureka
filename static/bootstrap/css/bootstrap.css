@@ -226,7 +226,7 @@ body {
   font-size: 14px;
   line-height: 20px;
   color: #333333;
-/*  background-color: #75D19D;*/
+/*  background-color: #75D19D;
 /*  background-color: #C9EDD9;*/
   background-color: #333A33;
   padding: 5px;
@@ -240,13 +240,14 @@ p {
   background-image: url("../img/pollock.jpg");
   background-repeat: no-repeat;
   background-position: right;
-  min-height: 200px;
+  min-height: 180px;
   width: 100%;
 }
 
 .eureka_title {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   padding-top: 80px;
-  padding-left: 40px;
+  padding-left: 80px;
   font-size: 6em;
   color: white;
 }
@@ -259,6 +260,55 @@ p {
   font-size: 2em;
 }
 
+.colors{
+  padding: 10px;
+  background-image: url("../img/faded_paint.jpg");
+  color: black;
+}
+
+.diff_row{
+  /*background-color: #A9A9A9;*/
+  background-color: black;
+  color: white;
+/*  border-radius: 5px 10px 5px 10px / 10px 5px 10px 5px;
+border-radius: 5px;
+border-radius: 5px 10px / 10px;*/
+}
+.welcome_info {
+  padding: 5px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.ratings_info {
+  padding: 10px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.special_side_bar{
+  /*background-color: #00a5ff;*/
+  background-color: black;
+  min-height: 400px;
+/*  background-color: #8b0000;
+*/  color: white;
+    padding: 5px;
+}
+
+.special_side_bar_version2{
+  /*background-color: #00a5ff;*/
+  background-color: black;
+  min-height: 300px;
+/*  background-color: #8b0000;
+*/  color: white;
+padding: 5px;
+font-size: .8em;
+}
+
+.creation_form{
+  margin-left: auto;
+  margin-right: auto;
+}
 .project_selectors {
   display: inline-block;
   display: inline;
@@ -269,7 +319,13 @@ p {
   margin-right: auto;*/
 }
 
+.alt_title {
+  padding-top: 50px;
+}
 
+.idea_page{
+  padding: 10px;
+}
 
 .darkphototext {
 color: white;
@@ -363,7 +419,7 @@ a:focus {
 /*  width: 1000px;*/
 /*  width: 940px;*/
   width: 1200px;
-}
+/**/}
 
 .container-original{
   width: 940px;
@@ -385,9 +441,17 @@ a:focus {
   width: 800px;
 }
 
+.nav-font {
+  font-family: Geneva;
+  color: red;
+}
+
+.span14 {
+  width: 1200px;
+}
 
 .span13 {
-  width: 1200px;
+  width: 1160px;
 }
 
 .span12 {
@@ -434,6 +498,9 @@ a:focus {
   width: 220px;
 }
 
+.span3ish{
+  width: 250px;
+}
 .span2 {
   width: 140px;
 }
@@ -1128,6 +1195,11 @@ pre code {
 
 form {
   margin: 0 0 20px;
+}
+
+.form_style{
+  border: 1px solid medium black;
+  padding: 2px;
 }
 
 fieldset {
@@ -2102,11 +2174,15 @@ table {
   background-color: transparent;
   border-collapse: collapse;
   border-spacing: 0;
+  margin: 5px;
+
 }
 
 .table {
   width: 100%;
   margin-bottom: 20px;
+  padding: 10px;
+  border: 1 px solid black;
 }
 
 .table th,
@@ -3488,6 +3564,7 @@ input[type="button"].btn-block {
   *background-color: #003bb3;
 }
 
+
 .btn-primary:active,
 .btn-primary.active {
   background-color: #003399 \9;
@@ -4466,6 +4543,7 @@ input[type="submit"].btn.btn-mini {
 }
 
 .navbar {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   *position: relative;
   *z-index: 2;
   margin-bottom: 20px;
@@ -5048,7 +5126,14 @@ input[type="submit"].btn.btn-mini {
 
 .navbar-inverse .btn-navbar:active,
 .navbar-inverse .btn-navbar.active {
-  background-color: #000000 \9;
+  background-color: #000000 \9
+}
+
+.zest{
+  color: #800000;
+/*  color: #B22222;
+*/  font-size: 1em;
+  font-family: Helvetica;
 }
 
 .breadcrumb {
@@ -6226,8 +6311,9 @@ a.badge:focus {
   margin-left:auto;
   margin-right:auto;
   width:100%;
-  padding: 10px;
-  margin-bottom: 30px;
+  min-height: 400px;
+/*  padding: 10px;
+*/  margin-bottom: 30px;
   font-size: 18px;
   font-weight: 200;
   line-height: 30px;
@@ -6236,6 +6322,10 @@ a.badge:focus {
   -webkit-border-radius: 6px;
      -moz-border-radius: 6px;
           border-radius: 6px;
+/*  border-radius: 5px 10px 5px 10px / 10px 5px 10px 5px;
+  border-radius: 5px;
+  border-radius: 5px 10px / 10px;
+*/
 }
 
 .hero-unit h1 {

@@ -1,38 +1,63 @@
 <!doctype html>
 <html>
 <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device=width, intitial-scale=1.0">
+    <title>EUREKA</title>
     <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.css') }}"  />
 </head>
 <body>
-        <div class = "art_image">
+    <div class="container">
+<div class = "art_image">
 <div class = "eureka_title">
     EUREKA
 </div>
 </div>
-  <div class="container">
     <header class="row">
-      <div class ="span">
+      <div class ="span13">
         <div class="navbar">
           <div class="navbar-inner">
-            <a class="brand">Eureka</a>
+            <a class="brand" href="{{url_for("my_page")}}">HOME</a>
               <ul class="nav">
-              <li class="active"><a href="#">Home</a></li>
               <li class="divider-vertical"></li>
-              <li><a href="http://localhost:5000/new_project">Start Project</a></li>
+              <li><a href="{{url_for("new_project")}}">NEW PROJECT</a></li>
               <li class="divider-vertical"></li>
-              <li><a href="http://localhost:5000/search_project">Find Projects</a></li>
+              <li><a href="{{url_for("search_project")}}">SEARCH PROJECT</a></li>
               <li class="divider-vertical"></li>
-              <li><a href="http://localhost:5000/logout">Logout</a></li>
+              <li><a href="{{url_for("all_my_ratings")}}">MY RATINGS</a></li>
+              <li class="divider-vertical"></li>
+              <li><a href="{{url_for("about")}}">ABOUT EUREKA</a></li>
+              <li class="divider-vertical"></li>
+               <li><a href="{{url_for("contact")}}">CONTACT</a></li>
+              <li class="divider-vertical"></li>
+              <li><a href="{{url_for("logout")}}">LOGOUT</a></li>
+               <li class="divider-vertical"></li>
+              <li class="zest">imagine the surreal and absurd</li>
             </ul>
           </div>
         </div></div>
     </div>
-<!--      <table class="table table-bordered table-hover table-condensed table-bordered">
-    <caption>My Projects</caption> -->
+    
   <div class="container">
   <div class="hero-unit">
+    <div class="ratings_info">
+     <div class="row-fluid">
+      <div class="span1"></div>
+      <div class="span9">
     <h1>Rate</h1>
-    <p>Rate the idea you created(1-10)</p>
+    <p>Rate the idea</p>
+
+      {% for each in main_idea %}
+      
+      Base Text: {{each.idea_project.base_text}} <br>
+      Idea: {{each.idea}} <br>
+      Creator: {{each.creator.username}} <br>
+      {% endfor %}
+
+<!--     Idea: {{main_idea.idea}}
+    Creator: {{main_idea.creator_id}} -->
+
+
     <p>You may provide an optional note about your rating, which may help other users</p>
 
       <form action = {{url_for("save_rating", id=id, idea=idea)}} form method="POST">

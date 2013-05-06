@@ -33,7 +33,7 @@
      {{rate.rating}}
      {{rate.rating_notes}}
 
-    <form action = {{url_for("save_rating_edits", id=rate.idea.project_id, idea=rate.idea_id)}} method="POST">
+    <form action = {{url_for("save_rating_edits", id=rate.idea.project_id, idea=rate.idea_id}} method="POST">
         <!-- iterate through form, which is taken the "form" taken from views -->
         {% for field in form %}
 

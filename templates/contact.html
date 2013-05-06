@@ -41,33 +41,19 @@
   <!-- <div class="container"> -->
   <div class="container">
   <div class="hero-unit">
-  <div class="colors">
-
+    <div class="colors">
      <div class="row-fluid">
       <div class="span9">
-        <br><br><br>
-	<h1>Search</h1>
-    <p>Look for projects by typing in all or part of the project name below</p>
-
-
-<form action="{{url_for("search_results")}}" method="POST">
-    <input type="text" name="query">
-    <input type="submit">
-</form>
-{% with messages = get_flashed_messages() %}
-{% if messages %}
-<ul>
-{% for message in messages %}
-  <li>{{ message }}</li>
-{% endfor %}
-</ul>
-{% endif %}
-{% endwith %}
-<br><br><br><br>
+    <h1>Well, Hello There...</h1>
+  
+  <p>My name is Lani and I made Eureka as my final project at <a href="http://www.hackbrightacademy.com/">Hackbright Academy</a></p>
+  <p>Feel free to visit my <a href="http://www.lostsomewhere.com/">blog</a>.
+  <p>I can also be reached via email (ilana.fried at gmail.com).</p>
+  <br><br><br><br><br><br><br>
 </div>
 </div>
 </div>
-</div>
+</container>
 </div>
 </body>
 </html>

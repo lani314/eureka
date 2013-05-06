@@ -1,47 +1,65 @@
 <!doctype html>
 <html>
 <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device=width, intitial-scale=1.0">
+    <title>EUREKA</title>
     <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.css') }}"  />
 </head>
 <body>
-        <div class="container">
+    <div class="container">
 <div class = "art_image">
 <div class = "eureka_title">
     EUREKA
 </div>
 </div>
-<!-- {% with messages = get_flashed_messages() %}
-{% if messages %}
-<ul>
-{% for message in messages %}
-  <li>{{ message }}</li>
-{% endfor %}
-</ul>
-{% endif %}
-{% endwith %} -->
-
     <header class="row">
-      <div class ="span6ish">
+      <div class ="span13">
         <div class="navbar">
           <div class="navbar-inner">
-            <a class="brand" href="http://localhost:5000/mypage">Home</a>
+            <a class="brand" href="{{url_for("my_page")}}">HOME</a>
               <ul class="nav">
-<!--               <li class="active"><a href="#">Home</a></li> -->
               <li class="divider-vertical"></li>
-              <li><a href="http://localhost:5000/new_project">Start Project</a></li>
+              <li><a href="{{url_for("new_project")}}">NEW PROJECT</a></li>
               <li class="divider-vertical"></li>
-              <li><a href="http://localhost:5000/search_project">Find Projects</a></li>
+              <li><a href="{{url_for("search_project")}}">SEARCH PROJECT</a></li>
               <li class="divider-vertical"></li>
-              <li><a href="http://localhost:5000/logout">Logout</a></li>
+              <li><a href="{{url_for("all_my_ratings")}}">MY RATINGS</a></li>
+              <li class="divider-vertical"></li>
+              <li><a href="{{url_for("about")}}">ABOUT EUREKA</a></li>
+              <li class="divider-vertical"></li>
+               <li><a href="{{url_for("contact")}}">CONTACT</a></li>
+              <li class="divider-vertical"></li>
+              <li><a href="{{url_for("logout")}}">LOGOUT</a></li>
+               <li class="divider-vertical"></li>
+              <li class="zest">imagine the surreal and absurd</li>
             </ul>
           </div>
         </div></div>
     </div>
+    
+  <!-- <div class="container"> -->
   <div class="container">
   <div class="hero-unit">
-    <h1>Project</h1>
-    <p>Create a project, either for yourself or a team!</p>
-    <p>If you wish to keep your project private (for yourself or your team), remember to include a PASSWORD.</p>
+    <div class="colors">
+
+     <div class="row-fluid">
+      <div class="span1">
+      </div>
+      <div class="span6">
+        <p></p><p></p>
+        <div class="alt_title">
+           <h1>New Project</h1>
+         </div>
+          <p>Please enter your new project information.</p>
+          <p>Be sure to fill out all fields.</p>
+        
+        <!-- <p></p><p></p>
+        <p>For information on starting a project:</p>
+          <p>visit the <a href="{{url_for("about")}}">About Section</a></p> -->
+      </div>
+      <div class="span4">
+        <div class="creation_form">
 
     <form action="/save_project" form method="POST">
         <!-- iterate through form, which is taken the "form" taken from views -->
@@ -56,7 +74,10 @@
             {{ field }}<br>
         {% endfor %}
         <input type="submit">
+      Forgot your password? <p><a href="{{url_for("contact")}}">Contact Us</a></p>
     </form>
+  </div>
+</div>
     {% with messages = get_flashed_messages() %}
 {% if messages %}
 <ul>
@@ -66,7 +87,18 @@
 </ul>
 {% endif %}
 {% endwith %}
-
+</div>
+</div>
+<!-- <div class="span3">
+    <div class="special_side_bar_version2">
+      <p>Please fill out all fields of form</p>
+      <p><font color="#B22222">Projects</font> are the base of your Eureka experience. Here's how it works: <p>1) Create a project with a unique name and password. The password is the key for other people to join.</p><p>2) Add base text. This is the text you already have. If you don't have base text, simply type "blank".</p><p>3) Add keywords (any related words!) to your project. Add at least one, which we'll need to generate some fun synonyms for you.</p><p>4) Press "Submit" -- and now you can generate ideas!</p>
+    </div></div> -->
+</div>
+</div>
+</div>
+</container>
+</div>
 </div>
 </div>
 </html>
