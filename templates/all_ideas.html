@@ -24,11 +24,17 @@
         <td>{{individual.creator.username}}</td>
         <td><a href="{{url_for("rate_idea", id=individual.project_id, idea=individual.id)}}">Rate Idea</a></td>
         </tr>
-     {% endfor %}
+    {% endfor %}
    </tbody>
  </table>
-   </div>
-
+       </div></div> 
+  <div class="span3">
+ <p></p><p></p><p></p>
+ <a href="{{url_for("sorted_ideas", id=pro_id)}}" class="btn btn-danger btn-large active"></i>View Highest Rated</a>
+ <p></p>
+   <a href="{{url_for("my_project", id=pro_id)}}" class="btn btn-danger btn-large active"></i>Return to Project</a>
+   <p></p>
+</div></div>
    <br>
 <br>
  </div>

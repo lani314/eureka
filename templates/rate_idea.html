@@ -43,8 +43,15 @@
     <div class="ratings_info">
      <div class="row-fluid">
       <div class="span1"></div>
-      <div class="span9">
+      <div class="span8">
     <h1>Rate</h1>
+    </div>
+      <div class="span3">
+      <p><a href="{{url_for("idea", id=id, idea=idea)}}" class="btn btn-danger btn-large active"></i>View Idea Ratings</a></p>
+<p><a href="{{url_for("all_ideas", id=id, idea=idea)}}" class="btn btn-danger btn-large active"></i>Return to Ideas</a><br>
+      </div>
+      <div class="span1"></div>
+      <div class="span8">
     <p>Rate the idea</p>
 
       {% for each in main_idea %}
@@ -56,10 +63,9 @@
 
 <!--     Idea: {{main_idea.idea}}
     Creator: {{main_idea.creator_id}} -->
-
+    <div>
 
     <p>You may provide an optional note about your rating, which may help other users</p>
-
       <form action = {{url_for("save_rating", id=id, idea=idea)}} form method="POST">
         <!-- iterate through form, which is taken the "form" taken from views -->
         {% for field in form %}
@@ -83,10 +89,7 @@
 </ul>
 {% endif %}
 {% endwith %}
-
-<p><a href="{{url_for("idea", id=id, idea=idea)}}">See all Ratings for this Idea</a></p>
-<p><a href="{{url_for("all_ideas", id=id, idea=idea)}}">Return to Project Ideas</a><br>
-<p><a href="{{url_for("all_my_ratings")}}">See All My Ratings</a><br>
+<div>
 </div>
 </div>
 </html>

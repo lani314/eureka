@@ -13,7 +13,7 @@
     EUREKA
 </div>
 </div>
-    <header class="row">
+<!--     <header class="row">
       <div class ="span13">
         <div class="navbar">
           <div class="navbar-inner">
@@ -37,19 +37,20 @@
           </div>
         </div></div>
     </div>
-    
+     -->
   <!-- <div class="container"> -->
   <div class="container">
   <div class="hero-unit">
-
-     <div class="row-fluid">
+       <br><br><br>
+     <div clas="row-fluid">
       <div class="span2">
       </div>
-      <div class="span5">
-        <p></p><p></p>
+      <div class="span6">
 <!--         <div class="alt_title">
  -->        <!--    <div class="row">
    <div class="span6"> -->
+    <br>
+    <p>LOGIN</p>
    <form class="form-horizontal" form action="/authenticate" form method="POST">
         {{form.hidden_tag()}}
         <!-- iterate through form, which is taken the "form" taken from views -->
@@ -66,14 +67,24 @@
         <label class="checkbox">
             <input type="checkbox">remember me
         </label>
-        <input type="submit" class="btn btn-info btn-large active"></i></a> 
-    </div>
+        <input type="submit" class="btn btn-danger btn-medium active"></i></a> 
 </form>
+<br>
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+<ul>
+{% for message in messages %}
+  <li>{{ message }}</li>
+{% endfor %}
+</ul>
+{% endif %}
+{% endwith %}
+</div>
 <!--   <div class="span9"> -->
 <!--  </div> -->
       <div class="span3">
         <div class="creation_form">
-
+<p>REGISTER AS MEMBER</p>
 <form class="form-horizontal" form action="save_user" form method="POST">
         <!-- iterate through form, which is taken the "form" taken from views -->
         {% for field in add_form if field.widget.input_type != 'hidden' %}
@@ -90,25 +101,9 @@
             <input type="checkbox">remember me
         </label>
 
-        <input type="submit" class="btn btn-info btn-large active"></i></a> 
+        <input type="submit" class="btn btn-danger btn-medium active"></i></a> 
     </div>
 </form>
-{% with messages = get_flashed_messages() %}
-{% if messages %}
-<ul>
-{% for message in messages %}
-  <li>{{ message }}</li>
-{% endfor %}
-</ul>
-{% endif %}
-{% endwith %}
-
-<!-- </div>
-</div>
-
-
- -->
-<!-- </div> -->
 </div>
 </div>
 </container>

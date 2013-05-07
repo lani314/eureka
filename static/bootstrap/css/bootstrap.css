@@ -244,6 +244,16 @@ p {
   width: 100%;
 }
 
+ .art_image_large {
+  background-color: black;
+  background-image: url("../img/pollock.jpg");
+  background-repeat: no-repeat;
+  background-position: top right;
+/*  padding: 10px*/;
+  min-height: 475px;
+  width: 1200px;
+}
+
 .eureka_title {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   padding-top: 80px;
@@ -281,7 +291,7 @@ border-radius: 5px;
 border-radius: 5px 10px / 10px;*/
 }
 .welcome_info {
-  padding: 5px;
+  border: 20px;
   margin-left: auto;
   margin-right: auto;
 }
@@ -329,9 +339,12 @@ font-size: .8em;
   padding-top: 50px;
 }
 
-.idea_page{
-  padding: 10px;
+.side_info {
+  padding: 5px;
+  margin-left: auto;
+  margin-right: auto;
 }
+
 
 .darkphototext {
 color: white;
@@ -357,6 +370,10 @@ left:340px;
 width: 500px;
 height: auto;
 display: inline-block;
+}
+
+.intro {
+  border: 10px;
 }
 
 a {

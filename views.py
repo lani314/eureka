@@ -55,8 +55,9 @@ def authenticate():
         if user:
             session['id'] = user.id
             return redirect("/mypage")
-        else: 
-            return redirect("/error")
+        else:
+            flash("Oops! Incorrect data. Login again.") 
+            return redirect("/")
     else:
         flash("Please fill in all fields")
         return redirect("/")
@@ -122,14 +123,13 @@ def contact():
 @app.route("/mypage", methods=['GET'])
 def my_page():
 
-    # create an empty list to append recent projects to
-    # recent_work = []
-
     # Query for all projects that match user in membership table (project user = global user)
     recent_work = model.session.query(model.Membership).filter_by(user_id=g.user.id).all()
-        # recent_work.append(my_membership)
 
-    return render_template("mypage.html", recent_work = recent_work)
+    for individual in model.session.query(model.User).filter_by(id=g.user.id):
+        person = individual.username
+
+    return render_template("mypage.html", recent_work = recent_work, person=person)
 
 @app.route("/new_project")
 def new_project():    
@@ -223,7 +223,10 @@ def authenticate_member():
                     return redirect("/my_project/" + mem_project)
             flash("Oops! Incorrect project information. Please search for the project again.")   
             return redirect("/search_project")
-            flash.refresh()               
+            flash.refresh()
+        flash("Oops! Incorrect project information. Please search for the project again.")   
+        return redirect("/search_project")
+        flash.refresh()                
     else:
         flash("Oops! The form was incomplete! Please search for project again.")   
         return redirect("/search_project")
@@ -358,8 +361,10 @@ def all_ideas(id):
     for work in model.session.query(model.Idea).filter_by(project_id=id):
         recent_ideas.append(work)
         name = work.idea_project.project_name
+        pro_id = work.project_id
+
    
-    return render_template("/all_ideas.html", recent_ideas=recent_ideas, name=name)
+    return render_template("/all_ideas.html", recent_ideas=recent_ideas, name=name, pro_id=pro_id)
 
 @app.route("/my_project/<int:id>/sorted_ideas", methods=["GET"])
 def sorted_ideas(id):
@@ -367,10 +372,10 @@ def sorted_ideas(id):
     ideas_to_sort = []
 
     for each in model.session.query(model.Idea).filter_by(project_id=id):
-        # sorted_version = sorted(each.average_rating)
+        pro_id = each.project_id
         ideas_to_sort.append(each)
    
-    return render_template("/sorted_ideas.html", ideas_to_sort=ideas_to_sort)
+    return render_template("/sorted_ideas.html", ideas_to_sort=ideas_to_sort, pro_id = pro_id)
 
 
 @app.route("/my_project/<int:id>/rate_idea/<int:idea>")
@@ -572,6 +577,8 @@ def idea(id, idea):
 
     # Query for idea in idea table to receive idea name, creator and ratings
     for selection in model.session.query(model.Idea).filter_by(id=idea):
+        pro_id = selection.project_id
+        pro_idea = selection.id
         selected_idea.append(selection)
 
     all_ratings = []
@@ -580,7 +587,7 @@ def idea(id, idea):
     for rating_info in model.session.query(model.Rating).filter_by(idea_id=idea):
         all_ratings.append(rating_info)
 
-    return render_template("/idea.html", selected_idea = selected_idea, all_ratings = all_ratings)
+    return render_template("/idea.html", selected_idea = selected_idea, all_ratings = all_ratings, pro_id=pro_id, pro_idea=pro_idea)
 
 @app.route("/about", methods=['GET'])
 def about():
