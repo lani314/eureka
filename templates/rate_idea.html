@@ -67,8 +67,8 @@
 
     <p>You may provide an optional note about your rating, which may help other users</p>
       <form action = {{url_for("save_rating", id=id, idea=idea)}} form method="POST">
-        <!-- iterate through form, which is taken the "form" taken from views -->
-        {% for field in form %}
+        {{form.hidden_tag()}}
+        {% for field in form if field.widget.input_type != 'hidden' %}
 
             {% for error in field.errors %}
             <!-- print error message -->

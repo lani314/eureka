@@ -7,7 +7,6 @@ class AddUserForm(Form):
 	password = PasswordField("password", validators=[v.required()])
 
 class LoginUserForm(Form):
-	# email = TextField("email", validators=[v.required()])
 	username = TextField("username", validators=[v.required()])
 	password = PasswordField("password", validators=[v.required()])
 
@@ -26,7 +25,6 @@ class RateIdeaForm(Form):
 
 class JoinProjectForm(Form):
 	project_id = TextField("project_id", validators=[v.required()])
-	project_name = TextField("project_name", validators=[v.required()])
 	project_password = TextField("project_password", validators=[v.required()])
 
 class AllIdeaForm(Form):

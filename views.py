@@ -20,15 +20,13 @@ app.secret_key = 'discovery'
 @app.before_request
 def before_request():
 
-    # authenticate existence of session id within object
     user_id = session.get("id")
 
     if user_id:
         g.user = model.session.query(model.User).get(user_id)
     else:
         g.user = None
-    # else:
-        # return redirect("/")
+    
 
 
 @app.route("/")
@@ -62,22 +60,6 @@ def authenticate():
         flash("Please fill in all fields")
         return redirect("/")
 
-# @app.route("/new_user")
-# def new_user():
-#     form = forms.AddUserForm()
-#     return render_template("new_user.html", form=form)
-
-# @app.route("/authenticate_new_user", methods=["POST"])
-# def authenticate():
-
-#     form = forms.AddUForm()
-#     if form.validate_on_submit():
-#         user = model.session.query(model.User).filter_by(email=form.email.data, password=form.password.data).first()
-#         if user:
-#             session['id'] = user.id
-#             return redirect("/mypage")
-#     else:
-#         return redirect("/")
 
 @app.route("/save_user", methods=["GET", "POST"])
 def save_user():
@@ -94,22 +76,7 @@ def save_user():
             session['id'] = user.id
             return redirect("/mypage")
 
-        # userid_generator = model.session.query(model.User).get(register_user.id)
-
-        # place_usermembership = model.Membership(user_id = register_user.id)
-
-        # model.session.add(place_usermembership)
-        # model.session.commit()
-
-
-        # WHY IS THE FLASH NOT WORKING?
-        # flash("Thanks for registering. Please login now.")
-
-        # user = g.user.id
-        # str_newuser = str(user)
-        
-        # return redirect("/")
-    # return render_template("/new_user.html", form=form)
+     
     else:
         flash("Please fill in all fields")
         return redirect("/")
@@ -146,12 +113,6 @@ def add_project():
         register_project = model.Project(id = None, project_master = g.user.id, project_name = form.name.data, project_password = form.password.data, base_text = form.base_text.data, keywords = form.keywords.data)
         model.session.add(register_project)
         
-        # query in Projects to get the id of the currently registered project's id
-        # model.session.commit()
-        # model.session.refresh(register_project)
-        
-        # insert id into memberships table position for project_id
-        #project_id = register_project.id, user_id = g.user.id)
 
         # access membership table, set to variable
         place_membership = model.Membership()
@@ -203,11 +164,10 @@ def search_results():
 @app.route("/authenticate_member", methods=["POST"])
 def authenticate_member():
 
-    # user = g.user.id
 
     form = forms.JoinProjectForm()
     if form.validate_on_submit():
-        group_project = model.session.query(model.Project).filter_by(id=form.project_id.data, project_name=form.project_name.data, project_password=form.project_password.data).first()
+        group_project = model.session.query(model.Project).filter_by(id=form.project_id.data, project_password=form.project_password.data).first()
         if group_project:
             member_search = model.session.query(model.Membership).filter_by(project_id=form.project_id.data, user_id=g.user.id).first()
             if member_search:
@@ -238,10 +198,7 @@ def my_project(id):
     collaborators = []
 
     project = model.session.query(model.Project).filter_by(id=id).one()
-        # for my_people in model.session.query(model.Membership).filter_by(project_id=id):
-        #     if my_people.user_id != master:
-        #         collaborators.append(my_people)
-
+     
     return render_template("/my_project.html", id=id, project = project)
 
 @app.route("/my_project/<int:id>/edit", methods =["POST", "GET"])
@@ -287,15 +244,10 @@ def create_idea(id):
 
     form = forms.AddIdeaForm()
 
-    # my_words = urlopen('http://api.wordnik.com/v4)
-    # response = my_words.read()
-
-    # word_list = []
-    # like_list = []
+   
 
     wordsApi = WordsApi.WordsApi(client)
     random_word = wordsApi.getRandomWord().word
-    # word_list.append(random_word)
 
     like_list = []
 
@@ -343,13 +295,10 @@ def save_idea(id):
 
         new_idea = str(id)
 
-        # session["idea"] = register_idea.id
-
-    # return redirect("/rate_idea")
+     
 
         return redirect("/my_project/" + new_idea + "/create_idea")
     else:
-        # flash("Please correctly enter in all fields")
         str_id = str(id)
         return redirect("/my_project/" + str_id + "/create_idea")
 
@@ -359,12 +308,13 @@ def all_ideas(id):
     recent_ideas = []
 
     for work in model.session.query(model.Idea).filter_by(project_id=id):
-        recent_ideas.append(work)
-        name = work.idea_project.project_name
         pro_id = work.project_id
+        name = work.idea_project.project_name
+        recent_ideas.append(work)
+        
 
    
-    return render_template("/all_ideas.html", recent_ideas=recent_ideas, name=name, pro_id=pro_id)
+    return render_template("/all_ideas.html", recent_ideas=recent_ideas, pro_id=pro_id)
 
 @app.route("/my_project/<int:id>/sorted_ideas", methods=["GET"])
 def sorted_ideas(id):
@@ -465,21 +415,7 @@ def save_rating(id, idea):
                             str_id = str(id)
                             str_idea = str(idea)
                             return redirect("/my_project/" + str_id + "/rate_idea/" + str_idea + "/save_average")
-                            # current_average_update = model.session.query(model.Idea).get(idea)
-                            # current_sum = current_average_update.ratings_sum
-                            # # current_sum_float = float(current_sum)
-                            # # average_base = current_average_update.average_rating
-                            # current_count = current_average_update.total_ratings
-                            # # current_average_update.average_rating = (exact_rating + average_base) / total_count
-                            # # current_average_update.average_rating = (current_sum + exact_rating) / (current_count + 1.0)
-                            # current_average_update.average_rating = (current_sum + exact_rating) / (current_count + 1.0)
-
-                            # model.session.commit()
-
-                    # str_id = str(id)
-                    # str_idea = str(idea)
-                    # flash("You've successfully added your rating")
-                    # return redirect("/my_project/" + str_id + "/all_ideas")
+                           
     else:
         str_id = str(id)
         str_idea = str(idea)
@@ -511,64 +447,6 @@ def all_my_ratings():
 
 
     return render_template("/all_my_ratings.html", my_ratings=my_ratings)
-
-# @app.route("/my_project/<int:id>/change_rating/<int:idea>/", methods=["POST", "GET"])
-# def change_rating(id, idea):
-
-#     rate = model.session.query(model.Rating).filter_by(idea_id=idea, rater_id=g.user.id).one()
-#     if rate:
-#         form = forms.RateIdeaForm()
-#         return render_template("/change_rating.html", form=form, rate=rate)
-#     else:
-#         flash("You haven't rated this idea yet.")
-#     str_id = str(id)
-#     str_idea = str(idea)
-#     return redirect("/my_project/" + str_id + "/rate_idea/" + str_idea)
-
-# @app.route("/my_project/<int:id>/save_rating_edits/<int:idea>", methods=["POST", "GET"])
-# def save_rating_edits(id, idea, old_rating):
-
-#     form = forms.RateIdeaForm()
-
-#     pass_id = str(id)
-#     pass_idea = str(idea)
-
-#     if form.validate_on_submit():
-#        # for rate in model.session.query(model.Rating).filter_by(id=idea, rater_id=g.user.id):
-#         retrieve_rating = model.session.query(model.Rating).filter_by(idea_id=idea, rater_id=g.user.id).get()
-
-#         rating_update = model.session.query(model.Rating).get(id)
-
-#         if form.rating.data:
-#             rating_update.rating = form.rating.data
-#         if form.rating_notes.data:
-#             rating.rating_notes = form.rating_notes.data
-
-#         average_update = model.session.query(model.Idea).get(idea)    
-#         old_sum = average_update.ratings_sum
-#         # old_rating = 
-#         modified_sum = old_sum - old_rating
-#         average_update.average_rating = (modified_sum + form.rating.data) / current_count
-
-
-#         model.session.commit()
-
-
-
-
-    # for average_counter in model.session.query(model.Idea).filter_by(id=idea):
-
-
-    #         current_average_update = model.session.query(model.Idea).get(idea)
-    #         average_base = current_average_update.average_rating
-    #         total_count = current_average_update.total_ratings
-    #         current_average_update.average_rating = (form.rating.data + average_base) / total_count
-         
-    #     model.session.commit()
-
-
-
-        # return redirect("/my_project/" + pass_id + "/change_rating/" + pass_idea)
 
 @app.route("/my_project/<int:id>/idea/<int:idea>")
 def idea(id, idea):

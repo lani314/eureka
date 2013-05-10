@@ -30,25 +30,16 @@ class Project(Base):
 
     master = relationship("User", backref=backref("projects", order_by=id))
 
-# ASSOCIATION TABLE
-# We need this b/c of the many-many relationship
-# However, if it were 1-many, we would not need it
 class Membership(Base):
     __tablename__ = "memberships"
     id = Column(Integer, primary_key = True)
     user_id = Column(Integer, ForeignKey('users.id'))
     project_id = Column(Integer, ForeignKey('projects.id'))
 
-    # from here we can query for memberships -- 
-
-    # The purpose of this is based on a query
-    # whenever we load a project, then corresponding users will also be loaded
-    # load corresponding users 
+  
     user = relationship("User", backref=backref("memberships", order_by=id))
 
-    # The purpose of this is based on a query
-    # whenever we load a users, then corresponding projects will also be loaded
-    # load corresponding projects
+    
     project = relationship("Project", backref=backref("memberships", order_by=id))
 
 class Idea(Base):
@@ -62,11 +53,9 @@ class Idea(Base):
     ratings_sum = Column(Integer, nullable = True)
 
 
-    # load corresponding project object
     idea_project = relationship("Project", backref=backref("ideas", order_by=id))
     creator = relationship("User", backref=backref("ideas", order_by=id))
 
-    # NOTE: MAYBE INCLUDE INSPIRATION LATER ON
 
 class Rating(Base):
     __tablename__ = "ratings"
@@ -76,9 +65,7 @@ class Rating(Base):
     rating = Column(Integer, nullable=True)
     rating_notes= Column(String, nullable = True)
 
-    # one idea has many ratings - ONE TO MANY
     idea = relationship("Idea", backref=backref("ideas", order_by=id))
-    # # one rater has many ratings - ONE TO MANY
     rater = relationship("User", backref=backref("ratings", order_by=id))
 
 def main():
